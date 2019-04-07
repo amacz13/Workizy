@@ -19,6 +19,7 @@ import { ChecklistItem } from '../providers/checklist-item/checklist-item';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { SqlQueriesProvider } from '../providers/sql-queries/sql-queries';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     StorageManager,
     Checklist,
     ChecklistItem,
-    HttpClient
+    HttpClient,
+    SqlQueriesProvider
   ]
 })
 export class AppModule {}
