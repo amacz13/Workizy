@@ -11,10 +11,14 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {SQLite} from "@ionic-native/sqlite";
-import {AngularFireAuth} from "@angular/fire/auth";
-import { ListProvider } from '../providers/list/list';
-import { ListItemProvider } from '../providers/list-item/list-item';
-import { StorageManagerProvider } from '../providers/storage-manager/storage-manager';
+import { List } from '../providers/list/list';
+import { ListItem } from '../providers/list-item/list-item';
+import { StorageManager } from '../providers/storage-manager/storage-manager';
+import { Checklist } from '../providers/checklist/checklist';
+import { ChecklistItem } from '../providers/checklist-item/checklist-item';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -26,6 +30,14 @@ import { StorageManagerProvider } from '../providers/storage-manager/storage-man
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -41,9 +53,17 @@ import { StorageManagerProvider } from '../providers/storage-manager/storage-man
     SplashScreen,
     SQLite,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ListProvider,
-    ListItemProvider,
-    StorageManagerProvider
+    List,
+    ListItem,
+    StorageManager,
+    Checklist,
+    ChecklistItem,
+    HttpClient
   ]
 })
 export class AppModule {}
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
