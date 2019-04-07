@@ -10,6 +10,11 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {SQLite} from "@ionic-native/sqlite";
+import {AngularFireAuth} from "@angular/fire/auth";
+import { ListProvider } from '../providers/list/list';
+import { ListItemProvider } from '../providers/list-item/list-item';
+import { StorageManagerProvider } from '../providers/storage-manager/storage-manager';
 
 @NgModule({
   declarations: [
@@ -34,7 +39,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    SQLite,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ListProvider,
+    ListItemProvider,
+    StorageManagerProvider
   ]
 })
 export class AppModule {}
