@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
+import { SettingsPage } from '../settings/settings';
+import { LocalListsPage } from '../local-lists/local-lists';
+import { OnlineListsPage } from '../online-lists/online-lists';
 import { HomePage } from '../home/home';
 import {TranslateService} from "@ngx-translate/core";
 
@@ -11,8 +12,9 @@ import {TranslateService} from "@ngx-translate/core";
 export class TabsPage {
 
   tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  tab2Root = LocalListsPage;
+  tab3Root = OnlineListsPage;
+  tab4Root = SettingsPage;
 
   constructor(public translate: TranslateService) {
     translate.setDefaultLang('en');

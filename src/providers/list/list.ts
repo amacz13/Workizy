@@ -19,4 +19,8 @@ export class List {
   constructor() {
   }
 
+  getTitle():String {
+    return this.title;
+  }
+
 }

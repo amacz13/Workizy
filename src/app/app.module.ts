@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { LocalListsPage } from '../pages/local-lists/local-lists';
+import { OnlineListsPage } from '../pages/online-lists/online-lists';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -19,15 +19,21 @@ import { ChecklistItem } from '../providers/checklist-item/checklist-item';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import { SqlQueriesProvider } from '../providers/sql-queries/sql-queries';
+import { SqlQueries } from '../providers/sql-queries/sql-queries';
+import {NativeStorage} from "@ionic-native/native-storage";
+import {SettingsPage} from "../pages/settings/settings";
+import { Encryption } from '../providers/encryption/encryption';
+import {AES256} from "@ionic-native/aes-256";
+import {Device} from "@ionic-native/device";
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
+    LocalListsPage,
+    OnlineListsPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    SettingsPage
   ],
   imports: [
     BrowserModule,
@@ -44,10 +50,11 @@ import { SqlQueriesProvider } from '../providers/sql-queries/sql-queries';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
+    LocalListsPage,
+    OnlineListsPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    SettingsPage
   ],
   providers: [
     StatusBar,
@@ -60,7 +67,12 @@ import { SqlQueriesProvider } from '../providers/sql-queries/sql-queries';
     Checklist,
     ChecklistItem,
     HttpClient,
-    SqlQueriesProvider
+    SqlQueries,
+    NativeStorage,
+    SQLite,
+    Encryption,
+    AES256,
+    Device
   ]
 })
 export class AppModule {}
