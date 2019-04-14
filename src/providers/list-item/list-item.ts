@@ -1,22 +1,39 @@
-import { Injectable } from '@angular/core';
 import {Checklist} from "../checklist/checklist";
+import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {List} from "../list/list";
 
-@Injectable()
+@Entity('listitem')
 export class ListItem {
 
   // Unique ID for storage purposes
-  private id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   // Content of the item
-  private title: String;
-  private textContent: String;
-  private picture: String;
-  private checklist: Checklist;
+  @Column({nullable: true})
+  title: String;
+  @Column({nullable: true})
+  textContent: String;
+  @Column({nullable: true})
+  picture: String;
+  @OneToOne(type => Checklist, cl => cl.listItem, {
+    nullable: true
+  })
+  @JoinColumn()
+  checklist: Checklist;
 
   // Date informations
-  private creationDate: number;
-  private lastEditionDate: number;
-  private reminderDate: number;
+  @Column()
+  creationDate: number;
+  @Column()
+  lastEditionDate: number;
+  @Column({nullable: true})
+  reminderDate: number;
+
+  @ManyToOne(type => List, list => list.items, {
+    cascade: ['insert']
+  })
+  list: List;
 
   constructor() {
 

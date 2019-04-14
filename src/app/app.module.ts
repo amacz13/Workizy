@@ -19,7 +19,6 @@ import { ChecklistItem } from '../providers/checklist-item/checklist-item';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import { SqlQueries } from '../providers/sql-queries/sql-queries';
 import {NativeStorage} from "@ionic-native/native-storage";
 import {SettingsPage} from "../pages/settings/settings";
 import { Encryption } from '../providers/encryption/encryption';
@@ -67,7 +66,6 @@ import {Device} from "@ionic-native/device";
     Checklist,
     ChecklistItem,
     HttpClient,
-    SqlQueries,
     NativeStorage,
     SQLite,
     Encryption,

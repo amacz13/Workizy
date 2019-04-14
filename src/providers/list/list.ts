@@ -1,26 +1,31 @@
-import { Injectable } from '@angular/core';
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {ListItem} from "../list-item/list-item";
 
-@Injectable()
+@Entity('list')
 export class List {
 
   // Unique ID for storage purposes
-  private id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   // List details
-  private title: String;
-  private cover: String;
+  @Column()
+  title: String;
+  @Column()
+  cover: String;
 
   // Date informations
-  private creationDate: number;
-  private lastEditionDate: number;
+  @Column()
+  creationDate: number;
+  @Column()
+  lastEditionDate: number;
 
-  private isSynchronized: boolean;
+  @Column()
+  isSynchronized: boolean;
+
+  @OneToMany(type => ListItem, item => item.list)
+  items: ListItem[];
 
   constructor() {
   }
-
-  getTitle():String {
-    return this.title;
-  }
-
 }
