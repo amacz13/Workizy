@@ -1,9 +1,24 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>{{ 'Settings' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>
+        Account
+      </ion-card-title>
+      <p>
+        You are not connected to a What's Next account. Sign in now to enable synchronization between your devices !
+      </p>
+    </ion-card-content>
+    <ion-item>
+      <button (click)="signIn()" ion-button icon-start clear item-end>
+        <ion-icon name="log-in"></ion-icon>
+        Sign In
+      </button>
+    </ion-item>
+  </ion-card>
 </ion-content>

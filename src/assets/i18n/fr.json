@@ -5,5 +5,19 @@
   "List": "Liste",
   "element" : "élément",
   "elements" : "éléments",
-  "Settings" : "Paramètres"
+  "Settings" : "Paramètres",
+  "New List" : "Nouvelle Liste",
+  "Title" : "Titre",
+  "List Type" : "Type de liste",
+  "Synchronize" : "Synchronizer",
+  "Create" : "Créer",
+  "Cancel" : "Annuler",
+  "General" : "Général",
+  "Pictures" : "Images",
+  "Links" : "Liens",
+  "Cover Picture" : "Photo de couverture",
+  "Shoot" : "Prendre une photo",
+  "Pick from Gallery" : "Choisir depuis la galerie",
+  "Pick from Samples" : "Choisir depuis les photos suggérées",
+  "Choose a Cover Picture" : "Choisir une photo de couverture"
 }

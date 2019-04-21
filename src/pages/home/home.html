@@ -1,6 +1,14 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>What's Next</ion-title>
+    <ion-buttons end>
+      <button *ngIf="viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
+        <ion-icon name="apps"></ion-icon>
+      </button>
+      <button *ngIf="!viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
+        <ion-icon name="list"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -10,4 +18,8 @@
     <div class="card-title">{{list.getTitle()}}</div>
     <div class="card-subtitle">41 Listings</div>
   </ion-card>
+
+  <ion-fab right bottom>
+    <button (click)="showNewList()" ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

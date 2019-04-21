@@ -24,6 +24,9 @@ import {SettingsPage} from "../pages/settings/settings";
 import { Encryption } from '../providers/encryption/encryption';
 import {AES256} from "@ionic-native/aes-256";
 import {Device} from "@ionic-native/device";
+import { UserSettings } from '../providers/user-settings/user-settings';
+import {NewListPage} from "../pages/new-list/new-list";
+import {ChooseCoverFromSamplesPage} from "../pages/choose-cover-from-samples/choose-cover-from-samples";
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import {Device} from "@ionic-native/device";
     OnlineListsPage,
     HomePage,
     TabsPage,
-    SettingsPage
+    SettingsPage,
+    NewListPage,
+    ChooseCoverFromSamplesPage
   ],
   imports: [
     BrowserModule,
@@ -53,7 +58,9 @@ import {Device} from "@ionic-native/device";
     OnlineListsPage,
     HomePage,
     TabsPage,
-    SettingsPage
+    SettingsPage,
+    NewListPage,
+    ChooseCoverFromSamplesPage
   ],
   providers: [
     StatusBar,
@@ -70,7 +77,8 @@ import {Device} from "@ionic-native/device";
     SQLite,
     Encryption,
     AES256,
-    Device
+    Device,
+    UserSettings
   ]
 })
 export class AppModule {}

@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'Choose a Cover Picture' | translate }}</ion-title>
+    <ion-buttons end>
+      <button (click)="close()" ion-button icon-only color="royal">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+
+  <ion-card *ngFor="let img of imgList" (click)="choose(img)">
+    <img src="assets/covers/{{img}}"/>
+  </ion-card>
+
+</ion-content>

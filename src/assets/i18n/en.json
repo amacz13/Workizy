@@ -5,5 +5,19 @@
   "List": "List",
   "element" : "element",
   "elements" : "elements",
-  "Settings" : "Settings"
+  "Settings" : "Settings",
+  "New List" : "New List",
+  "Title" : "Title",
+  "List Type" : "List Type",
+  "Synchronize" : "Synchronize",
+  "Create" : "Create",
+  "Cancel" : "Cancel",
+  "General" : "General",
+  "Pictures" : "Pictures",
+  "Links" : "Links",
+  "Cover Picture" : "Cover Picture",
+  "Shoot" : "Shoot",
+  "Pick from Gallery" : "Pick from Gallery",
+  "Pick from Samples" : "Pick from Samples",
+  "Choose a Cover Picture" : "Choose a Cover Picture"
 }

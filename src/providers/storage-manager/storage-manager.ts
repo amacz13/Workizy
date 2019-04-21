@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import {List} from "../list/list";
 import {getRepository, Repository} from "typeorm";
+import {ListItem} from "../list-item/list-item";
+import {Checklist} from "../checklist/checklist";
+import {ChecklistItem} from "../checklist-item/checklist-item";
 
 @Injectable()
 export class StorageManager {
 
+  static allLists: List[];
+
   public static initRepositories() {
     this.listRepository = getRepository('list') as Repository<List>;
+    this.listItemRepository = getRepository('listitem') as Repository<ListItem>;
+    this.checklistRepository = getRepository('checklist') as Repository<Checklist>;
+    this.checklistItemRepository = getRepository('checklistitem') as Repository<ChecklistItem>;
+
     this.getList(1).then( val => console.log(val));
     /*let list: List = new List();
     list.title = "Test";
@@ -18,6 +27,9 @@ export class StorageManager {
   }
 
   static listRepository: Repository<List>;
+  static listItemRepository: Repository<ListItem>;
+  static checklistRepository: Repository<Checklist>;
+  static checklistItemRepository: Repository<ChecklistItem>;
 
   connection: any;
 

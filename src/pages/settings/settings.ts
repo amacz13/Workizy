@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
+import {UserSettings} from "../../providers/user-settings/user-settings";
 
 @Component({
   selector: 'page-settings',
@@ -7,9 +8,12 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class SettingsPage {
 
-  constructor(public translate: TranslateService) {
-    translate.setDefaultLang('en');
+  constructor(public translate: TranslateService, public settings: UserSettings) {
+    //translate.setDefaultLang('en');
   }
 
 
+  signIn() {
+    this.settings.isConnected = true;
+  }
 }

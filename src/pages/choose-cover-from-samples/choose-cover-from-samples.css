@@ -1,0 +1,21 @@
+page-choose-cover-from-samples .card-background-page ion-card {
+  position: relative;
+  text-align: center;
+}
+page-choose-cover-from-samples .card-background-page .card-title {
+  position: absolute;
+  top: 36%;
+  font-size: 2em;
+  width: 100%;
+  font-weight: bold;
+  color: #fff;
+}
+page-choose-cover-from-samples .card-background-page .card-subtitle {
+  font-size: 1em;
+  position: absolute;
+  top: 52%;
+  width: 100%;
+  color: #fff;
+}
+
+/*# sourceMappingURL=choose-cover-from-samples.css.map */
