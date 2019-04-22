@@ -17,14 +17,14 @@ import {ChecklistItem} from "../providers/checklist-item/checklist-item";
 export class MyApp {
   rootPage:any = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager) {
     platform.ready().then(async() => {
       if(platform.is('cordova')) {
         console.log("[WhatsNext] Using cordova platform...");
         console.log("[WhatsNext] Creating ORM link with database...");
         await createConnection({
           type: 'cordova',
-          database: 'whatsnext',
+          database: 'whats-next',
           location: 'default',
           logging: ['error', 'query', 'schema'],
           synchronize: true,
@@ -35,7 +35,7 @@ export class MyApp {
             ChecklistItem
           ]
         }).then( () => {
-          StorageManager.initRepositories()
+          sm.initRepositories()
         });
       } else {
         console.log("[WhatsNext] Using web platform...");
@@ -53,7 +53,7 @@ export class MyApp {
             ChecklistItem
           ]
         }).then( () => {
-          StorageManager.initRepositories()
+          sm.initRepositories()
         });
       }
       // Okay, so the platform is ready and our plugins are available.

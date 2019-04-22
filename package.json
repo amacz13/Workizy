@@ -36,6 +36,7 @@
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
     "cordova-android": "8.0.0",
+    "cordova-osx": "5.0.0",
     "cordova-plugin-aes256-encryption": "1.2.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-firebase-authentication": "^1.1.2",
@@ -81,7 +82,8 @@
       "cordova-plugin-aes256-encryption": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "osx"
     ]
   }
 }

@@ -14,9 +14,9 @@
 
 <ion-content padding class="card-background-page">
   <ion-card *ngFor="let list of this.sm.allLists">
-    <img src="img/card-saopaolo.png"/>
-    <div class="card-title">{{list.getTitle()}}</div>
-    <div class="card-subtitle">41 Listings</div>
+    <img src="assets/covers/{{list.cover}}"/>
+    <div class="card-title">{{list.title}}</div>
+    <div class="card-subtitle">{{list.items.length}} items</div>
   </ion-card>
 
   <ion-fab right bottom>

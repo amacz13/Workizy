@@ -15,14 +15,14 @@
 
     <ion-item>
       <ion-label floating>{{ 'Title' | translate }}</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input [(ngModel)]="title" type="text"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>{{ 'List Type' | translate }}</ion-label>
       <ion-select [(ngModel)]="listType" interface="action-sheet" cancelText="{{ 'Cancel' | translate }}">
         <ion-option value="general">{{ 'General' | translate }}</ion-option>
-        <ion-option value="pictures">{{ 'Pcitures' | translate }}</ion-option>
+        <ion-option value="pictures">{{ 'Pictures' | translate }}</ion-option>
         <ion-option value="links">{{ 'Links' | translate }}</ion-option>
       </ion-select>
     </ion-item>
@@ -39,6 +39,6 @@
   </ion-list>
 
   <ion-footer padding no-shadow>
-    <button ion-button block>{{ 'Create' | translate }}</button>
+    <button (click)="createList()" ion-button block>{{ 'Create' | translate }}</button>
   </ion-footer>
 </ion-content>

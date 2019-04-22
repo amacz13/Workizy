@@ -8,15 +8,16 @@ import {ChecklistItem} from "../checklist-item/checklist-item";
 @Injectable()
 export class StorageManager {
 
-  static allLists: List[];
+  allLists: List[];
+  localLists: List[];
+  onlineLists: List[];
 
-  public static initRepositories() {
+  public initRepositories() {
     this.listRepository = getRepository('list') as Repository<List>;
     this.listItemRepository = getRepository('listitem') as Repository<ListItem>;
     this.checklistRepository = getRepository('checklist') as Repository<Checklist>;
     this.checklistItemRepository = getRepository('checklistitem') as Repository<ChecklistItem>;
-
-    this.getList(1).then( val => console.log(val));
+    this.getLists();
     /*let list: List = new List();
     list.title = "Test";
     list.creationDate = Date.now();
@@ -26,27 +27,40 @@ export class StorageManager {
     this.listRepository.save(list).then( () => this.getLists());*/
   }
 
-  static listRepository: Repository<List>;
-  static listItemRepository: Repository<ListItem>;
-  static checklistRepository: Repository<Checklist>;
-  static checklistItemRepository: Repository<ChecklistItem>;
+  listRepository: Repository<List>;
+  listItemRepository: Repository<ListItem>;
+  checklistRepository: Repository<Checklist>;
+  checklistItemRepository: Repository<ChecklistItem>;
 
   connection: any;
 
   constructor() {
   }
 
-  static saveList(list: List){
-    StorageManager.listRepository.save(list);
+  public saveList(list: List){
+    this.listRepository.save(list).then( () => {
+      this.getLists();
+    });
   }
 
 
-  static getList(id: number):Promise<List> {
-    return StorageManager.listRepository.findOne(id);
+  public getList(id: number):Promise<List> {
+    return this.listRepository.findOne(id);
   }
 
-  static getLists():any {
-    StorageManager.listRepository.find().then(lists => console.log("All lists : ",lists));
+  public getLists():any {
+    this.listRepository.find().then(lists => {
+      console.log("All lists : ",lists)
+      this.allLists = lists;
+    });
+    this.listRepository.find({isSynchronized:false}).then(lists => {
+      console.log("Local lists : ",lists);
+      this.localLists = lists;
+    });
+    this.listRepository.find({isSynchronized:true}).then(lists => {
+      console.log("Online lists : ",lists);
+      this.onlineLists = lists;
+    });
   }
 
 }
