@@ -4,6 +4,22 @@ import {ListItem} from "../list-item/list-item";
 @Entity('list')
 export class List {
 
+  // Unique ID for storage purposes
+  @PrimaryGeneratedColumn() private _id: number;
+
+  // List details
+  @Column() private _title: String;
+  @Column() private _cover: String;
+  @Column() private _listType: String;
+
+  // Date informations
+  @Column() private _creationDate: number;
+  @Column() private _lastEditionDate: number;
+
+  @Column() private _isSynchronized: boolean;
+
+  @OneToMany(type => ListItem, item => item.list) private _items: ListItem[];
+
   get listType(): String {
     return this._listType;
   }
@@ -61,21 +77,12 @@ export class List {
     this._id = value;
   }
 
-  // Unique ID for storage purposes
-  @PrimaryGeneratedColumn() private _id: number;
-
-  // List details
-  @Column() private _title: String;
-  @Column() private _cover: String;
-  @Column() private _listType: String;
-
-  // Date informations
-  @Column() private _creationDate: number;
-  @Column() private _lastEditionDate: number;
-
-  @Column() private _isSynchronized: boolean;
-
-  @OneToMany(type => ListItem, item => item.list) private _items: ListItem[];
+  getElementCount():number {
+    if (this.items == null) {
+      return 0;
+    }
+    return this.items.length;
+  }
 
   constructor() {
   }

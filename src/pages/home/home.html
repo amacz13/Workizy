@@ -13,11 +13,24 @@
 </ion-header>
 
 <ion-content padding class="card-background-page">
-  <ion-card *ngFor="let list of this.sm.allLists">
-    <img src="assets/covers/{{list.cover}}"/>
-    <div class="card-title">{{list.title}}</div>
-    <div class="card-subtitle">{{list.items.length}} items</div>
-  </ion-card>
+  <div *ngIf="!viewmode">
+    <ion-card *ngFor="let list of this.sm.allLists" (click)="showList(list)">
+      <img src="assets/covers/{{list.cover}}"/>
+      <div class="card-title">{{list.title}}</div>
+      <div class="card-subtitle">{{list.getElementCount()}} items</div>
+    </ion-card>
+  </div>
+
+  <ion-list *ngIf="viewmode">
+    <ion-item *ngFor="let list of this.sm.allLists">
+      <ion-thumbnail item-start>
+        <img src="assets/covers/{{list.cover}}">
+      </ion-thumbnail>
+      <h2>{{list.title}}</h2>
+      <p>{{list.getElementCount()}} items</p>
+      <button (click)="showList(list)" ion-button clear item-end><ion-icon name="arrow-forward"></ion-icon></button>
+    </ion-item>
+  </ion-list>
 
   <ion-fab right bottom>
     <button (click)="showNewList()" ion-fab color="primary"><ion-icon name="add"></ion-icon></button>

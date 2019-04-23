@@ -10,6 +10,7 @@ import {StorageManager} from "../providers/storage-manager/storage-manager";
 import {ListItem} from "../providers/list-item/list-item";
 import {Checklist} from "../providers/checklist/checklist";
 import {ChecklistItem} from "../providers/checklist-item/checklist-item";
+import {Link} from "../providers/link/link";
 
 @Component({
   templateUrl: 'app.html'
@@ -24,7 +25,7 @@ export class MyApp {
         console.log("[WhatsNext] Creating ORM link with database...");
         await createConnection({
           type: 'cordova',
-          database: 'whats-next',
+          database: 'wn',
           location: 'default',
           logging: ['error', 'query', 'schema'],
           synchronize: true,
@@ -32,7 +33,8 @@ export class MyApp {
             List,
             ListItem,
             Checklist,
-            ChecklistItem
+            ChecklistItem,
+            Link
           ]
         }).then( () => {
           sm.initRepositories()
@@ -50,7 +52,8 @@ export class MyApp {
             List,
             ListItem,
             Checklist,
-            ChecklistItem
+            ChecklistItem,
+            Link
           ]
         }).then( () => {
           sm.initRepositories()

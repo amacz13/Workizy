@@ -4,6 +4,7 @@ import {getRepository, Repository} from "typeorm";
 import {ListItem} from "../list-item/list-item";
 import {Checklist} from "../checklist/checklist";
 import {ChecklistItem} from "../checklist-item/checklist-item";
+import {Link} from "../link/link";
 
 @Injectable()
 export class StorageManager {
@@ -17,6 +18,7 @@ export class StorageManager {
     this.listItemRepository = getRepository('listitem') as Repository<ListItem>;
     this.checklistRepository = getRepository('checklist') as Repository<Checklist>;
     this.checklistItemRepository = getRepository('checklistitem') as Repository<ChecklistItem>;
+    this.linkRepository = getRepository('link') as Repository<Link>;
     this.getLists();
     /*let list: List = new List();
     list.title = "Test";
@@ -31,6 +33,7 @@ export class StorageManager {
   listItemRepository: Repository<ListItem>;
   checklistRepository: Repository<Checklist>;
   checklistItemRepository: Repository<ChecklistItem>;
+  linkRepository: Repository<Link>;
 
   connection: any;
 

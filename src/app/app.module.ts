@@ -27,6 +27,12 @@ import {Device} from "@ionic-native/device";
 import { UserSettings } from '../providers/user-settings/user-settings';
 import {NewListPage} from "../pages/new-list/new-list";
 import {ChooseCoverFromSamplesPage} from "../pages/choose-cover-from-samples/choose-cover-from-samples";
+import {ListViewerPage} from "../pages/list-viewer/list-viewer";
+import {NewItemPage} from "../pages/new-item/new-item";
+import {Camera} from "@ionic-native/camera";
+import { Link } from '../providers/link/link';
+import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {BrowserTab} from "@ionic-native/browser-tab";
 
 @NgModule({
   declarations: [
@@ -37,7 +43,9 @@ import {ChooseCoverFromSamplesPage} from "../pages/choose-cover-from-samples/cho
     TabsPage,
     SettingsPage,
     NewListPage,
-    ChooseCoverFromSamplesPage
+    ChooseCoverFromSamplesPage,
+    ListViewerPage,
+    NewItemPage
   ],
   imports: [
     BrowserModule,
@@ -60,7 +68,9 @@ import {ChooseCoverFromSamplesPage} from "../pages/choose-cover-from-samples/cho
     TabsPage,
     SettingsPage,
     NewListPage,
-    ChooseCoverFromSamplesPage
+    ChooseCoverFromSamplesPage,
+    ListViewerPage,
+    NewItemPage
   ],
   providers: [
     StatusBar,
@@ -78,7 +88,11 @@ import {ChooseCoverFromSamplesPage} from "../pages/choose-cover-from-samples/cho
     Encryption,
     AES256,
     Device,
-    UserSettings
+    UserSettings,
+    Camera,
+    Link,
+    InAppBrowser,
+    BrowserTab
   ]
 })
 export class AppModule {}

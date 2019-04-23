@@ -14,10 +14,14 @@
   "Cancel" : "Cancel",
   "General" : "General",
   "Pictures" : "Pictures",
+  "Picture" : "Picture",
   "Links" : "Links",
   "Cover Picture" : "Cover Picture",
   "Shoot" : "Shoot",
   "Pick from Gallery" : "Pick from Gallery",
   "Pick from Samples" : "Pick from Samples",
-  "Choose a Cover Picture" : "Choose a Cover Picture"
+  "Choose a Cover Picture" : "Choose a Cover Picture",
+  "Text" : "Text",
+  "Choose a Picture" : "Choose a Picture",
+  "New Item" : "New Item"
 }

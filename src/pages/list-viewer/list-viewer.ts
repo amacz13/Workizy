@@ -1,25 +1,30 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {ModalController, NavController, NavParams} from 'ionic-angular';
+import {List} from "../../providers/list/list";
+import {NewItemPage} from "../new-item/new-item";
 
-/**
- * Generated class for the ListViewerPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-list-viewer',
   templateUrl: 'list-viewer.html',
 })
 export class ListViewerPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  list: List;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
+    this.list = navParams.get("list");
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ListViewerPage');
   }
 
+  goBack() {
+    this.navCtrl.pop();
+  }
+
+  showNewItem() {
+    const modal = this.modalCtrl.create(NewItemPage);
+    modal.present();
+  }
 }

@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'New Item' | translate }}</ion-title>
+    <ion-buttons left>
+      <button (click)="close()" ion-button icon-only color="royal">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list no-padding>
+      <ion-item>
+        <ion-label floating>{{ 'Title' | translate }}</ion-label>
+        <ion-input [(ngModel)]="title" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>{{ 'Text' | translate }}</ion-label>
+        <ion-textarea [(ngModel)]="textContent" type="text"></ion-textarea>
+      </ion-item>
+
+      <button ion-item (click)="choosePicture()">
+        {{ 'Picture' | translate }}
+      </button>
+
+      <ion-item>
+        <ion-label>{{ 'Reminder' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="reminderEnabled"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="reminderEnabled">
+        <ion-label>{{ 'Reminder date' | translate }}</ion-label>
+        <ion-datetime min="{{getDateNow()}}" max="{{getMaxDate()}}" displayFormat="DD/MM/YYYY HH:mm" [(ngModel)]="reminderDate"></ion-datetime>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-list>
+      <ion-item-sliding *ngFor="let link of links">
+        <button (click)="openLink(link.content)" ion-item>
+          <ion-icon name="{{getIcon(link)}}" item-start></ion-icon>
+          <ion-label>{{link.content}}</ion-label>
+        </button>
+        <ion-item-options side="right">
+          <button ion-button color="light">
+            <ion-icon name="create"></ion-icon>
+            Edit
+          </button>
+          <button ion-button color="danger">
+            <ion-icon name="trash"></ion-icon>
+            Remove
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <div padding>
+      <button (click)="createLink()" ion-button block>{{ 'Add link' | translate }}</button>
+    </div>
+
+    <ion-list>
+      <ion-item-sliding  *ngFor="let task of tasks">
+        <ion-item>
+          <ion-checkbox item-start [ngModel]="task.isChecked"></ion-checkbox>
+          <ion-label>{{task.text}}</ion-label>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="light">
+            <ion-icon name="create"></ion-icon>
+            Edit
+          </button>
+          <button ion-button color="danger">
+            <ion-icon name="trash"></ion-icon>
+            Remove
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <div padding>
+      <button (click)="createItem()" ion-button block>{{ 'Add task' | translate }}</button>
+    </div>
+</ion-content>
+
+<ion-footer padding>
+  <button (click)="createItem()" ion-button block>{{ 'Create' | translate }}</button>
+</ion-footer>
