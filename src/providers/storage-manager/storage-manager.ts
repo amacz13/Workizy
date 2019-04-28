@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {List} from "../list/list";
-import {getRepository, Repository} from "typeorm";
+import {Connection, getRepository, Repository} from "typeorm";
 import {ListItem} from "../list-item/list-item";
 import {Checklist} from "../checklist/checklist";
 import {ChecklistItem} from "../checklist-item/checklist-item";
@@ -35,7 +35,7 @@ export class StorageManager {
   checklistItemRepository: Repository<ChecklistItem>;
   linkRepository: Repository<Link>;
 
-  connection: any;
+  connection: Connection;
 
   constructor() {
   }
@@ -46,16 +46,39 @@ export class StorageManager {
     });
   }
 
+  public saveListItem(item: ListItem){
+    this.listItemRepository.save(item);
+  }
+
+  public saveLink(link: Link){
+    this.linkRepository.save(link);
+  }
+
+  public getListItems(list: List):ListItem[] {
+    let listItems: ListItem[] = new Array<ListItem>();
+    this.listItemRepository.find({list:list}).then(items => {
+      console.log("Fetching items : ");
+      console.log(items);
+      listItems = items;
+    });
+    return listItems;
+  }
 
   public getList(id: number):Promise<List> {
     return this.listRepository.findOne(id);
   }
 
   public getLists():any {
-    this.listRepository.find().then(lists => {
-      console.log("All lists : ",lists)
+    /*this.connection.manager.find(List).then( lists => {
+      console.log("All lists : ",lists);
+      this.allLists = lists;
+    });*/
+
+    this.listRepository.find({ relations: ["items"] }).then(lists => {
+      console.log("All lists : ",lists);
       this.allLists = lists;
     });
+    /*
     this.listRepository.find({isSynchronized:false}).then(lists => {
       console.log("Local lists : ",lists);
       this.localLists = lists;
@@ -63,7 +86,7 @@ export class StorageManager {
     this.listRepository.find({isSynchronized:true}).then(lists => {
       console.log("Online lists : ",lists);
       this.onlineLists = lists;
-    });
+    });*/
   }
 
 }

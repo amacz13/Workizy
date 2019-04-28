@@ -36,8 +36,9 @@ export class MyApp {
             ChecklistItem,
             Link
           ]
-        }).then( () => {
-          sm.initRepositories()
+        }).then( connection => {
+          sm.connection = connection;
+          sm.initRepositories();
         });
       } else {
         console.log("[WhatsNext] Using web platform...");

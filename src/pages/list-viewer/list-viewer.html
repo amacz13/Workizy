@@ -10,7 +10,17 @@
 </ion-header>
 
 <ion-content padding>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let item of this.list.items" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
+        <ion-card (click)="showItem(item)">
+          <img *ngIf="item.picture != null" src="{{item.picture}}"/>
+          <ion-card-title *ngIf="item.title != null">{{item.title}}</ion-card-title>
+          <p *ngIf="item.textContent != null">{{item.textContent}}</p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-fab right bottom>
     <button (click)="showNewItem()" ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
   </ion-fab>

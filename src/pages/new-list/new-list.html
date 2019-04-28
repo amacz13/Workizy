@@ -21,7 +21,7 @@
     <ion-item>
       <ion-label>{{ 'List Type' | translate }}</ion-label>
       <ion-select [(ngModel)]="listType" interface="action-sheet" cancelText="{{ 'Cancel' | translate }}">
-        <ion-option value="general">{{ 'General' | translate }}</ion-option>
+        <ion-option selected value="general">{{ 'General' | translate }}</ion-option>
         <ion-option value="pictures">{{ 'Pictures' | translate }}</ion-option>
         <ion-option value="links">{{ 'Links' | translate }}</ion-option>
       </ion-select>

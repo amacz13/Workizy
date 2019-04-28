@@ -13,8 +13,9 @@ export class Checklist {
   @OneToMany(type => ChecklistItem, item => item.checklist)
   items: ChecklistItem[];
 
-  @OneToOne(type => ListItem, item => item.checklist)
-  @JoinColumn()
+  @OneToOne(type => ListItem, item => item.checklist, {
+    cascade: ['insert']
+  })
   listItem: ListItem;
 
   constructor() {

@@ -7,97 +7,29 @@ import {Link} from "../link/link";
 export class ListItem {
 
   // Unique ID for storage purposes
-  @PrimaryGeneratedColumn() private _id: number;
+  @PrimaryGeneratedColumn() id: number;
 
   // Content of the item
-  @Column({nullable: true}) private _title: String;
-  @Column({nullable: true}) private _textContent: String;
-  @Column({nullable: true}) private _picture: String;
+  @Column({nullable: true}) title: String;
+  @Column({nullable: true}) textContent: String;
+
+  @Column({nullable: true}) pictureSource: number;
+  @Column({nullable: true}) picture: String;
   @OneToOne(type => Checklist, cl => cl.listItem, {
-    nullable: true
-  })
-  @JoinColumn() private _checklist: Checklist;
+    nullable: true,
+    cascade: true
+  }) checklist: Checklist;
 
   // Date informations
-  @Column() private _creationDate: number;
-  @Column() private _lastEditionDate: number;
-  @Column({nullable: true}) private _reminderDate: number;
-  @OneToMany(type => Link, link => link.item) private _links: Link[];
+  @Column() creationDate: number;
+  @Column() lastEditionDate: number;
+  @Column({nullable: true}) reminderDate: number;
+  @OneToMany(type => Link, link => link.item, {nullable: true,
+    cascade: true}) links: Link[];
 
-  @ManyToOne(type => List, list => list.items, {
-    cascade: ['insert']
-  }) private _list: List;
-
-  get list(): List {
-    return this._list;
-  }
-
-  set list(value: List) {
-    this._list = value;
-  }
-  get links(): Link[] {
-    return this._links;
-  }
-
-  set links(value: Link[]) {
-    this._links = value;
-  }
-  get reminderDate(): number {
-    return this._reminderDate;
-  }
-
-  set reminderDate(value: number) {
-    this._reminderDate = value;
-  }
-  get lastEditionDate(): number {
-    return this._lastEditionDate;
-  }
-
-  set lastEditionDate(value: number) {
-    this._lastEditionDate = value;
-  }
-  get creationDate(): number {
-    return this._creationDate;
-  }
-
-  set creationDate(value: number) {
-    this._creationDate = value;
-  }
-  get checklist(): Checklist {
-    return this._checklist;
-  }
-
-  set checklist(value: Checklist) {
-    this._checklist = value;
-  }
-  get picture(): String {
-    return this._picture;
-  }
-
-  set picture(value: String) {
-    this._picture = value;
-  }
-  get textContent(): String {
-    return this._textContent;
-  }
-
-  set textContent(value: String) {
-    this._textContent = value;
-  }
-  get title(): String {
-    return this._title;
-  }
-
-  set title(value: String) {
-    this._title = value;
-  }
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
-  }
+  @ManyToOne(type => List, list => list.items)
+  @JoinColumn({name:"list.id"})
+  list: List;
 
   constructor() {
 

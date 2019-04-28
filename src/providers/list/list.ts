@@ -1,86 +1,30 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {ListItem} from "../list-item/list-item";
 
 @Entity('list')
 export class List {
 
   // Unique ID for storage purposes
-  @PrimaryGeneratedColumn() private _id: number;
+  @PrimaryGeneratedColumn() id: number;
 
   // List details
-  @Column() private _title: String;
-  @Column() private _cover: String;
-  @Column() private _listType: String;
+  @Column() title: String;
+  @Column() coverSource: number;
+  @Column() cover: String;
+  @Column() listType: String;
 
   // Date informations
-  @Column() private _creationDate: number;
-  @Column() private _lastEditionDate: number;
+  @Column() creationDate: number;
+  @Column() lastEditionDate: number;
 
-  @Column() private _isSynchronized: boolean;
+  @Column() isSynchronized: boolean;
 
-  @OneToMany(type => ListItem, item => item.list) private _items: ListItem[];
+  @OneToMany(type => ListItem, item => item.list, {
+    nullable: true
+  })
+  items: ListItem[];
 
-  get listType(): String {
-    return this._listType;
-  }
-
-  set listType(value: String) {
-    this._listType = value;
-  }
-  get items(): ListItem[] {
-    return this._items;
-  }
-
-  set items(value: ListItem[]) {
-    this._items = value;
-  }
-  get isSynchronized(): boolean {
-    return this._isSynchronized;
-  }
-
-  set isSynchronized(value: boolean) {
-    this._isSynchronized = value;
-  }
-  get lastEditionDate(): number {
-    return this._lastEditionDate;
-  }
-
-  set lastEditionDate(value: number) {
-    this._lastEditionDate = value;
-  }
-  get creationDate(): number {
-    return this._creationDate;
-  }
-
-  set creationDate(value: number) {
-    this._creationDate = value;
-  }
-  get cover(): String {
-    return this._cover;
-  }
-
-  set cover(value: String) {
-    this._cover = value;
-  }
-  get title(): String {
-    return this._title;
-  }
-
-  set title(value: String) {
-    this._title = value;
-  }
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
-  }
-
-  getElementCount():number {
-    if (this.items == null) {
-      return 0;
-    }
+  getElementCount() {
     return this.items.length;
   }
 

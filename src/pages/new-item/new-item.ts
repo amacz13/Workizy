@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import {ActionSheetController, AlertController, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, AlertController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import {Link} from "../../providers/link/link";
 import {ChecklistItem} from "../../providers/checklist-item/checklist-item";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {BrowserTab} from "@ionic-native/browser-tab";
+import {ListItem} from "../../providers/list-item/list-item";
+import {List} from "../../providers/list/list";
+import {StorageManager} from "../../providers/storage-manager/storage-manager";
 
 @Component({
   selector: 'page-new-item',
@@ -19,9 +22,14 @@ export class NewItemPage {
   reminderDate: any;
   picture: String;
 
+  links: Link[] = new Array<Link>();
+  tasks: ChecklistItem[] = new Array<ChecklistItem>();
+  list: List;
+
+
   shootOptions: CameraOptions = {
     quality: 60,
-    destinationType: this.camera.DestinationType.FILE_URI,
+    destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE,
     sourceType: this.camera.PictureSourceType.CAMERA
@@ -29,15 +37,14 @@ export class NewItemPage {
 
   pickOptions: CameraOptions = {
     quality: 60,
-    destinationType: this.camera.DestinationType.FILE_URI,
+    destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE,
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
   };
-  links: Link[] = new Array<Link>();
-  tasks: ChecklistItem[] = new Array<ChecklistItem>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController) {
+    this.list = navParams.get('list');
   }
 
   ionViewDidLoad() {
@@ -45,7 +52,28 @@ export class NewItemPage {
   }
 
   createItem() {
+    let item: ListItem = new ListItem();
+    item.title = this.title;
+    item.picture = this.picture;
+    item.textContent = this.textContent;
+    item.creationDate = Date.now();
+    item.lastEditionDate = Date.now();
+    item.list = this.list;
+    /*for (let link of this.links) {
+      link.item = item;
+      this.sm.saveLink(link);
+    }*/
+    item.links = this.links;
+    /*if (this.list.items == null) {
+      this.list.items = new Array<ListItem>();
+    }*/
+    this.list.items.push(item);
 
+    console.log("Saving new item...");
+    console.log(this.list);
+    this.sm.saveListItem(item);
+    this.sm.saveList(this.list);
+    this.viewCtrl.dismiss({'list':this.list});
   }
 
   choosePicture() {
@@ -62,6 +90,7 @@ export class NewItemPage {
                         console.log('Shoot clicked');
                         this.camera.getPicture(this.shootOptions).then((imageData) => {
                           this.picture = 'data:image/jpeg;base64,' + imageData;
+                          console.log(this.picture);
                         }, (err) => {
                           console.error("An error occured while trying to shoot photo : ");
                           console.error(err);
@@ -73,6 +102,7 @@ export class NewItemPage {
                         console.log('Pick from Gallery clicked');
                         this.camera.getPicture(this.pickOptions).then((imageData) => {
                           this.picture = 'data:image/jpeg;base64,' + imageData;
+                          console.log(this.picture);
                         }, (err) => {
                           console.error("An error occured while trying to pick photo : ");
                           console.error(err);

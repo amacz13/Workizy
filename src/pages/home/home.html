@@ -13,18 +13,31 @@
 </ion-header>
 
 <ion-content padding class="card-background-page">
-  <div *ngIf="!viewmode">
+  <!--<div *ngIf="!viewmode">
     <ion-card *ngFor="let list of this.sm.allLists" (click)="showList(list)">
       <img src="assets/covers/{{list.cover}}"/>
       <div class="card-title">{{list.title}}</div>
       <div class="card-subtitle">{{list.getElementCount()}} items</div>
     </ion-card>
-  </div>
+  </div>-->
+  <ion-grid *ngIf="!viewmode">
+    <ion-row>
+      <ion-col *ngFor="let list of this.sm.allLists" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
+        <ion-card (click)="showList(list)">
+          <img *ngIf="list.coverSource == 0" src="assets/covers/{{list.cover}}"/>
+          <img *ngIf="list.coverSource == 1" src="{{list.cover}}"/>
+          <div class="card-title">{{list.title}}</div>
+          <div class="card-subtitle">{{list.getElementCount()}} items</div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-list *ngIf="viewmode">
     <ion-item *ngFor="let list of this.sm.allLists">
       <ion-thumbnail item-start>
-        <img src="assets/covers/{{list.cover}}">
+        <img *ngIf="list.coverSource == 0" src="assets/covers/{{list.cover}}"/>
+        <img *ngIf="list.coverSource == 1" src="{{list.cover}}"/>
       </ion-thumbnail>
       <h2>{{list.title}}</h2>
       <p>{{list.getElementCount()}} items</p>
