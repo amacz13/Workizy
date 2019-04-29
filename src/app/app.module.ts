@@ -1,4 +1,4 @@
-import {NgModule, ErrorHandler, InjectionToken} from '@angular/core';
+import {NgModule, ErrorHandler} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
@@ -34,9 +34,11 @@ import { Link } from '../providers/link/link';
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {BrowserTab} from "@ionic-native/browser-tab";
 import { FirebaseManager } from '../providers/firebase-manager/firebase-manager';
-import {AngularFirestore, AngularFirestoreModule} from "@angular/fire/firestore";
+import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environment/environment";
+import {AngularFireAuthModule} from "@angular/fire/auth";
+import {LoginPage} from "../pages/login/login";
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import {environment} from "../environment/environment";
     NewListPage,
     ChooseCoverFromSamplesPage,
     ListViewerPage,
-    NewItemPage
+    NewItemPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,9 @@ import {environment} from "../environment/environment";
     }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    IonicModule.forRoot(MyApp, {mode: 'wp'})
+    AngularFireAuthModule,
+    IonicModule.forRoot(MyApp)
+    //IonicModule.forRoot(MyApp, {mode: 'wp'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -76,7 +81,8 @@ import {environment} from "../environment/environment";
     NewListPage,
     ChooseCoverFromSamplesPage,
     ListViewerPage,
-    NewItemPage
+    NewItemPage,
+    LoginPage
   ],
   providers: [
     StatusBar,

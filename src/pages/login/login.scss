@@ -1,0 +1,43 @@
+page-login {
+
+  ion-content {
+    background-image: url('../assets/imgs/login-bg.jpg');
+    -webkit-background-image: url('../assets/imgs/login-bg.jpg');
+    -webkit-background-size: cover;
+    background-size: cover;
+  }
+
+  ion-item {
+    background-color: transparent !important;
+    padding: 0 !important;
+
+    .label {
+      color: #FFF !important;
+    }
+
+    ion-label{
+      color: #FFF !important;
+    }
+
+    ion-input {
+      background-color: transparent !important;
+      color: #FFF !important;
+    }
+  }
+
+  img {
+    height: 100%;
+    width: 100%;
+  }
+
+  hr {
+    width: 100%;
+    background-color: #FFF !important;
+    color: white !important;
+  }
+
+  button {
+    height: 5rem !important;
+    font-size: 1.7rem !important;
+  }
+}

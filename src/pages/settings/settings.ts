@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {UserSettings} from "../../providers/user-settings/user-settings";
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'page-settings',

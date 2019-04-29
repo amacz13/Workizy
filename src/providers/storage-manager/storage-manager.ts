@@ -5,6 +5,7 @@ import {ListItem} from "../list-item/list-item";
 import {Checklist} from "../checklist/checklist";
 import {ChecklistItem} from "../checklist-item/checklist-item";
 import {Link} from "../link/link";
+import {FirebaseManager} from "../firebase-manager/firebase-manager";
 
 @Injectable()
 export class StorageManager {
@@ -37,12 +38,33 @@ export class StorageManager {
 
   connection: Connection;
 
-  constructor() {
+  constructor(public fm: FirebaseManager) {
   }
 
   public saveList(list: List){
+    console.log("Saving list...");
     this.listRepository.save(list).then( () => {
       this.getLists();
+      if (list.isSynchronized) {
+        if (list.firebaseId == null){
+          console.log("Saving list into firebase...");
+          this.fm.addList(list).then( val => {
+            this.listRepository.save(val).then( () => {
+              this.getLists();
+            });
+          });
+        } else {
+          console.log("Updating list into firebase...");
+          this.fm.updateList(list).then( val => {
+            this.listRepository.save(val).then( () => {
+              this.getLists();
+            });
+          });
+        }
+      }
+      this.listRepository.save(list).then( () => {
+        this.getLists();
+      });
     });
   }
 

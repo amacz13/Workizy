@@ -1,0 +1,36 @@
+<ion-content padding fullscreen>
+
+  <ion-grid>
+
+    <ion-row>
+      <img src="assets/imgs/logo.png">
+    </ion-row>
+
+    <ion-row>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input [(ngModel)]="email" type="email"></ion-input>
+      </ion-item>
+    </ion-row>
+
+    <ion-row>
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input [(ngModel)]="password" type="password"></ion-input>
+      </ion-item>
+    </ion-row>
+
+    <ion-row>
+       <button (click)="login()" ion-button color="white" outline block>Log In</button>
+    </ion-row>
+
+    <ion-row>
+      <hr>
+    </ion-row>
+
+    <ion-row>
+      <button (click)="register()" ion-button color="white" outline block>Register</button>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

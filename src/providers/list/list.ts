@@ -6,6 +6,7 @@ export class List {
 
   // Unique ID for storage purposes
   @PrimaryGeneratedColumn() id: number;
+  @Column({nullable: true}) firebaseId: String;
 
   // List details
   @Column() title: String;

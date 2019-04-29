@@ -7,6 +7,8 @@ import {NewListPage} from "../new-list/new-list";
 import {List} from "../../providers/list/list";
 import {ListViewerPage} from "../list-viewer/list-viewer";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
+import {AngularFireAuth} from "@angular/fire/auth";
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'page-home',
@@ -16,8 +18,22 @@ export class HomePage {
 
   public viewmode:boolean = false;
 
-  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager) {
+  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public auth: AngularFireAuth) {
     translate.setDefaultLang('fr');
+
+    //Account Creation
+    //firebase.auth().createUserWithEmailAndPassword("axel.maczkowiak@live.fr","test123").then(val => console.log("User created : ",val));
+
+    //Account Login
+    //firebase.auth().signInWithEmailAndPassword("axel.maczkowiak@outlook.fr","test123").then(val => console.log("User created : ",val));
+
+    //FB Login
+    //this.auth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(val => console.log("User connected : ",val));
+    //firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(val => console.log("User connected : ",val));
+
+
+    //Google Login
+    //this.auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(val => console.log("User connected : ",val));
   }
 
 

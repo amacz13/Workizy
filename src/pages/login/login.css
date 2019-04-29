@@ -1,0 +1,35 @@
+page-login ion-content {
+  background-image: url("../assets/imgs/login-bg.jpg");
+  -webkit-background-image: url("../assets/imgs/login-bg.jpg");
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+page-login ion-item {
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+page-login ion-item .label {
+  color: #FFF !important;
+}
+page-login ion-item ion-label {
+  color: #FFF !important;
+}
+page-login ion-item ion-input {
+  background-color: transparent !important;
+  color: #FFF !important;
+}
+page-login img {
+  height: 100%;
+  width: 100%;
+}
+page-login hr {
+  width: 100%;
+  background-color: #FFF !important;
+  color: white !important;
+}
+page-login button {
+  height: 5rem !important;
+  font-size: 1.7rem !important;
+}
+
+/*# sourceMappingURL=login.css.map */
