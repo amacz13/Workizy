@@ -57,7 +57,7 @@ import {BrowserTab} from "@ionic-native/browser-tab";
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, {mode: 'wp'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [

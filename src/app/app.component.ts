@@ -25,7 +25,7 @@ export class MyApp {
         console.log("[WhatsNext] Creating ORM link with database...");
         await createConnection({
           type: 'cordova',
-          database: 'wn',
+          database: 'whatsnextdb',
           location: 'default',
           logging: ['error', 'query', 'schema'],
           synchronize: true,

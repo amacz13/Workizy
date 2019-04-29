@@ -9,9 +9,9 @@ import {Link} from "../link/link";
 @Injectable()
 export class StorageManager {
 
-  allLists: List[];
-  localLists: List[];
-  onlineLists: List[];
+  allLists: List[] = new Array<List>();
+  localLists: List[] = new Array<List>();
+  onlineLists: List[] = new Array<List>();
 
   public initRepositories() {
     this.listRepository = getRepository('list') as Repository<List>;
@@ -77,6 +77,15 @@ export class StorageManager {
     this.listRepository.find({ relations: ["items"] }).then(lists => {
       console.log("All lists : ",lists);
       this.allLists = lists;
+
+      for (let l of this.allLists) {
+        if (!l.isSynchronized){
+          this.localLists.push(l);
+        } else {
+          this.onlineLists.push(l);
+        }
+      }
+      console.log("Local lists : ",this.localLists);
     });
     /*
     this.listRepository.find({isSynchronized:false}).then(lists => {
