@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {List} from "../list/list";
 import {UserSettings} from "../user-settings/user-settings";
-import {ListItem} from "../list-item/list-item";
-import {rejects} from "assert";
 
 @Injectable()
 export class FirebaseManager {
@@ -13,12 +11,11 @@ export class FirebaseManager {
 
   public addList(list: List){
     return new Promise<any>((resolve, reject) => {
-      this.afs.collection('/lists').add({
-        user: this.settings.user.email,
+      this.afs.collection('/'+this.settings.user.email+'lists').add({
         title: list.title,
         coverSource: list.coverSource,
         isSynchronized: list.isSynchronized,
-        items: list.items,
+        //items: list.items,
         cover: list.cover,
         listType: list.listType,
         lastEditionDate: list.lastEditionDate,
@@ -28,6 +25,20 @@ export class FirebaseManager {
           (res) => {
             console.log("List added to Firebase", res);
             list.firebaseId = res.id;
+            for (let item of list.items){
+              this.afs.collection('/'+this.settings.user.email+'lists/'+res.id+'/items').add({
+                id: item.id,
+                reminderDate: item.reminderDate,
+                pictureSource: item.pictureSource,
+                creationDate: item.creationDate,
+                lastEditionDate: item.lastEditionDate,
+                picture: item.picture,
+                title: item.title,
+                textContent: item.textContent
+              }).then( r => {
+                item.firebaseId = r.id;
+              });
+            }
             resolve(list)
           },
           err => reject(err)
@@ -37,7 +48,7 @@ export class FirebaseManager {
 
   public updateList(list: List) {
     return new Promise<any>((resolve, reject) => {
-      this.afs.collection('/lists').doc(list.firebaseId.toString()).update({
+      this.afs.collection('/'+this.settings.user.email+'lists').doc(list.firebaseId.toString()).update({
         title: list.title,
         coverSource: list.coverSource,
         isSynchronized: list.isSynchronized,
@@ -49,6 +60,18 @@ export class FirebaseManager {
         id: list.id,
       }).then((res) => {
           console.log("List updated to Firebase", res);
+          for (let item of list.items){
+            this.afs.collection('/'+this.settings.user.email+'lists/'+list.id+'/items').doc(item.firebaseId.toString()).update({
+              id: item.id,
+              reminderDate: item.reminderDate,
+              pictureSource: item.pictureSource,
+              creationDate: item.creationDate,
+              lastEditionDate: item.lastEditionDate,
+              picture: item.picture,
+              title: item.title,
+              textContent: item.textContent
+            });
+          }
           resolve(list)
         },
         err => reject(err)
@@ -56,8 +79,8 @@ export class FirebaseManager {
     });
   }
 
-  syncLists() {
-
+  getLists() {
+    this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => console.log(data));
   }
 
 

@@ -8,6 +8,7 @@ export class ListItem {
 
   // Unique ID for storage purposes
   @PrimaryGeneratedColumn() id: number;
+  @Column({nullable: true}) firebaseId: String;
 
   // Content of the item
   @Column({nullable: true}) title: String;

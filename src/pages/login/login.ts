@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, LoadingController, NavController, NavParams, Platform} from 'ionic-angular';
 import * as firebase from 'firebase/app';
 import {TabsPage} from "../tabs/tabs";
 import {AngularFireAuth} from "@angular/fire/auth";
@@ -14,17 +14,20 @@ export class LoginPage {
   email: string;
   password: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings) {
-    this.nativeStorage.getItem('connected')
-      .then(
-        data => {
-          if (data == 1) {
-            this.settings.isConnected = true;
-            this.navCtrl.setRoot(TabsPage);
-          }
-        },
-        error => console.error(error)
-      );
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform) {
+    this.platform.ready().then( () => {
+      console.log("[Login] Platform ready, accessing Native Storage...");
+      this.nativeStorage.getItem('connected')
+        .then(
+          data => {
+            /*if (data == 1) {
+              this.settings.isConnected = true;
+              this.navCtrl.setRoot(TabsPage);
+            }*/
+          },
+          error => console.error(error)
+        );
+    });
   }
 
   login() {
@@ -57,9 +60,11 @@ export class LoginPage {
         } else {
           this.nativeStorage.setItem('connected', 1)
             .then(() => {
-              this.settings.user = val.user;
-              this.settings.isConnected = true;
-              this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+              this.nativeStorage.setItem('user', val.user).then( () => {
+                this.settings.user = val.user;
+                this.settings.isConnected = true;
+                this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+              });
             });
         }
       }).catch(err => {
@@ -107,9 +112,11 @@ export class LoginPage {
 
           this.nativeStorage.setItem('connected', 1)
             .then(() => {
-              this.settings.user = val.user;
-              this.settings.isConnected = true;
-              this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+              this.nativeStorage.setItem('user', val.user).then( () => {
+                this.settings.user = val.user;
+                this.settings.isConnected = true;
+                this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+              });
             });
         }
       }).catch(err => {
