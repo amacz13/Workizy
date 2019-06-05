@@ -112,6 +112,8 @@ export class StorageManager {
       console.log("All lists : ",lists);
       this.allLists = lists;
     });*/
+    this.localLists = new Array<List>();
+    this.onlineLists = new Array<List>();
 
     this.listRepository.find({ relations: ["items"] }).then(lists => {
       console.log("All lists : ",lists);

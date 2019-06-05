@@ -3,11 +3,14 @@ import {AngularFirestore} from "@angular/fire/firestore";
 import {List} from "../list/list";
 import {UserSettings} from "../user-settings/user-settings";
 import {StorageManager} from "../storage-manager/storage-manager";
+import {MyApp} from "../../app/app.component";
 
 @Injectable()
 export class FirebaseManager {
 
-  constructor(public afs: AngularFirestore, public settings: UserSettings, public sm:StorageManager) {
+
+
+  constructor(public afs: AngularFirestore, public settings: UserSettings) {
   }
 
   public addList(list: List){
@@ -85,13 +88,35 @@ export class FirebaseManager {
       for (let list of data.docs){
         let listData = list.data();
         console.log(list.data());
-        if (this.sm.syncedListExists(list.id)) {
-          let l = this.sm.getSyncedList(list.id);
+        if (MyApp.storageManager.syncedListExists(list.id)) {
+          let l = MyApp.storageManager.getSyncedList(list.id);
           if (l.lastEditionDate > listData.lastEditionDate) {
-
+            this.updateList(l);
+          } else {
+            let newList:List = new List();
+            newList.cover = listData.cover;
+            newList.coverSource = listData.coverSource;
+            newList.lastEditionDate = listData.lastEditionDate;
+            newList.firebaseId = listData.firebaseId;
+            newList.creationDate = listData.creationDate;
+            newList.id = listData.id;
+            newList.isSynchronized = listData.isSynchronized;
+            newList.listType = listData.listType;
+            newList.title = listData.title;
+            MyApp.storageManager.saveList(newList);
           }
         } else {
-
+          let newList:List = new List();
+          newList.cover = listData.cover;
+          newList.coverSource = listData.coverSource;
+          newList.lastEditionDate = listData.lastEditionDate;
+          newList.firebaseId = listData.firebaseId;
+          newList.creationDate = listData.creationDate;
+          newList.id = listData.id;
+          newList.isSynchronized = listData.isSynchronized;
+          newList.listType = listData.listType;
+          newList.title = listData.title;
+          MyApp.storageManager.saveList(newList);
         }
       }
     });

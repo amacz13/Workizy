@@ -5,6 +5,8 @@
   "homepage": "https://amacz13.fr/",
   "private": true,
   "scripts": {
+    "run-osx": "ionic cordova run osx",
+    "run-android": "ionic cordova run android",
     "start": "ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",

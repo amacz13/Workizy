@@ -19,14 +19,17 @@ import {LoginPage} from "../pages/login/login";
 export class MyApp {
   rootPage:any = LoginPage;
 
+  public static storageManager:StorageManager;
+
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager) {
+    MyApp.storageManager = sm;
     platform.ready().then(async() => {
       if(platform.is('cordova')) {
         console.log("[WhatsNext] Using cordova platform...");
         console.log("[WhatsNext] Creating ORM link with database...");
         await createConnection({
           type: 'cordova',
-          database: 'whatsnextdb',
+          database: 'workizy-devdb',
           location: 'default',
           logging: ['error', 'query', 'schema'],
           synchronize: true,

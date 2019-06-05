@@ -18,7 +18,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager) {
     translate.setDefaultLang('fr');
-
+    //HomePage.storageManager = sm;
     //Account Creation
     //firebase.auth().createUserWithEmailAndPassword("axel.maczkowiak@live.fr","test123").then(val => console.log("User created : ",val));
 
