@@ -1,7 +1,8 @@
-import {Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, Unique} from "typeorm";
 import {ListItem} from "../list-item/list-item";
 
 @Entity('list')
+@Unique(["firebaseId"])
 export class List {
 
   // Unique ID for storage purposes

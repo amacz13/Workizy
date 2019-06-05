@@ -41,6 +41,21 @@ export class StorageManager {
   constructor(public fm: FirebaseManager) {
   }
 
+  public syncedListExists(fbId : String): boolean{
+    for (let list of this.allLists) {
+      if (list.firebaseId == fbId) return true;
+    }
+    return false;
+  }
+
+
+  public getSyncedList(fbId : String): List{
+    for (let list of this.allLists) {
+      if (list.firebaseId == fbId) return list;
+    }
+    return null;
+  }
+
   public saveList(list: List){
     console.log("Saving list...");
     this.listRepository.save(list).then( () => {
@@ -89,6 +104,8 @@ export class StorageManager {
   public getList(id: number):Promise<List> {
     return this.listRepository.findOne(id);
   }
+
+
 
   public getLists():any {
     /*this.connection.manager.find(List).then( lists => {

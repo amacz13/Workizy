@@ -20,10 +20,10 @@ export class LoginPage {
       this.nativeStorage.getItem('connected')
         .then(
           data => {
-            /*if (data == 1) {
+            if (data == 1) {
               this.settings.isConnected = true;
               this.navCtrl.setRoot(TabsPage);
-            }*/
+            }
           },
           error => console.error(error)
         );

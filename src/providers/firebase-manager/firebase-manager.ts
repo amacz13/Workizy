@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {List} from "../list/list";
 import {UserSettings} from "../user-settings/user-settings";
+import {StorageManager} from "../storage-manager/storage-manager";
 
 @Injectable()
 export class FirebaseManager {
 
-  constructor(public afs: AngularFirestore, public settings: UserSettings) {
+  constructor(public afs: AngularFirestore, public settings: UserSettings, public sm:StorageManager) {
   }
 
   public addList(list: List){
@@ -80,7 +81,20 @@ export class FirebaseManager {
   }
 
   getLists() {
-    this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => console.log(data));
+    this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => {
+      for (let list of data.docs){
+        let listData = list.data();
+        console.log(list.data());
+        if (this.sm.syncedListExists(list.id)) {
+          let l = this.sm.getSyncedList(list.id);
+          if (l.lastEditionDate > listData.lastEditionDate) {
+
+          }
+        } else {
+
+        }
+      }
+    });
   }
 
 
