@@ -6,6 +6,7 @@ import {AngularFireAuth} from "@angular/fire/auth";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {UserSettings} from "../../providers/user-settings/user-settings";
 import {AngularFirestore} from "@angular/fire/firestore";
+import Persistence = firebase.auth.Auth.Persistence;
 
 @Component({
   selector: 'page-login',
@@ -60,15 +61,17 @@ export class LoginPage {
             alert.present();
           });
         } else {
-          this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-            this.nativeStorage.setItem('connected', 1)
-              .then(() => {
-                this.nativeStorage.setItem('user', val2.user).then(() => {
-                  this.settings.user = val2.user;
-                  this.settings.isConnected = true;
-                  this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+          this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
+            this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
+              this.nativeStorage.setItem('connected', 1)
+                .then(() => {
+                  this.nativeStorage.setItem('user', val2.user).then(() => {
+                    this.settings.user = val2.user;
+                    this.settings.isConnected = true;
+                    this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                  });
                 });
-              });
+            });
           });
         }
       }).catch(err => {
@@ -113,15 +116,17 @@ export class LoginPage {
             alert.present();
           });
         } else {
-          this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-            this.nativeStorage.setItem('connected', 1)
-              .then(() => {
-                this.nativeStorage.setItem('user', val2.user).then(() => {
-                  this.settings.user = val2.user;
-                  this.settings.isConnected = true;
-                  this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+          this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
+            this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
+              this.nativeStorage.setItem('connected', 1)
+                .then(() => {
+                  this.nativeStorage.setItem('user', val2.user).then(() => {
+                    this.settings.user = val2.user;
+                    this.settings.isConnected = true;
+                    this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                  });
                 });
-              });
+            });
           });
         }
       }).catch(err => {
