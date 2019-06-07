@@ -56,7 +56,32 @@ export class StorageManager {
     return null;
   }
 
-  public saveList(list: List){
+  public saveLocalList(list: List){
+    console.log("Saving local list...");
+    this.listRepository.save(list).then( () => {
+      this.getLists();
+    });
+  }
+
+  public saveSyncedList(list: List){
+    console.log("Saving synced list...");
+    this.fm.addList(list).then( val => {
+      this.listRepository.save(val).then( () => {
+        this.getLists();
+      });
+    });
+  }
+
+  public updateSyncedList(list: List){
+    console.log("Updating synced list...");
+    this.fm.updateList(list).then( val => {
+      this.listRepository.save(val).then( () => {
+        this.getLists();
+      });
+    });
+  }
+
+  /*public saveList(list: List){
     console.log("Saving list...");
     this.listRepository.save(list).then( () => {
       this.getLists();
@@ -81,7 +106,7 @@ export class StorageManager {
         this.getLists();
       });
     });
-  }
+  }*/
 
   public saveListItem(item: ListItem){
     this.listItemRepository.save(item);

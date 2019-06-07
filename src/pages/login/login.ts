@@ -5,6 +5,7 @@ import {TabsPage} from "../tabs/tabs";
 import {AngularFireAuth} from "@angular/fire/auth";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {UserSettings} from "../../providers/user-settings/user-settings";
+import {AngularFirestore} from "@angular/fire/firestore";
 
 @Component({
   selector: 'page-login',
@@ -14,10 +15,11 @@ export class LoginPage {
   email: string;
   password: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform, public afs: AngularFirestore) {
     this.platform.ready().then( () => {
       console.log("[Login] Platform ready, accessing Native Storage...");
-      this.nativeStorage.getItem('connected')
+
+      /*this.nativeStorage.getItem('connected')
         .then(
           data => {
             if (data == 1) {
@@ -26,7 +28,7 @@ export class LoginPage {
             }
           },
           error => console.error(error)
-        );
+        );*/
     });
   }
 
@@ -58,14 +60,16 @@ export class LoginPage {
             alert.present();
           });
         } else {
-          this.nativeStorage.setItem('connected', 1)
-            .then(() => {
-              this.nativeStorage.setItem('user', val.user).then( () => {
-                this.settings.user = val.user;
-                this.settings.isConnected = true;
-                this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+          this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
+            this.nativeStorage.setItem('connected', 1)
+              .then(() => {
+                this.nativeStorage.setItem('user', val2.user).then(() => {
+                  this.settings.user = val2.user;
+                  this.settings.isConnected = true;
+                  this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                });
               });
-            });
+          });
         }
       }).catch(err => {
         console.error("Error while logging in user : ", err);
@@ -109,15 +113,16 @@ export class LoginPage {
             alert.present();
           });
         } else {
-
-          this.nativeStorage.setItem('connected', 1)
-            .then(() => {
-              this.nativeStorage.setItem('user', val.user).then( () => {
-                this.settings.user = val.user;
-                this.settings.isConnected = true;
-                this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+          this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
+            this.nativeStorage.setItem('connected', 1)
+              .then(() => {
+                this.nativeStorage.setItem('user', val2.user).then(() => {
+                  this.settings.user = val2.user;
+                  this.settings.isConnected = true;
+                  this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                });
               });
-            });
+          });
         }
       }).catch(err => {
         console.error("Error while logging in user : ", err);

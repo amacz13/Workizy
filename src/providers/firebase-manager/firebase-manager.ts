@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {List} from "../list/list";
 import {UserSettings} from "../user-settings/user-settings";
-import {StorageManager} from "../storage-manager/storage-manager";
 import {MyApp} from "../../app/app.component";
 
 @Injectable()
 export class FirebaseManager {
 
-
-
   constructor(public afs: AngularFirestore, public settings: UserSettings) {
   }
 
   public addList(list: List){
+    console.log("Saving list into Firebase...");
+    console.log(list);
     return new Promise<any>((resolve, reject) => {
       this.afs.collection('/'+this.settings.user.email+'lists').add({
         title: list.title,
@@ -23,8 +22,7 @@ export class FirebaseManager {
         cover: list.cover,
         listType: list.listType,
         lastEditionDate: list.lastEditionDate,
-        creationDate: list.creationDate,
-        id: list.id,
+        creationDate: list.creationDate
       }).then(
           (res) => {
             console.log("List added to Firebase", res);
@@ -60,8 +58,7 @@ export class FirebaseManager {
         cover: list.cover,
         listType: list.listType,
         lastEditionDate: list.lastEditionDate,
-        creationDate: list.creationDate,
-        id: list.id,
+        creationDate: list.creationDate
       }).then((res) => {
           console.log("List updated to Firebase", res);
           for (let item of list.items){
@@ -99,11 +96,10 @@ export class FirebaseManager {
             newList.lastEditionDate = listData.lastEditionDate;
             newList.firebaseId = listData.firebaseId;
             newList.creationDate = listData.creationDate;
-            newList.id = listData.id;
             newList.isSynchronized = listData.isSynchronized;
             newList.listType = listData.listType;
             newList.title = listData.title;
-            MyApp.storageManager.saveList(newList);
+            MyApp.storageManager.saveLocalList(newList);
           }
         } else {
           let newList:List = new List();
@@ -112,11 +108,10 @@ export class FirebaseManager {
           newList.lastEditionDate = listData.lastEditionDate;
           newList.firebaseId = listData.firebaseId;
           newList.creationDate = listData.creationDate;
-          newList.id = listData.id;
           newList.isSynchronized = listData.isSynchronized;
           newList.listType = listData.listType;
           newList.title = listData.title;
-          MyApp.storageManager.saveList(newList);
+          MyApp.storageManager.saveLocalList(newList);
         }
       }
     });

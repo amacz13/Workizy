@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {ListItem} from "../list-item/list-item";
 import {ChecklistItem} from "../checklist-item/checklist-item";
 

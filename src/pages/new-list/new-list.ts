@@ -127,7 +127,11 @@ export class NewListPage {
     list.lastEditionDate = Date.now();
     list.listType = this.listType;
     list.items = new Array<ListItem>();
-    this.sm.saveList(list);
+    if (list.isSynchronized) {
+      this.sm.saveSyncedList(list);
+    } else {
+      this.sm.saveLocalList(list);
+    }
     this.navCtrl.pop();
   }
 }
