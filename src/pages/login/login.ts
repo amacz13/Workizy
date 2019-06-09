@@ -63,6 +63,7 @@ export class LoginPage {
         } else {
           this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
             this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
+              console.log("UserID : "+val2.user.uid);
               this.nativeStorage.setItem('connected', 1)
                 .then(() => {
                   this.nativeStorage.setItem('user', val2.user).then(() => {

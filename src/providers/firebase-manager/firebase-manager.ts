@@ -80,16 +80,29 @@ export class FirebaseManager {
     });
   }
 
-  getLists() {
-    MyApp.storageManager.removeAllOnlineLists();
-    this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => {
-      for (let list of data.docs){
-        let listData = list.data();
-        console.log(list.data());
-        if (MyApp.storageManager.syncedListExists(list.id)) {
-          let l = MyApp.storageManager.getSyncedList(list.id);
-          if (l.lastEditionDate > listData.lastEditionDate) {
-            this.updateList(l);
+    getLists() {
+      console.log(this.afs.firestore.app.auth().currentUser.uid);
+      MyApp.storageManager.removeAllOnlineLists();
+      this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => {
+        for (let list of data.docs){
+          let listData = list.data();
+          console.log(list.data());
+          if (MyApp.storageManager.syncedListExists(list.id)) {
+            let l = MyApp.storageManager.getSyncedList(list.id);
+            if (l.lastEditionDate > listData.lastEditionDate) {
+              this.updateList(l);
+            } else {
+              let newList:List = new List();
+              newList.cover = listData.cover;
+              newList.coverSource = listData.coverSource;
+              newList.lastEditionDate = listData.lastEditionDate;
+              newList.firebaseId = listData.firebaseId;
+              newList.creationDate = listData.creationDate;
+              newList.isSynchronized = listData.isSynchronized;
+              newList.listType = listData.listType;
+              newList.title = listData.title;
+              MyApp.storageManager.saveOnlineListFromFB(newList);
+            }
           } else {
             let newList:List = new List();
             newList.cover = listData.cover;
@@ -102,20 +115,8 @@ export class FirebaseManager {
             newList.title = listData.title;
             MyApp.storageManager.saveOnlineListFromFB(newList);
           }
-        } else {
-          let newList:List = new List();
-          newList.cover = listData.cover;
-          newList.coverSource = listData.coverSource;
-          newList.lastEditionDate = listData.lastEditionDate;
-          newList.firebaseId = listData.firebaseId;
-          newList.creationDate = listData.creationDate;
-          newList.isSynchronized = listData.isSynchronized;
-          newList.listType = listData.listType;
-          newList.title = listData.title;
-          MyApp.storageManager.saveOnlineListFromFB(newList);
         }
-      }
-    });
+      });
   }
 
 
