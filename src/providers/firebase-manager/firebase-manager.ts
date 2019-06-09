@@ -81,6 +81,7 @@ export class FirebaseManager {
   }
 
   getLists() {
+    MyApp.storageManager.removeAllOnlineLists();
     this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => {
       for (let list of data.docs){
         let listData = list.data();
@@ -99,7 +100,7 @@ export class FirebaseManager {
             newList.isSynchronized = listData.isSynchronized;
             newList.listType = listData.listType;
             newList.title = listData.title;
-            MyApp.storageManager.saveLocalList(newList);
+            MyApp.storageManager.saveOnlineListFromFB(newList);
           }
         } else {
           let newList:List = new List();
@@ -111,7 +112,7 @@ export class FirebaseManager {
           newList.isSynchronized = listData.isSynchronized;
           newList.listType = listData.listType;
           newList.title = listData.title;
-          MyApp.storageManager.saveLocalList(newList);
+          MyApp.storageManager.saveOnlineListFromFB(newList);
         }
       }
     });

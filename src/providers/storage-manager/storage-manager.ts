@@ -63,6 +63,13 @@ export class StorageManager {
     });
   }
 
+  public saveOnlineListFromFB(list: List){
+    console.log("Saving online list in local db...");
+    this.listRepository.save(list).then( () => {
+      this.getLists();
+    });
+  }
+
   public saveSyncedList(list: List){
     console.log("Saving synced list...");
     this.fm.addList(list).then( val => {
@@ -162,6 +169,16 @@ export class StorageManager {
       console.log("Online lists : ",lists);
       this.onlineLists = lists;
     });*/
+  }
+
+  public removeList(list: List){
+    this.listRepository.remove(list);
+  }
+
+  public removeAllOnlineLists(){
+    for (let list of this.onlineLists) {
+      this.listRepository.remove(list);
+    }
   }
 
 }

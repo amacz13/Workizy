@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ActionSheetController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, AlertController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import {ChooseCoverFromSamplesPage} from "../choose-cover-from-samples/choose-cover-from-samples";
 import {List} from "../../providers/list/list";
@@ -36,7 +36,7 @@ export class NewListPage {
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public asCtrl: ActionSheetController, public translate: TranslateService, public modalCtrl: ModalController, public sm: StorageManager, public camera: Camera) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public asCtrl: ActionSheetController, public translate: TranslateService, public modalCtrl: ModalController, public sm: StorageManager, public camera: Camera, public alertCtrl: AlertController) {
     if(navParams.get('online') == null) {
       this.sync = false;
     } else {
@@ -79,9 +79,19 @@ export class NewListPage {
                     handler: () => {
                       console.log('Pick from Gallery clicked');
                       this.camera.getPicture(this.pickOptions).then((imageData) => {
-                        this.cover = 'data:image/jpeg;base64,' + imageData;
-                        this.coverSource = 1;
-                        console.log(this.cover);
+                        if ((imageData.length * (3/4)) - 2 > 1024000) {
+                          let alert = this.alertCtrl.create({
+                            title: 'File size error',
+                            subTitle: 'The size of the file should not exceed 1 MB !',
+                            buttons: ['OK']
+                          });
+                          alert.present();
+                        } else {
+                          this.cover = 'data:image/jpeg;base64,' + imageData;
+                          this.coverSource = 1;
+                          console.log(this.cover);
+                        }
+
                       }, (err) => {
                         console.error("An error occured while trying to pick photo : ");
                         console.error(err);
