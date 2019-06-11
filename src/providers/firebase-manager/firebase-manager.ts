@@ -3,6 +3,7 @@ import {AngularFirestore} from "@angular/fire/firestore";
 import {List} from "../list/list";
 import {UserSettings} from "../user-settings/user-settings";
 import {MyApp} from "../../app/app.component";
+import {ListItem} from "../list-item/list-item";
 
 @Injectable()
 export class FirebaseManager {
@@ -27,24 +28,33 @@ export class FirebaseManager {
           (res) => {
             console.log("List added to Firebase", res);
             list.firebaseId = res.id;
-            for (let item of list.items){
-              this.afs.collection('/'+this.settings.user.email+'lists/'+res.id+'/items').add({
-                id: item.id,
-                reminderDate: item.reminderDate,
-                pictureSource: item.pictureSource,
-                creationDate: item.creationDate,
-                lastEditionDate: item.lastEditionDate,
-                picture: item.picture,
-                title: item.title,
-                textContent: item.textContent
-              }).then( r => {
-                item.firebaseId = r.id;
-              });
-            }
             resolve(list)
           },
           err => reject(err)
         )
+    });
+  }
+
+  public addItem(item: ListItem) {
+    console.log("Saving item into Firebase...");
+    console.log(item);
+    let list: List = item.list;
+    return new Promise<any>((resolve, reject) => {
+      this.afs.collection('/'+this.settings.user.email+'lists/'+list.firebaseId+"/items").add({
+        creationDate: item.creationDate,
+        lastEditionDate: item.lastEditionDate,
+        picture: item.picture,
+        reminderDate: item.reminderDate,
+        textContent: item.textContent,
+        title: item.title
+      }).then(
+        (res) => {
+          console.log("Item added to Firebase", res);
+          item.firebaseId = res.id;
+          resolve(list)
+        },
+        err => reject(err)
+      )
     });
   }
 
@@ -65,7 +75,6 @@ export class FirebaseManager {
             this.afs.collection('/'+this.settings.user.email+'lists/'+list.id+'/items').doc(item.firebaseId.toString()).update({
               id: item.id,
               reminderDate: item.reminderDate,
-              pictureSource: item.pictureSource,
               creationDate: item.creationDate,
               lastEditionDate: item.lastEditionDate,
               picture: item.picture,
@@ -85,13 +94,29 @@ export class FirebaseManager {
     this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => {
       for (let list of data.docs){
         let listData = list.data();
-        console.log(list.data());
+        let newList:List = new List();
+        this.afs.collection('/'+this.settings.user.email+'lists/'+listData.firebaseId+"/items").ref.get().then(fbData => {
+          console.log("Fetching items...");
+          console.log(fbData.docs);
+          for (let items of fbData.docs) {
+            let itemData = items.data();
+            console.log("Item get :");
+            console.log(itemData);
+            let item: ListItem;
+            item.title = itemData.title;
+            item.reminderDate = itemData.reminderDate;
+            item.list = newList;
+            item.textContent = itemData.textContent;
+            item.picture = itemData.picture;
+            item.creationDate = itemData.creationDate;
+            newList.items.push(item);
+          }
+        }).catch(e => console.error("Error while fetching items : ",e));
         if (MyApp.storageManager.syncedListExists(list.id)) {
           let l = MyApp.storageManager.getSyncedList(list.id);
           if (l.lastEditionDate > listData.lastEditionDate) {
             this.updateList(l);
           } else {
-            let newList:List = new List();
             newList.cover = listData.cover;
             newList.coverSource = listData.coverSource;
             newList.lastEditionDate = listData.lastEditionDate;
@@ -100,10 +125,9 @@ export class FirebaseManager {
             newList.isSynchronized = listData.isSynchronized;
             newList.listType = listData.listType;
             newList.title = listData.title;
-            MyApp.storageManager.saveOnlineListFromFB(newList);
+            MyApp.storageManager.updateOnlineListFromFB(newList);
           }
         } else {
-          let newList:List = new List();
           newList.cover = listData.cover;
           newList.coverSource = listData.coverSource;
           newList.lastEditionDate = listData.lastEditionDate;

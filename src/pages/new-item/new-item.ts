@@ -16,11 +16,11 @@ import {StorageManager} from "../../providers/storage-manager/storage-manager";
 })
 
 export class NewItemPage {
-  title: String;
-  textContent: String;
+  title: String = null;
+  textContent: String = null;
   reminderEnabled: boolean = false;
-  reminderDate: any;
-  picture: String;
+  reminderDate: any = null;
+  picture: String = null;
 
   links: Link[] = new Array<Link>();
   tasks: ChecklistItem[] = new Array<ChecklistItem>();
@@ -63,6 +63,7 @@ export class NewItemPage {
       link.item = item;
       this.sm.saveLink(link);
     }*/
+    item.reminderDate = this.reminderDate;
     item.links = this.links;
     /*if (this.list.items == null) {
       this.list.items = new Array<ListItem>();
@@ -73,7 +74,7 @@ export class NewItemPage {
     console.log(this.list);
     this.sm.saveListItem(item);
     if (this.list.isSynchronized){
-      this.sm.updateSyncedList(this.list);
+      this.sm.saveSyncedItem(item);
     } else {
       this.sm.saveLocalList(this.list);
     }

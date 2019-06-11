@@ -20,7 +20,7 @@ export class LoginPage {
     this.platform.ready().then( () => {
       console.log("[Login] Platform ready, accessing Native Storage...");
 
-      /*this.nativeStorage.getItem('connected')
+      this.nativeStorage.getItem('connected')
         .then(
           data => {
             if (data == 1) {
@@ -29,7 +29,7 @@ export class LoginPage {
             }
           },
           error => console.error(error)
-        );*/
+        );
     });
   }
 

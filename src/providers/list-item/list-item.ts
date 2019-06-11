@@ -14,7 +14,6 @@ export class ListItem {
   @Column({nullable: true}) title: String;
   @Column({nullable: true}) textContent: String;
 
-  @Column({nullable: true}) pictureSource: number;
   @Column({nullable: true}) picture: String;
   @OneToOne(type => Checklist, cl => cl.listItem, {
     nullable: true,

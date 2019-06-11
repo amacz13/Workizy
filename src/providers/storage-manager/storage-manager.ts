@@ -48,7 +48,6 @@ export class StorageManager {
     return false;
   }
 
-
   public getSyncedList(fbId : String): List{
     for (let list of this.allLists) {
       if (list.firebaseId == fbId) return list;
@@ -59,6 +58,14 @@ export class StorageManager {
   public saveLocalList(list: List){
     console.log("Saving local list...");
     this.listRepository.save(list).then( () => {
+      this.getLists();
+    });
+  }
+
+
+  public updateOnlineListFromFB(list: List){
+    console.log("Updating online list in local db...");
+    this.listRepository.update(list.firebaseId.toString(),list).then( () => {
       this.getLists();
     });
   }
@@ -74,6 +81,15 @@ export class StorageManager {
     console.log("Saving synced list...");
     this.fm.addList(list).then( val => {
       this.listRepository.save(val).then( () => {
+        this.getLists();
+      });
+    });
+  }
+
+  public saveSyncedItem(item: ListItem){
+    console.log("Saving synced list...");
+    this.fm.addItem(item).then( val => {
+      this.listRepository.save(item.list).then( () => {
         this.getLists();
       });
     });
