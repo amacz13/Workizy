@@ -138,8 +138,7 @@ export class FirebaseManager {
           newList.title = listData.title;
           MyApp.storageManager.saveOnlineListFromFB(newList);
         }
-      }
-    });
+      });
   }
 
 
