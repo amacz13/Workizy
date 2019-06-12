@@ -74,7 +74,7 @@ export class NewItemPage {
     console.log(this.list);
     this.sm.saveListItem(item);
     if (this.list.isSynchronized){
-      this.sm.saveSyncedItem(item);
+      this.sm.addSyncedItem(item).then(syncedList => this.sm.saveLocalList(syncedList));
     } else {
       this.sm.saveLocalList(this.list);
     }

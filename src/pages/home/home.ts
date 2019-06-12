@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ModalController, NavController} from 'ionic-angular';
+import {LoadingController, ModalController, NavController} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {Encryption} from "../../providers/encryption/encryption";
@@ -16,7 +16,7 @@ export class HomePage {
 
   public viewmode:boolean = false;
 
-  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager) {
+  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController) {
     translate.setDefaultLang('fr');
     //HomePage.storageManager = sm;
     //Account Creation
@@ -47,5 +47,14 @@ export class HomePage {
   showList(list: List){
     const modal = this.modalCtrl.create(ListViewerPage, {list: list});
     modal.present();
+  }
+
+  forceSync() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present().then(()=> {
+      this.fm.sync().then(() => loading.dismiss());
+    });
   }
 }

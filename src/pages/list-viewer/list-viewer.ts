@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ModalController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {List} from "../../providers/list/list";
 import {NewItemPage} from "../new-item/new-item";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
@@ -14,7 +14,7 @@ export class ListViewerPage {
   list: List;
   items: ListItem[] = new Array<ListItem>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public sm: StorageManager) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public sm: StorageManager, public alertCtrl: AlertController) {
     this.list = navParams.get("list");
     //this.items = this.sm.getListItems(this.list);
     this.items = this.list.items;
@@ -40,5 +40,29 @@ export class ListViewerPage {
 
   showItem(item: ListItem) {
     
+  }
+
+  deleteList() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm deletion',
+      message: 'Are you sure to delete this list?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Delete clicked');
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

@@ -4,6 +4,9 @@
       {{ 'Synced lists' | translate }}
     </ion-title>
     <ion-buttons end>
+      <button (click)="forceSync()" ion-button icon-only color="royal">
+        <ion-icon name="sync"></ion-icon>
+      </button>
       <button *ngIf="viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
         <ion-icon name="apps"></ion-icon>
       </button>

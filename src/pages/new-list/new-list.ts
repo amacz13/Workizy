@@ -138,7 +138,7 @@ export class NewListPage {
     list.listType = this.listType;
     list.items = new Array<ListItem>();
     if (list.isSynchronized) {
-      this.sm.saveSyncedList(list);
+      this.sm.addSyncedList(list).then(newList => this.sm.saveLocalList(newList));
     } else {
       this.sm.saveLocalList(list);
     }

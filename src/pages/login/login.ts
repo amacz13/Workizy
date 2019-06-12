@@ -19,7 +19,6 @@ export class LoginPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform, public afs: AngularFirestore) {
     this.platform.ready().then( () => {
       console.log("[Login] Platform ready, accessing Native Storage...");
-
       this.nativeStorage.getItem('connected')
         .then(
           data => {
