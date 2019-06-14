@@ -169,10 +169,13 @@ export class FirebaseManager {
         item.creationDate = itemData.creationDate;
         item.lastEditionDate = itemData.lastEditionDate;
         // Todo : Check if l is null and if it is null, try again
+        console.log("[FM] TEST : ");
+        for (let a = 0; a < 10; a++) console.log(MyApp.storageManager.getSyncedList(itemData.listFbId));
         let l:List = MyApp.storageManager.getSyncedList(itemData.listFbId);
         console.log("[FM] List to add item : ");
         console.log(l);
         console.log("[FM] Creating new item list...");
+        if (l == null) l = MyApp.storageManager.getSyncedList(itemData.listFbId);
         let newItemList:Array<ListItem> = new Array<ListItem>();
         if (l.items.length > 0) {
           for (let i of l.items) {
@@ -190,6 +193,7 @@ export class FirebaseManager {
         } else {
           newItemList.push(item);
         }
+        MyApp.storageManager.saveListItem(item);
         l.items = newItemList;
         console.log("[FM] Updating list & items locally");
         MyApp.storageManager.updateOnlineListFromFB(l);
