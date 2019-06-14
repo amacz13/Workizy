@@ -56,7 +56,7 @@ export class StorageManager {
   }
 
   public saveLocalList(list: List){
-    console.log("Saving local list...");
+    console.log("[SM] Saving local list...");
     this.listRepository.save(list).then( () => {
       this.getLists();
     });
@@ -64,31 +64,31 @@ export class StorageManager {
 
 
   public updateOnlineListFromFB(list: List){
-    console.log("Updating online list in local db...");
+    console.log("[SM] Updating online list in local db...");
     this.listRepository.update(list.firebaseId.toString(),list).then( () => {
       this.getLists();
     });
   }
 
   public saveOnlineListFromFB(list: List){
-    console.log("Saving online list in local db...");
+    console.log("[SM] Saving online list in local db...");
     this.listRepository.save(list).then( () => {
       this.getLists();
     });
   }
 
   public addSyncedList(list: List){
-    console.log("Saving synced list...");
+    console.log("[SM] Saving synced list...");
     return this.fm.addList(list);
   }
 
   public addSyncedItem(item: ListItem){
-    console.log("Saving synced item...");
+    console.log("[SM] Saving synced item...");
     return this.fm.addItem(item).then();
   }
 
   public updateSyncedList(list: List){
-    console.log("Updating synced list...");
+    console.log("[SM] Updating synced list...");
     this.fm.updateList(list).then( val => {
       this.listRepository.save(val).then( () => {
         this.getLists();

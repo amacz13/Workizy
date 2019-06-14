@@ -72,7 +72,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "^3.2.4",
-    "@types/node": "^11.13.13",
+    "@types/node": "^11.13.14",
     "typescript": "~3.3.3"
   },
   "description": "An Ionic project",

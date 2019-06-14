@@ -22,7 +22,8 @@ export class List {
   @Column() isSynchronized: boolean;
 
   @OneToMany(type => ListItem, item => item.list, {
-    nullable: true
+    nullable: true,
+    onDelete: 'CASCADE'
   })
   items: ListItem[];
 
