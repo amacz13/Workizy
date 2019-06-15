@@ -27,10 +27,9 @@ export class FirebaseManager {
     });
   }
 
-  public addList(list: List){
+  public async addList(list: List){
     console.log("Saving list into Firebase...");
     console.log(list);
-    return new Promise<any>((resolve, reject) => {
       this.afs.collection('/'+this.settings.user.email+'lists').add({
         title: list.title,
         coverSource: list.coverSource,
@@ -41,14 +40,14 @@ export class FirebaseManager {
         lastEditionDate: list.lastEditionDate,
         creationDate: list.creationDate
       }).then(
-          (res) => {
-            console.log("List added to Firebase", res);
-            list.firebaseId = res.id;
-            resolve(list)
-          },
-          err => reject(err)
-        )
-    });
+      async (res) => {
+        console.log("List added to Firebase", res);
+        list.firebaseId = res.id;
+        await MyApp.storageManager.saveLocalList(list);
+        console.log("Refreshing lists...");
+        await MyApp.storageManager.getAll();
+        console.log("End Firebase addList");
+      });
   }
 
   public updateList(list: List) {

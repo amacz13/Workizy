@@ -33,11 +33,11 @@ export class OnlineListsPage {
     //modal.present();
   }
 
-  forceSync() {
+  async forceSync() {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-    loading.present().then(()=> {
+    await loading.present().then(()=> {
       this.fm.sync().then(() => loading.dismiss());
     });
   }

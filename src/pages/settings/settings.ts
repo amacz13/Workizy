@@ -16,6 +16,5 @@ export class SettingsPage {
 
   signIn() {
     //this.settings.isConnected = true;
-    this.fm.getLists();
   }
 }

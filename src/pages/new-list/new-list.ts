@@ -14,7 +14,7 @@ import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
 })
 export class NewListPage {
 
-  public listType: any;
+  public listType: String = "general";
   public sync: boolean;
   public title: any;
   public cover: String;
@@ -127,7 +127,7 @@ export class NewListPage {
 
   }
 
-  createList() {
+  async createList() {
     let list: List = new List();
     list.id = UuidGenerator.getUUID();
     list.title = this.title;
@@ -139,11 +139,13 @@ export class NewListPage {
     list.listType = this.listType;
     list.items = new Array<ListItem>();
     if (list.isSynchronized) {
-      this.sm.addSyncedList(list).then(newList => this.sm.saveLocalList(newList));
+      await this.sm.addSyncedList(list);
     } else {
       list.firebaseId = "NOTAPPLICABLE";
-      this.sm.saveLocalList(list);
+      await this.sm.saveLocalList(list);
+      await this.sm.getAll();
     }
+    console.log("End of new list");
     this.navCtrl.pop();
   }
 }

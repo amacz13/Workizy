@@ -79,31 +79,22 @@ export class StorageManager {
 
   public async updateOnlineListFromFB(list: List){
     console.log("[SM] Updating online list in local db...");
-    return this.listRepository.save(list);
+    await this.listRepository.save(list);
   }
 
   public async saveOnlineListFromFB(list: List){
     console.log("[SM] Saving online list in local db...");
-    return this.listRepository.save(list);
+    await this.listRepository.save(list);
   }
 
-  public addSyncedList(list: List){
+  public async addSyncedList(list: List){
     console.log("[SM] Saving synced list...");
-    return this.fm.addList(list);
+    await this.fm.addList(list);
   }
 
   public async addSyncedItem(item: ListItem){
     console.log("[SM] Saving synced item...");
     await this.fm.addItem(item);
-  }
-
-  public updateSyncedList(list: List){
-    console.log("[SM] Updating synced list...");
-    this.fm.updateList(list).then( val => {
-      this.listRepository.save(val).then( () => {
-        this.getAll();
-      });
-    });
   }
 
   /*public saveList(list: List){
