@@ -1,13 +1,12 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique} from "typeorm";
+import {Column, Entity, JoinTable, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique} from "typeorm";
 import {ListItem} from "../list-item/list-item";
 
 @Entity('list')
-@Unique(["firebaseId"])
 export class List {
 
   // Unique ID for storage purposes
-  @PrimaryGeneratedColumn() id: number;
-  @Column({nullable: true}) firebaseId: String;
+  @PrimaryColumn() id: String;
+  @PrimaryColumn() firebaseId: String;
 
   // List details
   @Column() title: String;
@@ -22,9 +21,9 @@ export class List {
   @Column() isSynchronized: boolean;
 
   @OneToMany(type => ListItem, item => item.list, {
-    nullable: true,
     onDelete: 'CASCADE'
   })
+  @JoinTable()
   items: ListItem[];
 
   getElementCount() {

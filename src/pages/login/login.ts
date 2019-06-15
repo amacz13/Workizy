@@ -7,6 +7,7 @@ import {NativeStorage} from "@ionic-native/native-storage";
 import {UserSettings} from "../../providers/user-settings/user-settings";
 import {AngularFirestore} from "@angular/fire/firestore";
 import Persistence = firebase.auth.Auth.Persistence;
+import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
 
 @Component({
   selector: 'page-login',
@@ -16,7 +17,7 @@ export class LoginPage {
   email: string;
   password: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform, public afs: AngularFirestore) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform, public afs: AngularFirestore, public fm:FirebaseManager) {
     this.platform.ready().then( () => {
       console.log("[Login] Platform ready, accessing Native Storage...");
       this.nativeStorage.getItem('connected')
@@ -25,6 +26,12 @@ export class LoginPage {
             if (data == 1) {
               this.settings.isConnected = true;
               this.navCtrl.setRoot(TabsPage);
+              let loading = this.loadingCtrl.create({
+                content: 'Please wait...'
+              });
+              loading.present().then(async ()=> {
+                await this.fm.sync().then(async () => await loading.dismiss());
+              });
             }
           },
           error => console.error(error)

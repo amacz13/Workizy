@@ -1,5 +1,13 @@
 import {Checklist} from "../checklist/checklist";
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn
+} from "typeorm";
 import {List} from "../list/list";
 import {Link} from "../link/link";
 
@@ -7,8 +15,8 @@ import {Link} from "../link/link";
 export class ListItem {
 
   // Unique ID for storage purposes
-  @PrimaryGeneratedColumn() id: number;
-  @Column({nullable: true}) firebaseId: String;
+  @PrimaryColumn() id: String;
+  @PrimaryColumn() firebaseId: String;
 
   // Content of the item
   @Column({nullable: true}) title: String;
@@ -28,7 +36,6 @@ export class ListItem {
     cascade: true}) links: Link[];
 
   @ManyToOne(type => List, list => list.items)
-  @JoinColumn({name:"list.id"})
   list: List;
 
   constructor() {

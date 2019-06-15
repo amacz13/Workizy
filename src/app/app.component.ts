@@ -28,7 +28,7 @@ export class MyApp {
         console.log("[WhatsNext] Creating ORM link with database...");
         await createConnection({
           type: 'cordova',
-          database: 'workizy-devdb8',
+          database: 'workizy-devdb27',
           location: 'default',
           logging: ['error', 'query', 'schema'],
           synchronize: true,

@@ -6,6 +6,7 @@ import {List} from "../../providers/list/list";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {ListItem} from "../../providers/list-item/list-item";
 import {Camera, CameraOptions} from "@ionic-native/camera";
+import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
 
 @Component({
   selector: 'page-new-list',
@@ -18,7 +19,6 @@ export class NewListPage {
   public title: any;
   public cover: String;
   public coverSource: number = -1;
-
 
   shootOptions: CameraOptions = {
     quality: 60,
@@ -129,6 +129,7 @@ export class NewListPage {
 
   createList() {
     let list: List = new List();
+    list.id = UuidGenerator.getUUID();
     list.title = this.title;
     list.isSynchronized = this.sync;
     list.cover = this.cover;
@@ -140,6 +141,7 @@ export class NewListPage {
     if (list.isSynchronized) {
       this.sm.addSyncedList(list).then(newList => this.sm.saveLocalList(newList));
     } else {
+      list.firebaseId = "NOTAPPLICABLE";
       this.sm.saveLocalList(list);
     }
     this.navCtrl.pop();

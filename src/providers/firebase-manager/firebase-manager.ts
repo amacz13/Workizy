@@ -4,6 +4,7 @@ import {List} from "../list/list";
 import {UserSettings} from "../user-settings/user-settings";
 import {MyApp} from "../../app/app.component";
 import {ListItem} from "../list-item/list-item";
+import {UuidGenerator} from "../uuid-generator/uuid-generator";
 
 @Injectable()
 export class FirebaseManager {
@@ -16,10 +17,13 @@ export class FirebaseManager {
   Retrieve all informations from Firebase
    */
 
-  public sync() {
-    return this.getLists().then(() =>{
-
-      this.getItems();
+  public async sync() {
+    return await this.getLists().then(async() => {
+      await MyApp.storageManager.getAll().then(async () => {
+        await this.getItems().then(async () => {
+          await MyApp.storageManager.getAll();
+        });
+      });
     });
   }
 
@@ -67,10 +71,10 @@ export class FirebaseManager {
     });
   }
 
-  getLists() {
+  public async getLists() {
     console.log("[FM] Fetching lists from Firebase...");
-    MyApp.storageManager.removeAllOnlineLists();
-    return this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(data => {
+    //MyApp.storageManager.removeAllOnlineLists();
+    return this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(async data => {
       for (let list of data.docs) {
         let listData = list.data();
         let newList: List = new List();
@@ -81,18 +85,19 @@ export class FirebaseManager {
             this.updateList(l);
           } else {
             console.log("[FM] Updating list locally");
-            newList.cover = listData.cover;
-            newList.coverSource = listData.coverSource;
-            newList.lastEditionDate = listData.lastEditionDate;
-            newList.firebaseId = list.id;
-            newList.creationDate = listData.creationDate;
-            newList.isSynchronized = listData.isSynchronized;
-            newList.listType = listData.listType;
-            newList.title = listData.title;
-            MyApp.storageManager.updateOnlineListFromFB(newList);
+            l.cover = listData.cover;
+            l.coverSource = listData.coverSource;
+            l.lastEditionDate = listData.lastEditionDate;
+            l.firebaseId = list.id;
+            l.creationDate = listData.creationDate;
+            l.isSynchronized = listData.isSynchronized;
+            l.listType = listData.listType;
+            l.title = listData.title;
+            await MyApp.storageManager.updateOnlineListFromFB(l);
           }
         } else {
           console.log("[FM] Creating list locally");
+          newList.id = UuidGenerator.getUUID();
           newList.cover = listData.cover;
           newList.coverSource = listData.coverSource;
           newList.lastEditionDate = listData.lastEditionDate;
@@ -101,7 +106,8 @@ export class FirebaseManager {
           newList.isSynchronized = listData.isSynchronized;
           newList.listType = listData.listType;
           newList.title = listData.title;
-          MyApp.storageManager.saveOnlineListFromFB(newList);
+          newList.items = new Array<ListItem>();
+          await MyApp.storageManager.saveOnlineListFromFB(newList);
         }
       }
     });
@@ -123,28 +129,25 @@ export class FirebaseManager {
   Add a ListItem in Firebase
    */
 
-  public addItem(item: ListItem) {
+  public async addItem(item: ListItem) {
     console.log("Saving item into Firebase...");
     console.log(item);
     let list: List = item.list;
-    return new Promise<any>((resolve, reject) => {
-      this.afs.collection('/'+this.settings.user.email+'items').add({
-        creationDate: item.creationDate,
-        lastEditionDate: item.lastEditionDate,
-        picture: item.picture,
-        reminderDate: item.reminderDate,
-        textContent: item.textContent,
-        title: item.title,
-        listFbId: item.list.firebaseId
-      }).then(
-        (res) => {
-          console.log("Item added to Firebase", res);
-          item.firebaseId = res.id;
-          resolve(list)
-        },
-        err => reject(err)
-      )
-    });
+    await this.afs.collection('/'+this.settings.user.email+'items').add({
+      creationDate: item.creationDate,
+      lastEditionDate: item.lastEditionDate,
+      picture: item.picture,
+      reminderDate: item.reminderDate,
+      textContent: item.textContent,
+      title: item.title,
+      listFbId: item.list.firebaseId
+    }).then(
+      async (res) => {
+        console.log("Item added to Firebase", res);
+        item.firebaseId = res.id;
+        await MyApp.storageManager.saveListItem(item);
+      }
+    );
   }
 
   /*
@@ -152,7 +155,7 @@ export class FirebaseManager {
   Retrieved all Items and
    */
 
-  getItems() {
+  /*getItems() {
     return this.afs.collection('/'+this.settings.user.email+'items').ref.get().then(data => {
       console.log("[FM] Fetching items...");
       console.log(data.docs);
@@ -168,9 +171,6 @@ export class FirebaseManager {
         item.picture = itemData.picture;
         item.creationDate = itemData.creationDate;
         item.lastEditionDate = itemData.lastEditionDate;
-        // Todo : Check if l is null and if it is null, try again
-        console.log("[FM] TEST : ");
-        for (let a = 0; a < 10; a++) console.log(MyApp.storageManager.getSyncedList(itemData.listFbId));
         let l:List = MyApp.storageManager.getSyncedList(itemData.listFbId);
         console.log("[FM] List to add item : ");
         console.log(l);
@@ -199,7 +199,65 @@ export class FirebaseManager {
         MyApp.storageManager.updateOnlineListFromFB(l);
       }
     });
-  }
+  }*/
 
+  public async getItems() {
+    console.log("[FM] Fetching items from Firebase...");
+    return this.afs.collection('/'+this.settings.user.email+'items').ref.get().then(async data => {
+      for (let item of data.docs) {
+        let itemData = item.data();
+        let newItem: ListItem = new ListItem();
+        let l = MyApp.storageManager.getSyncedList(itemData.listFbId);
+        if (MyApp.storageManager.syncedItemExists(item.id)) {
+          let i = MyApp.storageManager.getSyncedItem(item.id);
+          if (i.lastEditionDate > itemData.lastEditionDate) {
+            console.log("[FM] Local item is most recent, updating item in Firebase");
+            // this.updateItem(i);
+          } else {
+            console.log("[FM] Updating item locally");
+            i.firebaseId = item.id;
+            i.lastEditionDate = itemData.lastEditionDate;
+            i.creationDate = itemData.creationDate;
+            i.picture = itemData.picture;
+            i.textContent = itemData.textContent;
+            i.reminderDate = itemData.reminderDate;
+            i.title = itemData.title;
+            if (l.items.length > 0) {
+              l.items.forEach((it, index) => {
+                if (it.firebaseId == i.firebaseId) {
+                  l.items.splice(index,1);
+                }
+              });
+            }
+            l.items.push(i);
+            console.log("Saving list : ",l);
+            await MyApp.storageManager.saveListItem(i);
+            await MyApp.storageManager.saveOnlineListFromFB(l);
+          }
+        } else {
+          console.log("[FM] Creating item locally in list : ",l);
+          newItem.id = UuidGenerator.getUUID();
+          newItem.firebaseId = item.id;
+          newItem.lastEditionDate = itemData.lastEditionDate;
+          newItem.creationDate = itemData.creationDate;
+          newItem.picture = itemData.picture;
+          newItem.textContent = itemData.textContent;
+          newItem.reminderDate = itemData.reminderDate;
+          newItem.title = itemData.title;
+          newItem.list = l;
+          if (l.items == null) {
+            console.log("FDP");
+            l.items = new Array<ListItem>();
+            l.items.push(newItem);
+          } else {
+            l.items.push(newItem);
+          }
+          console.log("Saving list : ",l);
+          await MyApp.storageManager.saveListItem(newItem);
+          await MyApp.storageManager.saveOnlineListFromFB(l);
+        }
+      }
+    });
+  }
 
 }

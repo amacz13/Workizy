@@ -9,6 +9,8 @@ import {BrowserTab} from "@ionic-native/browser-tab";
 import {ListItem} from "../../providers/list-item/list-item";
 import {List} from "../../providers/list/list";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
+import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
+import {MyApp} from "../../app/app.component";
 
 @Component({
   selector: 'page-new-item',
@@ -51,8 +53,9 @@ export class NewItemPage {
     console.log('ionViewDidLoad NewItemPage');
   }
 
-  createItem() {
+  async createItem() {
     let item: ListItem = new ListItem();
+    item.id = UuidGenerator.getUUID();
     item.title = this.title;
     item.picture = this.picture;
     item.textContent = this.textContent;
@@ -65,19 +68,19 @@ export class NewItemPage {
     }*/
     item.reminderDate = this.reminderDate;
     item.links = this.links;
-    /*if (this.list.items == null) {
-      this.list.items = new Array<ListItem>();
-    }*/
+    item.firebaseId = "NOTAPPLICABLE";
     this.list.items.push(item);
+
+    if (this.list.isSynchronized){
+      await this.sm.addSyncedItem(item);
+    } else {
+      await this.sm.saveListItem(item);
+    }
 
     console.log("Saving new item...");
     console.log(this.list);
-    this.sm.saveListItem(item);
-    if (this.list.isSynchronized){
-      this.sm.addSyncedItem(item).then(syncedList => this.sm.saveLocalList(syncedList));
-    } else {
-      this.sm.saveLocalList(this.list);
-    }
+    await this.sm.saveLocalList(this.list);
+    await this.sm.getAll();
     this.viewCtrl.dismiss({'list':this.list});
   }
 

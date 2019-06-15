@@ -13,6 +13,9 @@ export class StorageManager {
   allLists: List[] = new Array<List>();
   localLists: List[] = new Array<List>();
   onlineLists: List[] = new Array<List>();
+  allItems: ListItem[] = new Array<ListItem>();
+  localItems: ListItem[] = new Array<ListItem>();
+  onlineItems: ListItem[] = new Array<ListItem>();
 
   public initRepositories() {
     this.listRepository = getRepository('list') as Repository<List>;
@@ -20,14 +23,14 @@ export class StorageManager {
     this.checklistRepository = getRepository('checklist') as Repository<Checklist>;
     this.checklistItemRepository = getRepository('checklistitem') as Repository<ChecklistItem>;
     this.linkRepository = getRepository('link') as Repository<Link>;
-    this.getLists();
+    this.getAll();
     /*let list: List = new List();
     list.title = "Test";
     list.creationDate = Date.now();
     list.lastEditionDate = Date.now();
     list.cover = "COVER";
     list.isSynchronized = true;
-    this.listRepository.save(list).then( () => this.getLists());*/
+    this.listRepository.save(list).then( () => this.getAll());*/
   }
 
   listRepository: Repository<List>;
@@ -55,26 +58,33 @@ export class StorageManager {
     return null;
   }
 
-  public saveLocalList(list: List){
+  public syncedItemExists(fbId : String): boolean{
+    for (let item of this.onlineItems) {
+      if (item.firebaseId == fbId) return true;
+    }
+    return false;
+  }
+
+  public getSyncedItem(fbId : String): ListItem{
+    for (let item of this.onlineItems) {
+      if (item.firebaseId == fbId) return item;
+    }
+    return null;
+  }
+
+  public async saveLocalList(list: List){
     console.log("[SM] Saving local list...");
-    this.listRepository.save(list).then( () => {
-      this.getLists();
-    });
+    await this.listRepository.save(list);
   }
 
-
-  public updateOnlineListFromFB(list: List){
+  public async updateOnlineListFromFB(list: List){
     console.log("[SM] Updating online list in local db...");
-    this.listRepository.update(list.firebaseId.toString(),list).then( () => {
-      this.getLists();
-    });
+    return this.listRepository.save(list);
   }
 
-  public saveOnlineListFromFB(list: List){
+  public async saveOnlineListFromFB(list: List){
     console.log("[SM] Saving online list in local db...");
-    this.listRepository.save(list).then( () => {
-      this.getLists();
-    });
+    return this.listRepository.save(list);
   }
 
   public addSyncedList(list: List){
@@ -82,16 +92,16 @@ export class StorageManager {
     return this.fm.addList(list);
   }
 
-  public addSyncedItem(item: ListItem){
+  public async addSyncedItem(item: ListItem){
     console.log("[SM] Saving synced item...");
-    return this.fm.addItem(item).then();
+    await this.fm.addItem(item);
   }
 
   public updateSyncedList(list: List){
     console.log("[SM] Updating synced list...");
     this.fm.updateList(list).then( val => {
       this.listRepository.save(val).then( () => {
-        this.getLists();
+        this.getAll();
       });
     });
   }
@@ -99,32 +109,32 @@ export class StorageManager {
   /*public saveList(list: List){
     console.log("Saving list...");
     this.listRepository.save(list).then( () => {
-      this.getLists();
+      this.getAll();
       if (list.isSynchronized) {
         if (list.firebaseId == null){
           console.log("Saving list into firebase...");
           this.fm.addList(list).then( val => {
             this.listRepository.save(val).then( () => {
-              this.getLists();
+              this.getAll();
             });
           });
         } else {
           console.log("Updating list into firebase...");
           this.fm.updateList(list).then( val => {
             this.listRepository.save(val).then( () => {
-              this.getLists();
+              this.getAll();
             });
           });
         }
       }
       this.listRepository.save(list).then( () => {
-        this.getLists();
+        this.getAll();
       });
     });
   }*/
 
-  public saveListItem(item: ListItem){
-    this.listItemRepository.save(item);
+  public async saveListItem(item: ListItem){
+     await this.listItemRepository.save(item);
   }
 
   public saveLink(link: Link){
@@ -147,7 +157,8 @@ export class StorageManager {
 
 
 
-  public getLists():any {
+  public async getAll() {
+    console.log("getAll called");
     /*this.connection.manager.find(List).then( lists => {
       console.log("All lists : ",lists);
       this.allLists = lists;
@@ -155,19 +166,35 @@ export class StorageManager {
     this.localLists = new Array<List>();
     this.onlineLists = new Array<List>();
 
-    this.listRepository.find({ relations: ["items"] }).then(lists => {
-      console.log("All lists : ",lists);
+    await this.listRepository.find({ relations: ["items"] }).then(async lists => {
       this.allLists = lists;
+      console.log("LISTS : ",lists);
 
       for (let l of this.allLists) {
         if (!l.isSynchronized){
-          this.localLists.push(l);
+          await this.localLists.push(l);
         } else {
-          this.onlineLists.push(l);
+          await this.onlineLists.push(l);
         }
       }
-      console.log("Local lists : ",this.localLists);
     });
+
+    this.localItems = new Array<ListItem>();
+    this.onlineItems = new Array<ListItem>();
+
+    await this.listItemRepository.find({ relations: ["list"] }).then(async items => {
+      this.allItems = items;
+      console.log("ITEMS : ",items);
+
+      for (let l of this.allItems) {
+        if (!l.list.isSynchronized){
+          await this.localItems.push(l);
+        } else {
+          await this.onlineItems.push(l);
+        }
+      }
+    });
+
     /*
     this.listRepository.find({isSynchronized:false}).then(lists => {
       console.log("Local lists : ",lists);
@@ -186,6 +213,12 @@ export class StorageManager {
   public removeAllOnlineLists(){
     for (let list of this.onlineLists) {
       this.listRepository.remove(list);
+    }
+  }
+
+  public removeAllOnlineItems(){
+    for (let item of this.onlineItems) {
+      this.listItemRepository.remove(item);
     }
   }
 
