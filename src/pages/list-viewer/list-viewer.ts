@@ -86,6 +86,8 @@ export class ListViewerPage {
       return "logo-linkedin";
     } else if (link.content.includes("pinterest.com")){
       return "logo-pinterest";
+    } else {
+      return "link";
     }
   }
 

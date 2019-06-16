@@ -157,7 +157,7 @@ export class StorageManager {
     this.localLists = new Array<List>();
     this.onlineLists = new Array<List>();
 
-    await this.listRepository.find({ relations: ["items"] }).then(async lists => {
+    await this.listRepository.find({ relations: ["items","items.links"] }).then(async lists => {
       this.allLists = lists;
       console.log("LISTS : ",lists);
 

@@ -227,16 +227,20 @@ export class FirebaseManager {
             i.textContent = itemData.textContent;
             i.reminderDate = itemData.reminderDate;
             i.title = itemData.title;
+            console.log("Links : ",itemData.links);
             for (let l of i.links) {
               await MyApp.storageManager.removeLink(l);
             }
             i.links = new Array<Link>();
-            for (let l of itemData.links) {
-              let link: Link = new Link();
-              link.content = l;
-              link.item = i;
-              i.links.push(link);
-              await MyApp.storageManager.saveLink(link);
+            if(itemData.links != null && itemData.links.length > 0) {
+              for (let l of itemData.links) {
+                console.log("Link : ",l);
+                let link: Link = new Link();
+                link.content = l;
+                link.item = i;
+                i.links.push(link);
+                await MyApp.storageManager.saveLink(link);
+              }
             }
             if (l.items.length > 0) {
               l.items.forEach((it, index) => {
@@ -262,12 +266,16 @@ export class FirebaseManager {
           newItem.title = itemData.title;
           newItem.list = l;
           newItem.links = new Array<Link>();
-          for (let l of itemData.links) {
-            let link: Link = new Link();
-            link.content = l;
-            link.item = newItem;
-            newItem.links.push(link);
-            await MyApp.storageManager.saveLink(link);
+          console.log("Links : ",itemData.links);
+          if(itemData.links != null && itemData.links.length > 0) {
+            for (let l of itemData.links) {
+              console.log("Link : ",l);
+              let link: Link = new Link();
+              link.content = l;
+              link.item = newItem;
+              newItem.links.push(link);
+              await MyApp.storageManager.saveLink(link);
+            }
           }
           if (l.items == null) {
             l.items = new Array<ListItem>();
