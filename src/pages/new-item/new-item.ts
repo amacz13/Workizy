@@ -62,10 +62,6 @@ export class NewItemPage {
     item.creationDate = Date.now();
     item.lastEditionDate = Date.now();
     item.list = this.list;
-    for (let link of this.links) {
-      link.item = item;
-      await this.sm.saveLink(link);
-    }
     item.reminderDate = this.reminderDate;
     item.links = this.links;
     item.firebaseId = "NOTAPPLICABLE";
@@ -74,6 +70,10 @@ export class NewItemPage {
     if (this.list.isSynchronized){
       await this.sm.addSyncedItem(item);
     } else {
+      for (let link of this.links) {
+        link.item = item;
+        await this.sm.saveLink(link);
+      }
       await this.sm.saveListItem(item);
     }
 
@@ -193,6 +193,8 @@ export class NewItemPage {
       return "logo-linkedin";
     } else if (link.content.includes("pinterest.com")){
       return "logo-pinterest";
+    } else {
+      return "link";
     }
   }
 

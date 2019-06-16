@@ -68,9 +68,9 @@ export class ListViewerPage {
         console.log("Removing list : ",this.list);
         if (this.list.isSynchronized)  this.fm.deleteList(this.list);
         await this.sm.removeList(this.list);
+        await this.sm.getAll();
+        await this.sm.getAll();
         loading.dismiss();
-        await this.sm.getAll();
-        await this.sm.getAll();
       });
     });
   }
@@ -137,6 +137,57 @@ export class ListViewerPage {
           const browser = this.iab.create("https://"+content.toString());
         }
       }
+    });
+  }
+
+  deleteItem(item: ListItem) {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm deletion',
+      message: 'Are you sure to delete this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Delete clicked');
+            this.doDeleteItem(item);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  private doDeleteItem(item: ListItem) {
+    console.log("Start rm item : ",item);
+    this.translate.get("Please wait...").toPromise().then(async text =>{
+      let loading = this.loadingCtrl.create({
+        content: text
+      });
+      await loading.present().then(async ()=> {
+        if(item.links != null && item.links.length > 0) {
+          for (let l of item.links) {
+            console.log("Removing link : ", l);
+            await this.sm.removeLink(l);
+          }
+        }
+        console.log("Removing item : ",item);
+        if (this.list.isSynchronized)  this.fm.deleteItem(item);
+        await this.sm.removeItem(item);
+        await this.sm.getAll();
+        this.items.forEach((it, index) => {
+          if (it.id == item.id) {
+            this.items.splice(index,1);
+          }
+        });
+        loading.dismiss();
+      });
     });
   }
 }

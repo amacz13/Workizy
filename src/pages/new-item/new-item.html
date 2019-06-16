@@ -27,7 +27,7 @@
 
       <ion-item>
         <ion-label>{{ 'Reminder' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="reminderEnabled"></ion-toggle>
+        <ion-toggle disabled [(ngModel)]="reminderEnabled"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="reminderEnabled">
@@ -80,7 +80,7 @@
     </ion-list>
 
     <div padding>
-      <button (click)="createItem()" ion-button block>{{ 'Add task' | translate }}</button>
+      <button disabled (click)="createItem()" ion-button block>{{ 'Add task' | translate }}</button>
     </div>
 </ion-content>
 

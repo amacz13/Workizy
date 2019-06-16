@@ -75,6 +75,7 @@ export class FirebaseManager {
     console.log("[FM] Fetching lists from Firebase...");
     //MyApp.storageManager.removeAllOnlineLists();
     return this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(async data => {
+      let obtainedList: Array<String> = new Array<String>();
       for (let list of data.docs) {
         let listData = list.data();
         let newList: List = new List();
@@ -93,6 +94,7 @@ export class FirebaseManager {
             l.isSynchronized = listData.isSynchronized;
             l.listType = listData.listType;
             l.title = listData.title;
+            obtainedList.push(l.firebaseId);
             await MyApp.storageManager.updateOnlineListFromFB(l);
           }
         } else {
@@ -107,7 +109,31 @@ export class FirebaseManager {
           newList.listType = listData.listType;
           newList.title = listData.title;
           newList.items = new Array<ListItem>();
+          obtainedList.push(newList.firebaseId);
           await MyApp.storageManager.saveOnlineListFromFB(newList);
+        }
+      }
+      await MyApp.storageManager.getAll();
+      for (let l of MyApp.storageManager.onlineLists){
+        console.log("Checking if list needs to be deleted : ",l);
+        if (obtainedList.indexOf(l.firebaseId) <= -1){
+          console.log("Removing : ",l);
+          if (l.items != null && l.items.length > 0) {
+            for (let it of l.items) {
+              if (it.links != null && it.links.length > 0) {
+                for (let l of it.links) {
+                  console.log("Removing link : ", l);
+                  await MyApp.storageManager.removeLink(l);
+                }
+              }
+              console.log("Removing item : ", it);
+              await MyApp.storageManager.removeItem(it);
+            }
+          }
+          console.log("Removing list : ",l);
+          await MyApp.storageManager.removeList(l);
+          await MyApp.storageManager.getAll();
+          await MyApp.storageManager.getAll();
         }
       }
     });
@@ -150,6 +176,10 @@ export class FirebaseManager {
       async (res) => {
         console.log("Item added to Firebase", res);
         item.firebaseId = res.id;
+        for (let link of item.links) {
+          link.item = item;
+          await MyApp.storageManager.saveLink(link);
+        }
         await MyApp.storageManager.saveListItem(item);
       }
     );
@@ -158,6 +188,7 @@ export class FirebaseManager {
   public async getItems() {
     console.log("[FM] Fetching items from Firebase...");
     return this.afs.collection('/'+this.settings.user.email+'items').ref.get().then(async data => {
+      let obtainedList: Array<String> = new Array<String>();
       for (let item of data.docs) {
         let itemData = item.data();
         let newItem: ListItem = new ListItem();
@@ -176,6 +207,7 @@ export class FirebaseManager {
             i.textContent = itemData.textContent;
             i.reminderDate = itemData.reminderDate;
             i.title = itemData.title;
+            obtainedList.push(i.firebaseId);
             console.log("Links : ",itemData.links);
             for (let l of i.links) {
               await MyApp.storageManager.removeLink(l);
@@ -214,6 +246,7 @@ export class FirebaseManager {
           newItem.reminderDate = itemData.reminderDate;
           newItem.title = itemData.title;
           newItem.list = l;
+          obtainedList.push(newItem.firebaseId);
           newItem.links = new Array<Link>();
           console.log("Links : ",itemData.links);
           if(itemData.links != null && itemData.links.length > 0) {
@@ -235,6 +268,23 @@ export class FirebaseManager {
           console.log("Saving list : ",l);
           await MyApp.storageManager.saveListItem(newItem);
           await MyApp.storageManager.saveOnlineListFromFB(l);
+        }
+        await MyApp.storageManager.getAll();
+        for (let it of MyApp.storageManager.onlineItems){
+          console.log("Checking if item needs to be deleted : ",it);
+          if (obtainedList.indexOf(it.firebaseId) <= -1) {
+            console.log("Removing : ", it);
+            if (it.links != null && it.links.length > 0) {
+              for (let l of it.links) {
+                console.log("Removing link : ", l);
+                await MyApp.storageManager.removeLink(l);
+              }
+            }
+            console.log("Removing item : ", it);
+            await MyApp.storageManager.removeItem(it);
+          }
+        await MyApp.storageManager.getAll();
+        await MyApp.storageManager.getAll();
         }
       }
     });
