@@ -76,28 +76,36 @@ export class ListViewerPage {
   }
 
   async deleteList() {
-    let alert = this.alertCtrl.create({
-      title: 'Confirm deletion',
-      message: 'Are you sure to delete this list?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Delete clicked');
-            this.doDeleteList();
-            this.navCtrl.pop();
-          }
-        }
-      ]
+    this.translate.get('Confirm deletion').toPromise().then(title => {
+      this.translate.get('Are you sure to delete this list?').toPromise().then(msg => {
+        this.translate.get('Cancel').toPromise().then(cancel => {
+          this.translate.get('Yes').toPromise().then(yes => {
+            let alert = this.alertCtrl.create({
+              title: title,
+              message: msg,
+              buttons: [
+                {
+                  text: cancel,
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: yes,
+                  handler: () => {
+                    console.log('Delete clicked');
+                    this.doDeleteList();
+                    this.navCtrl.pop();
+                  }
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      });
     });
-    alert.present();
   }
 
   getIcon(link: Link) {
@@ -141,27 +149,35 @@ export class ListViewerPage {
   }
 
   deleteItem(item: ListItem) {
-    let alert = this.alertCtrl.create({
-      title: 'Confirm deletion',
-      message: 'Are you sure to delete this item?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Delete clicked');
-            this.doDeleteItem(item);
-          }
-        }
-      ]
+    this.translate.get('Confirm deletion').toPromise().then( title => {
+      this.translate.get('Are you sure to delete this item?').toPromise().then( msg => {
+        this.translate.get('Cancel').toPromise().then( cancel => {
+          this.translate.get('Yes').toPromise().then( yes => {
+            let alert = this.alertCtrl.create({
+              title: title,
+              message: msg,
+              buttons: [
+                {
+                  text: cancel,
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: yes,
+                  handler: () => {
+                    console.log('Delete clicked');
+                    this.doDeleteItem(item);
+                  }
+                }
+              ]
+            });
+            alert.present();
+        });
+      });
     });
-    alert.present();
+    });
   }
 
   private doDeleteItem(item: ListItem) {

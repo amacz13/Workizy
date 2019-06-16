@@ -6,11 +6,16 @@ import {MyApp} from "../../app/app.component";
 import {ListItem} from "../list-item/list-item";
 import {UuidGenerator} from "../uuid-generator/uuid-generator";
 import {Link} from "../link/link";
+import SimpleCrypto from "simple-crypto-js";
+
 
 @Injectable()
 export class FirebaseManager {
 
+  public simpleCrypto;
+
   constructor(public afs: AngularFirestore, public settings: UserSettings) {
+
   }
 
   /*
@@ -31,13 +36,13 @@ export class FirebaseManager {
   public async addList(list: List){
     console.log("Saving list into Firebase...");
     console.log(list);
+    this.simpleCrypto = new SimpleCrypto(this.settings.user.uid);
       this.afs.collection('/'+this.settings.user.email+'lists').add({
-        title: list.title,
+        title: this.simpleCrypto.encrypt(list.title),
         coverSource: list.coverSource,
         isSynchronized: list.isSynchronized,
-        //items: list.items,
-        cover: list.cover,
-        listType: list.listType,
+        cover: this.simpleCrypto.encrypt(list.cover).toString(),
+        listType: this.simpleCrypto.encrypt(list.listType).toString(),
         lastEditionDate: list.lastEditionDate,
         creationDate: list.creationDate
       }).then(
@@ -52,14 +57,14 @@ export class FirebaseManager {
   }
 
   public updateList(list: List) {
+    this.simpleCrypto = new SimpleCrypto(this.settings.user.uid);
     return new Promise<any>((resolve, reject) => {
       this.afs.collection('/'+this.settings.user.email+'lists').doc(list.firebaseId.toString()).update({
-        title: list.title,
+        title: this.simpleCrypto.encrypt(list.title),
         coverSource: list.coverSource,
         isSynchronized: list.isSynchronized,
-        items: list.items,
-        cover: list.cover,
-        listType: list.listType,
+        cover: this.simpleCrypto.encrypt(list.cover).toString(),
+        listType: this.simpleCrypto.encrypt(list.listType).toString(),
         lastEditionDate: list.lastEditionDate,
         creationDate: list.creationDate
       }).then((res) => {
@@ -73,6 +78,7 @@ export class FirebaseManager {
 
   public async getLists() {
     console.log("[FM] Fetching lists from Firebase...");
+    this.simpleCrypto = new SimpleCrypto(this.settings.user.uid);
     //MyApp.storageManager.removeAllOnlineLists();
     return this.afs.collection('/'+this.settings.user.email+'lists').ref.get().then(async data => {
       let obtainedList: Array<String> = new Array<String>();
@@ -86,28 +92,28 @@ export class FirebaseManager {
             this.updateList(l);
           } else {
             console.log("[FM] Updating list locally");
-            l.cover = listData.cover;
+            l.cover = this.simpleCrypto.decrypt(listData.cover);
             l.coverSource = listData.coverSource;
             l.lastEditionDate = listData.lastEditionDate;
             l.firebaseId = list.id;
             l.creationDate = listData.creationDate;
             l.isSynchronized = listData.isSynchronized;
-            l.listType = listData.listType;
-            l.title = listData.title;
+            l.listType = this.simpleCrypto.decrypt(listData.listType);
+            l.title = this.simpleCrypto.decrypt(listData.title);
             obtainedList.push(l.firebaseId);
             await MyApp.storageManager.updateOnlineListFromFB(l);
           }
         } else {
           console.log("[FM] Creating list locally");
           newList.id = UuidGenerator.getUUID();
-          newList.cover = listData.cover;
+          newList.cover = this.simpleCrypto.decrypt(listData.cover);
           newList.coverSource = listData.coverSource;
           newList.lastEditionDate = listData.lastEditionDate;
           newList.firebaseId = list.id;
           newList.creationDate = listData.creationDate;
           newList.isSynchronized = listData.isSynchronized;
-          newList.listType = listData.listType;
-          newList.title = listData.title;
+          newList.listType = this.simpleCrypto.decrypt(listData.listType);
+          newList.title = this.simpleCrypto.decrypt(listData.title);
           newList.items = new Array<ListItem>();
           obtainedList.push(newList.firebaseId);
           await MyApp.storageManager.saveOnlineListFromFB(newList);
@@ -156,20 +162,27 @@ export class FirebaseManager {
    */
 
   public async addItem(item: ListItem) {
+    this.simpleCrypto = new SimpleCrypto(this.settings.user.uid);
     console.log("Saving item into Firebase...");
     console.log(item);
     let list: List = item.list;
     let links: Array<String> = new Array<String>();
     for (let l of item.links){
-      links.push(l.content);
+      links.push(this.simpleCrypto.encrypt(l.content));
     }
+    let picture: string = null;
+    let title: string = null;
+    let textContent: string = null;
+    if (item.title != null) title = this.simpleCrypto.encrypt(item.title);
+    if (item.picture != null) picture = this.simpleCrypto.encrypt(item.picture);
+    if (item.textContent != null) textContent = this.simpleCrypto.encrypt(item.textContent);
     await this.afs.collection('/'+this.settings.user.email+'items').add({
       creationDate: item.creationDate,
       lastEditionDate: item.lastEditionDate,
-      picture: item.picture,
+      picture: picture,
       reminderDate: item.reminderDate,
-      textContent: item.textContent,
-      title: item.title,
+      textContent: textContent,
+      title: title,
       listFbId: item.list.firebaseId,
       links: links
     }).then(
@@ -187,6 +200,7 @@ export class FirebaseManager {
 
   public async getItems() {
     console.log("[FM] Fetching items from Firebase...");
+    this.simpleCrypto = new SimpleCrypto(this.settings.user.uid);
     return this.afs.collection('/'+this.settings.user.email+'items').ref.get().then(async data => {
       let obtainedList: Array<String> = new Array<String>();
       for (let item of data.docs) {
@@ -203,10 +217,10 @@ export class FirebaseManager {
             i.firebaseId = item.id;
             i.lastEditionDate = itemData.lastEditionDate;
             i.creationDate = itemData.creationDate;
-            i.picture = itemData.picture;
-            i.textContent = itemData.textContent;
+            if (itemData.picture != null) i.picture = this.simpleCrypto.decrypt(itemData.picture);
+            if (itemData.textContent != null) i.textContent = this.simpleCrypto.decrypt(itemData.textContent);
             i.reminderDate = itemData.reminderDate;
-            i.title = itemData.title;
+            if (itemData.title != null) i.title = this.simpleCrypto.decrypt(itemData.title);
             obtainedList.push(i.firebaseId);
             console.log("Links : ",itemData.links);
             for (let l of i.links) {
@@ -217,7 +231,7 @@ export class FirebaseManager {
               for (let l of itemData.links) {
                 console.log("Link : ",l);
                 let link: Link = new Link();
-                link.content = l;
+                link.content = this.simpleCrypto.decrypt(l);
                 link.item = i;
                 i.links.push(link);
                 await MyApp.storageManager.saveLink(link);
@@ -241,10 +255,10 @@ export class FirebaseManager {
           newItem.firebaseId = item.id;
           newItem.lastEditionDate = itemData.lastEditionDate;
           newItem.creationDate = itemData.creationDate;
-          newItem.picture = itemData.picture;
-          newItem.textContent = itemData.textContent;
+          if (itemData.picture != null) newItem.picture = this.simpleCrypto.decrypt(itemData.picture);
+          if (itemData.textContent != null) newItem.textContent = this.simpleCrypto.decrypt(itemData.textContent);
           newItem.reminderDate = itemData.reminderDate;
-          newItem.title = itemData.title;
+          if (itemData.title != null) newItem.title = this.simpleCrypto.decrypt(itemData.title);
           newItem.list = l;
           obtainedList.push(newItem.firebaseId);
           newItem.links = new Array<Link>();
@@ -253,7 +267,7 @@ export class FirebaseManager {
             for (let l of itemData.links) {
               console.log("Link : ",l);
               let link: Link = new Link();
-              link.content = l;
+              link.content = this.simpleCrypto.decrypt(l);
               link.item = newItem;
               newItem.links.push(link);
               await MyApp.storageManager.saveLink(link);

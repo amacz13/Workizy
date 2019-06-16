@@ -51,7 +51,7 @@
   "Signing in...": "Signing in...",
   "Verify email": "Verify email",
   "Please verify your account by clicking on the link you received by email" : "Please verify your account by clicking on the link you received by email",
-  "Please type your email first": "Please fill the email field",,
+  "Please type your email first": "Please fill the email field",
   "EULA Refused": "EULA Refused",
   "The application will exit": "The application will exit",
   "You will receive a link to reset your password by email": "You will receive a link to reset your password by email",
@@ -61,5 +61,17 @@
   "Log Out": "Log Out",
   "Appearance": "Appearance",
   "Dark Theme": "Dark Theme (beta)",
-  "Apply": "Apply"
+  "Apply": "Apply",
+  "Add link":  "Add link",
+  "Add task": "Add task",
+  "Reminder": "Reminder",
+  "New Link": "New Link",
+  "Link": "Link",
+  "Add": "Add",
+  "Confirm deletion": "Confirm deletion",
+  "Are you sure to delete this item?": "Are you sure to delete this item ?",
+  "Are you sure to delete this list?": "Are you sure to delete this list?",
+  "Yes": "Yes",
+  "Delete": "Delete",
+  "Please fill at least one input": "Please fill at least one input"
 }

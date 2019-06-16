@@ -129,24 +129,37 @@ export class NewListPage {
   }
 
   async createList() {
-    let list: List = new List();
-    list.id = UuidGenerator.getUUID();
-    list.title = this.title;
-    list.isSynchronized = this.sync;
-    list.cover = this.cover;
-    list.coverSource = this.coverSource;
-    list.creationDate = Date.now();
-    list.lastEditionDate = Date.now();
-    list.listType = this.listType;
-    list.items = new Array<ListItem>();
-    if (list.isSynchronized) {
-      await this.sm.addSyncedList(list);
+    if (this.title == null || this.title == "" || this.cover == null || this.listType == null) {
+      this.translate.get("Error").toPromise().then(async err => {
+        this.translate.get("Please fill all inputs").toPromise().then(async msg => {
+          let alert = this.alertCtrl.create({
+            title: err,
+            subTitle: msg,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
+      });
     } else {
-      list.firebaseId = "NOTAPPLICABLE";
-      await this.sm.saveLocalList(list);
-      await this.sm.getAll();
+      let list: List = new List();
+      list.id = UuidGenerator.getUUID();
+      list.title = this.title;
+      list.isSynchronized = this.sync;
+      list.cover = this.cover;
+      list.coverSource = this.coverSource;
+      list.creationDate = Date.now();
+      list.lastEditionDate = Date.now();
+      list.listType = this.listType;
+      list.items = new Array<ListItem>();
+      if (list.isSynchronized) {
+        await this.sm.addSyncedList(list);
+      } else {
+        list.firebaseId = "NOTAPPLICABLE";
+        await this.sm.saveLocalList(list);
+        await this.sm.getAll();
+      }
+      console.log("End of new list");
+      this.navCtrl.pop();
     }
-    console.log("End of new list");
-    this.navCtrl.pop();
   }
 }

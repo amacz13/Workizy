@@ -54,34 +54,47 @@ export class NewItemPage {
   }
 
   async createItem() {
-    let item: ListItem = new ListItem();
-    item.id = UuidGenerator.getUUID();
-    item.title = this.title;
-    item.picture = this.picture;
-    item.textContent = this.textContent;
-    item.creationDate = Date.now();
-    item.lastEditionDate = Date.now();
-    item.list = this.list;
-    item.reminderDate = this.reminderDate;
-    item.links = this.links;
-    item.firebaseId = "NOTAPPLICABLE";
-    this.list.items.push(item);
-
-    if (this.list.isSynchronized){
-      await this.sm.addSyncedItem(item);
+    if ((this.title == null || this.title == "") && this.picture == null && this.textContent == null) {
+      this.translate.get("Error").toPromise().then(async err => {
+        this.translate.get("Please fill at least one input").toPromise().then(async msg => {
+          let alert = this.alertCtrl.create({
+            title: err,
+            subTitle: msg,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
+      });
     } else {
-      for (let link of this.links) {
-        link.item = item;
-        await this.sm.saveLink(link);
-      }
-      await this.sm.saveListItem(item);
-    }
+      let item: ListItem = new ListItem();
+      item.id = UuidGenerator.getUUID();
+      item.title = this.title;
+      item.picture = this.picture;
+      item.textContent = this.textContent;
+      item.creationDate = Date.now();
+      item.lastEditionDate = Date.now();
+      item.list = this.list;
+      item.reminderDate = this.reminderDate;
+      item.links = this.links;
+      item.firebaseId = "NOTAPPLICABLE";
+      this.list.items.push(item);
 
-    console.log("Saving new item...");
-    console.log(this.list);
-    await this.sm.saveLocalList(this.list);
-    await this.sm.getAll();
-    this.viewCtrl.dismiss({'list':this.list});
+      if (this.list.isSynchronized) {
+        await this.sm.addSyncedItem(item);
+      } else {
+        for (let link of this.links) {
+          link.item = item;
+          await this.sm.saveLink(link);
+        }
+        await this.sm.saveListItem(item);
+      }
+
+      console.log("Saving new item...");
+      console.log(this.list);
+      await this.sm.saveLocalList(this.list);
+      await this.sm.getAll();
+      this.viewCtrl.dismiss({'list': this.list});
+    }
   }
 
   choosePicture() {
@@ -146,34 +159,42 @@ export class NewItemPage {
   }
 
   createLink() {
-    let alert = this.alertCtrl.create({
-      title: 'New Link',
-      inputs: [
-        {
-          name: 'content',
-          placeholder: 'Link',
-          type: 'url'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Add',
-          handler: data => {
-            let link: Link = new Link();
-            link.content = data.content;
-            this.links.push(link);
-          }
-        }
-      ]
+    this.translate.get('New Link').toPromise().then( title => {
+      this.translate.get('Link').toPromise().then( placeholder => {
+        this.translate.get('Cancel').toPromise().then( cancel => {
+          this.translate.get('Add').toPromise().then( add => {
+            let alert = this.alertCtrl.create({
+              title: title,
+              inputs: [
+                {
+                  name: 'content',
+                  placeholder: placeholder,
+                  type: 'url'
+                }
+              ],
+              buttons: [
+                {
+                  text: cancel,
+                  role: 'cancel',
+                  handler: data => {
+                    console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: add,
+                  handler: data => {
+                    let link: Link = new Link();
+                    link.content = data.content;
+                    this.links.push(link);
+                  }
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      });
     });
-    alert.present();
   }
 
   getIcon(link: Link) {

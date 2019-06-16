@@ -61,5 +61,17 @@
   "Log Out": "Déconnexion",
   "Appearance": "Apparence",
   "Dark Theme": "Thème sombre (beta)",
-  "Apply": "Appliquer"
+  "Apply": "Appliquer",
+  "Add link": "Nouveau lien",
+  "Add task": "Nouvelle tâche",
+  "Reminder": "Rappel",
+  "New Link": "Nouveau lien",
+  "Link": "Lien",
+  "Add": "Ajouter",
+  "Confirm deletion": "Confirmer la suppression",
+  "Are you sure to delete this item?": "Êtes-vous sur de vouloir supprimer cet élément ?",
+  "Are you sure to delete this list?": "Êtes-vous sur de vouloir supprimer cette liste ?",
+  "Yes": "Oui",
+  "Delete": "Supprimer",
+  "Please fill at least one input": "Merci de remplir au moins un champ"
 }
