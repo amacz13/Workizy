@@ -2,13 +2,23 @@
   <ion-slides ion-fixed>
     <!-- Welcome Slide -->
     <ion-slide padding>
-      <img src="assets/imgs/logo.png">
-      <h1>Workizy</h1>
-      <h3>{{ 'WorikzyDescription' | translate }}</h3>
-      <button (click)="next()" ion-button color="light" block outline>
-        {{ 'Get Started' | translate }}&emsp;
-        <ion-icon name="arrow-dropright"></ion-icon>
-      </button>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-2 offset-5>
+            <img src="assets/imgs/logo.png">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <h1>Workizy</h1>
+          <h3>{{ 'WorikzyDescription' | translate }}</h3>
+        </ion-row>
+        <ion-row>
+          <button (click)="next()" ion-button color="light" block outline>
+            {{ 'Get Started' | translate }}&emsp;
+            <ion-icon name="arrow-dropright"></ion-icon>
+          </button>
+        </ion-row>
+      </ion-grid>
     </ion-slide>
     <!-- Terms and Conditions -->
     <ion-slide padding>

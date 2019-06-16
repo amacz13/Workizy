@@ -34,7 +34,7 @@ export class FirstStartPage {
       this.slides.pager = true;
       this.slides.paginationType = "progress";
       this.slides.paginationHide = false;
-      this.slides.effect = "coverflow";
+      //this.slides.effect = "coverflow";
       console.log("[Login] Platform ready, accessing Native Storage...");
       if (this.platform.is('android')) {
         // Do specific android stuff
