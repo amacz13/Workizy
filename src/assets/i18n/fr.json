@@ -54,5 +54,12 @@
   "Please type your email first": "Merci de saisir votre email",
   "EULA Refused": "CLUF Refusé",
   "The application will exit": "L'application va se fermer",
-  "You will receive a link to reset your password by email": "Vous allez recevoir un lien par mail afin de réinitialiser votre mot de passe"
+  "You will receive a link to reset your password by email": "Vous allez recevoir un lien par mail afin de réinitialiser votre mot de passe",
+  "You are not connected to a Workizy account. Sign in now to enable synchronization between your devices !": "Vous n'êtes pas connecté à un compte Workizy. Connectez-vous maintenant pour activer la synchronisation entre vos appareils !",
+  "Sign In": "Connexion",
+  "You are connected to the following Workizy account : ": "Vous êtes connecté au compte Workizy suivant : ",
+  "Log Out": "Déconnexion",
+  "Appearance": "Apparence",
+  "Dark Theme": "Thème sombre (beta)",
+  "Apply": "Appliquer"
 }

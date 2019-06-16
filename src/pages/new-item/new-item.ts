@@ -62,10 +62,10 @@ export class NewItemPage {
     item.creationDate = Date.now();
     item.lastEditionDate = Date.now();
     item.list = this.list;
-    /*for (let link of this.links) {
+    for (let link of this.links) {
       link.item = item;
-      this.sm.saveLink(link);
-    }*/
+      await this.sm.saveLink(link);
+    }
     item.reminderDate = this.reminderDate;
     item.links = this.links;
     item.firebaseId = "NOTAPPLICABLE";
@@ -197,7 +197,6 @@ export class NewItemPage {
   }
 
   openLink(content: String) {
-
     this.browserTab.isAvailable().then(isAvailable => {
       if (isAvailable) {
         if (content.includes("http://") || content.includes("https://")){
@@ -213,8 +212,5 @@ export class NewItemPage {
         }
       }
     });
-
-
-
   }
 }

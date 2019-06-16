@@ -5,6 +5,7 @@ import {UserSettings} from "../user-settings/user-settings";
 import {MyApp} from "../../app/app.component";
 import {ListItem} from "../list-item/list-item";
 import {UuidGenerator} from "../uuid-generator/uuid-generator";
+import {Link} from "../link/link";
 
 @Injectable()
 export class FirebaseManager {
@@ -132,6 +133,10 @@ export class FirebaseManager {
     console.log("Saving item into Firebase...");
     console.log(item);
     let list: List = item.list;
+    let links: Array<String> = new Array<String>();
+    for (let l of item.links){
+      links.push(l.content);
+    }
     await this.afs.collection('/'+this.settings.user.email+'items').add({
       creationDate: item.creationDate,
       lastEditionDate: item.lastEditionDate,
@@ -139,7 +144,8 @@ export class FirebaseManager {
       reminderDate: item.reminderDate,
       textContent: item.textContent,
       title: item.title,
-      listFbId: item.list.firebaseId
+      listFbId: item.list.firebaseId,
+      links: links
     }).then(
       async (res) => {
         console.log("Item added to Firebase", res);
@@ -221,6 +227,17 @@ export class FirebaseManager {
             i.textContent = itemData.textContent;
             i.reminderDate = itemData.reminderDate;
             i.title = itemData.title;
+            for (let l of i.links) {
+              await MyApp.storageManager.removeLink(l);
+            }
+            i.links = new Array<Link>();
+            for (let l of itemData.links) {
+              let link: Link = new Link();
+              link.content = l;
+              link.item = i;
+              i.links.push(link);
+              await MyApp.storageManager.saveLink(link);
+            }
             if (l.items.length > 0) {
               l.items.forEach((it, index) => {
                 if (it.firebaseId == i.firebaseId) {
@@ -244,8 +261,15 @@ export class FirebaseManager {
           newItem.reminderDate = itemData.reminderDate;
           newItem.title = itemData.title;
           newItem.list = l;
+          newItem.links = new Array<Link>();
+          for (let l of itemData.links) {
+            let link: Link = new Link();
+            link.content = l;
+            link.item = newItem;
+            newItem.links.push(link);
+            await MyApp.storageManager.saveLink(link);
+          }
           if (l.items == null) {
-            console.log("FDP");
             l.items = new Array<ListItem>();
             l.items.push(newItem);
           } else {

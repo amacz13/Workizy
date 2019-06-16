@@ -128,8 +128,8 @@ export class StorageManager {
      await this.listItemRepository.save(item);
   }
 
-  public saveLink(link: Link){
-    this.linkRepository.save(link);
+  public async saveLink(link: Link){
+    await this.linkRepository.save(link);
   }
 
   public getListItems(list: List):ListItem[] {
@@ -173,7 +173,7 @@ export class StorageManager {
     this.localItems = new Array<ListItem>();
     this.onlineItems = new Array<ListItem>();
 
-    await this.listItemRepository.find({ relations: ["list"] }).then(async items => {
+    await this.listItemRepository.find({ relations: ["list","links"] }).then(async items => {
       this.allItems = items;
       console.log("ITEMS : ",items);
 
@@ -199,6 +199,10 @@ export class StorageManager {
 
   public removeList(list: List){
     this.listRepository.remove(list);
+  }
+
+  public async removeLink(link: Link){
+    await this.linkRepository.remove(link);
   }
 
   public removeAllOnlineLists(){

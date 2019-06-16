@@ -27,7 +27,7 @@
       </ion-select>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="settings.isConnected">
       <ion-label>{{ 'Synchronize' | translate }}</ion-label>
       <ion-toggle [(ngModel)]="sync"></ion-toggle>
     </ion-item>

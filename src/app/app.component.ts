@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import {Events, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { createConnection } from 'typeorm';
@@ -18,11 +18,12 @@ import {FirstStartPage} from "../pages/first-start/first-start";
 })
 export class MyApp {
   rootPage:any = FirstStartPage;
+  theme:string = ""
 
   public static storageManager:StorageManager;
   public static internetConnected: boolean = navigator.onLine;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events) {
     MyApp.storageManager = sm;
     platform.ready().then(async() => {
       if(platform.is('cordova')) {
@@ -69,6 +70,20 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       //statusBar.styleDefault();
       splashScreen.hide();
+      event.subscribe('theme:dark', () => {
+        this.setDarkTheme();
+      });
+      event.subscribe('theme:light', () => {
+        this.setLightTheme();
+      });
     });
+  }
+
+  private setDarkTheme() {
+    this.theme = "ionic.theme.dark";
+  }
+
+  private setLightTheme() {
+    this.theme = "ionic.theme.default";
   }
 }

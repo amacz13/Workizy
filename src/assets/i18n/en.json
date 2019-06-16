@@ -54,5 +54,12 @@
   "Please type your email first": "Please fill the email field",,
   "EULA Refused": "EULA Refused",
   "The application will exit": "The application will exit",
-  "You will receive a link to reset your password by email": "You will receive a link to reset your password by email"
+  "You will receive a link to reset your password by email": "You will receive a link to reset your password by email",
+  "You are not connected to a Workizy account. Sign in now to enable synchronization between your devices !": "You are not connected to a Workizy account. Sign in now to enable synchronization between your devices !",
+  "Sign In": "Sign In",
+  "You are connected to the following Workizy account : ": "You are connected to the following Workizy account : ",
+  "Log Out": "Log Out",
+  "Appearance": "Appearance",
+  "Dark Theme": "Dark Theme (beta)",
+  "Apply": "Apply"
 }

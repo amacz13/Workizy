@@ -7,6 +7,7 @@ import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {ListItem} from "../../providers/list-item/list-item";
 import {Camera, CameraOptions} from "@ionic-native/camera";
 import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
+import {UserSettings} from "../../providers/user-settings/user-settings";
 
 @Component({
   selector: 'page-new-list',
@@ -36,7 +37,7 @@ export class NewListPage {
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public asCtrl: ActionSheetController, public translate: TranslateService, public modalCtrl: ModalController, public sm: StorageManager, public camera: Camera, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public asCtrl: ActionSheetController, public translate: TranslateService, public modalCtrl: ModalController, public sm: StorageManager, public camera: Camera, public alertCtrl: AlertController, public settings: UserSettings) {
     if(navParams.get('online') == null) {
       this.sync = false;
     } else {

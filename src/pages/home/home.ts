@@ -45,8 +45,9 @@ export class HomePage {
   }
 
   showList(list: List){
-    const modal = this.modalCtrl.create(ListViewerPage, {list: list});
-    modal.present();
+    this.navCtrl.push(ListViewerPage, {list: list});
+    //const modal = this.modalCtrl.create(ListViewerPage, {list: list});
+    //modal.present();
   }
 
   async forceSync() {

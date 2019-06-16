@@ -32,6 +32,7 @@ export class ListItem {
   @Column() creationDate: number;
   @Column() lastEditionDate: number;
   @Column({nullable: true}) reminderDate: number;
+
   @OneToMany(type => Link, link => link.item, {nullable: true,
     cascade: true}) links: Link[];
 
