@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, LoadingController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {List} from "../../providers/list/list";
 import {NewItemPage} from "../new-item/new-item";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
@@ -7,6 +7,8 @@ import {ListItem} from "../../providers/list-item/list-item";
 import {Link} from "../../providers/link/link";
 import {BrowserTab} from "@ionic-native/browser-tab";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'page-list-viewer',
@@ -17,7 +19,7 @@ export class ListViewerPage {
   list: List;
   items: ListItem[] = new Array<ListItem>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager) {
     this.list = navParams.get("list");
     //this.items = this.sm.getListItems(this.list);
     this.items = this.list.items;
@@ -45,7 +47,35 @@ export class ListViewerPage {
     
   }
 
-  deleteList() {
+  async doDeleteList(){
+    console.log("Start rm list");
+    this.translate.get("Please wait...").toPromise().then(async text =>{
+      let loading = this.loadingCtrl.create({
+        content: text
+      });
+      await loading.present().then(async ()=> {
+        for (let it of this.list.items){
+          if(it.links != null && it.links.length > 0) {
+            for (let l of it.links){
+              console.log("Removing link : ",l);
+              await this.sm.removeLink(l);
+            }
+          }
+          console.log("Removing item : ",it);
+          if (this.list.isSynchronized)  this.fm.deleteItem(it);
+          await this.sm.removeItem(it);
+        }
+        console.log("Removing list : ",this.list);
+        if (this.list.isSynchronized)  this.fm.deleteList(this.list);
+        await this.sm.removeList(this.list);
+        loading.dismiss();
+        await this.sm.getAll();
+        await this.sm.getAll();
+      });
+    });
+  }
+
+  async deleteList() {
     let alert = this.alertCtrl.create({
       title: 'Confirm deletion',
       message: 'Are you sure to delete this list?',
@@ -61,6 +91,7 @@ export class ListViewerPage {
           text: 'Yes',
           handler: () => {
             console.log('Delete clicked');
+            this.doDeleteList();
             this.navCtrl.pop();
           }
         }

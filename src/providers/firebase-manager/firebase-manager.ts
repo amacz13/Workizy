@@ -155,57 +155,6 @@ export class FirebaseManager {
     );
   }
 
-  /*
-  getItems
-  Retrieved all Items and
-   */
-
-  /*getItems() {
-    return this.afs.collection('/'+this.settings.user.email+'items').ref.get().then(data => {
-      console.log("[FM] Fetching items...");
-      console.log(data.docs);
-      for (let items of data.docs) {
-        let itemData = items.data();
-        console.log("Item get :");
-        console.log(itemData);
-        let item: ListItem = new ListItem();
-        item.title = itemData.title;
-        item.reminderDate = itemData.reminderDate;
-        item.firebaseId = items.id;
-        item.textContent = itemData.textContent;
-        item.picture = itemData.picture;
-        item.creationDate = itemData.creationDate;
-        item.lastEditionDate = itemData.lastEditionDate;
-        let l:List = MyApp.storageManager.getSyncedList(itemData.listFbId);
-        console.log("[FM] List to add item : ");
-        console.log(l);
-        console.log("[FM] Creating new item list...");
-        if (l == null) l = MyApp.storageManager.getSyncedList(itemData.listFbId);
-        let newItemList:Array<ListItem> = new Array<ListItem>();
-        if (l.items.length > 0) {
-          for (let i of l.items) {
-            if (i.firebaseId == items.id) {
-              if (i.lastEditionDate > item.lastEditionDate) {
-                newItemList.push(i);
-                // Need to update item in Firebase
-              } else {
-                newItemList.push(item);
-              }
-            } else {
-              newItemList.push(i);
-            }
-          }
-        } else {
-          newItemList.push(item);
-        }
-        MyApp.storageManager.saveListItem(item);
-        l.items = newItemList;
-        console.log("[FM] Updating list & items locally");
-        MyApp.storageManager.updateOnlineListFromFB(l);
-      }
-    });
-  }*/
-
   public async getItems() {
     console.log("[FM] Fetching items from Firebase...");
     return this.afs.collection('/'+this.settings.user.email+'items').ref.get().then(async data => {
@@ -289,6 +238,11 @@ export class FirebaseManager {
         }
       }
     });
+  }
+
+  public async deleteItem(item: ListItem) {
+    console.log("Deleting item into Firebase...");
+    await this.afs.collection('/' + this.settings.user.email + 'items').doc(item.firebaseId.toString()).delete();
   }
 
 }

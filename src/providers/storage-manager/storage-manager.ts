@@ -205,6 +205,10 @@ export class StorageManager {
     await this.linkRepository.remove(link);
   }
 
+  public async removeItem(item: ListItem){
+    await this.listItemRepository.remove(item);
+  }
+
   public removeAllOnlineLists(){
     for (let list of this.onlineLists) {
       this.listRepository.remove(list);
