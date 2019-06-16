@@ -40,6 +40,7 @@ import {environment} from "../environment/environment";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { LoginPage } from "../pages/login/login";
 import { UuidGenerator } from '../providers/uuid-generator/uuid-generator';
+import {FirstStartPage} from "../pages/first-start/first-start";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { UuidGenerator } from '../providers/uuid-generator/uuid-generator';
     ChooseCoverFromSamplesPage,
     ListViewerPage,
     NewItemPage,
-    LoginPage
+    LoginPage,
+    FirstStartPage
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,8 @@ import { UuidGenerator } from '../providers/uuid-generator/uuid-generator';
     ChooseCoverFromSamplesPage,
     ListViewerPage,
     NewItemPage,
-    LoginPage
+    LoginPage,
+    FirstStartPage
   ],
   providers: [
     StatusBar,

@@ -7,6 +7,7 @@ import {NewListPage} from "../new-list/new-list";
 import {List} from "../../providers/list/list";
 import {ListViewerPage} from "../list-viewer/list-viewer";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
+import {UserSettings} from "../../providers/user-settings/user-settings";
 
 @Component({
   selector: 'page-home',
@@ -16,8 +17,7 @@ export class HomePage {
 
   public viewmode:boolean = false;
 
-  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController) {
-    translate.setDefaultLang('fr');
+  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings) {
     //HomePage.storageManager = sm;
     //Account Creation
     //firebase.auth().createUserWithEmailAndPassword("axel.maczkowiak@live.fr","test123").then(val => console.log("User created : ",val));
@@ -50,11 +50,13 @@ export class HomePage {
   }
 
   async forceSync() {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    await loading.present().then(()=> {
-      this.fm.sync().then(() => loading.dismiss());
+    this.translate.get("Please wait...").toPromise().then(async text =>{
+      let loading = this.loadingCtrl.create({
+        content: text
+      });
+      await loading.present().then(()=> {
+        this.fm.sync().then(() => loading.dismiss());
+      });
     });
   }
 }

@@ -8,6 +8,7 @@ import {UserSettings} from "../../providers/user-settings/user-settings";
 import {AngularFirestore} from "@angular/fire/firestore";
 import Persistence = firebase.auth.Auth.Persistence;
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'page-login',
@@ -17,7 +18,7 @@ export class LoginPage {
   email: string;
   password: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform, public afs: AngularFirestore, public fm:FirebaseManager) {
+  constructor(public navCtrl: NavController, public translate: TranslateService, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public auth: AngularFireAuth, private nativeStorage: NativeStorage, public settings: UserSettings, public platform: Platform, public afs: AngularFirestore, public fm:FirebaseManager) {
     this.platform.ready().then( () => {
       console.log("[Login] Platform ready, accessing Native Storage...");
       this.nativeStorage.getItem('connected')

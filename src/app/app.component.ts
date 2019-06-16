@@ -11,14 +11,16 @@ import {Checklist} from "../providers/checklist/checklist";
 import {ChecklistItem} from "../providers/checklist-item/checklist-item";
 import {Link} from "../providers/link/link";
 import {LoginPage} from "../pages/login/login";
+import {FirstStartPage} from "../pages/first-start/first-start";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = LoginPage;
+  rootPage:any = FirstStartPage;
 
   public static storageManager:StorageManager;
+  public static internetConnected: boolean = navigator.onLine;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager) {
     MyApp.storageManager = sm;
