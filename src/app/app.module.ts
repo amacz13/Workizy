@@ -71,7 +71,7 @@ import {FirstStartPage} from "../pages/first-start/first-start";
     AngularFirestoreModule,
     AngularFireAuthModule,
     IonicModule.forRoot(MyApp)
-    //IonicModule.forRoot(MyApp, {mode: 'wp'})
+    //IonicModule.forRoot(MyApp, {mode: 'ios'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [

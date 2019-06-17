@@ -16,10 +16,12 @@ export class ChooseCoverFromSamplesPage {
   }
 
   choose(img: String) {
+    //Close the view and transfer the chosen picture
     this.viewCtrl.dismiss({'picture':img});
   }
 
   close() {
+    //Close the view
     this.viewCtrl.dismiss();
   }
 }

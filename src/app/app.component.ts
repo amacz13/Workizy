@@ -25,10 +25,14 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events) {
     MyApp.storageManager = sm;
+
+    // Device is ready, Cordova plugins & Ionic modules are loaded
     platform.ready().then(async() => {
       if(platform.is('cordova')) {
+        // Device is an app (Windows, MacOS, Android or iOS)
         console.log("[WhatsNext] Using cordova platform...");
         console.log("[WhatsNext] Creating ORM link with database...");
+        // Creating connection to database
         await createConnection({
           type: 'cordova',
           database: 'workizy-devdb32',
@@ -66,9 +70,7 @@ export class MyApp {
           sm.initRepositories()
         });
       }
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      //statusBar.styleDefault();
+      // Hide the splascreen and create the event listeners
       splashScreen.hide();
       event.subscribe('theme:dark', () => {
         this.setDarkTheme();
