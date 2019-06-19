@@ -1,7 +1,11 @@
 <ion-content padding fullscreen>
+  <ion-fab top left>
+    <button ion-fab mini color="light"><ion-icon name="arrow-back"></ion-icon></button>
+  </ion-fab>
+
   <ion-slides ion-fixed>
     <!-- Welcome Slide -->
-    <ion-slide padding>
+    <ion-slide padding fullscreen>
       <ion-grid>
         <ion-row>
           <ion-col col-2 col-sm-4 col-md-4 offset-5 offset-sm-4 offset-md-4>
@@ -13,7 +17,7 @@
           <h3>{{ 'WorikzyDescription' | translate }}</h3>
         </ion-row>
         <ion-row>
-          <button (click)="next()" ion-button color="light" block outline>
+          <button (click)="next()" ion-button color="light" block round>
             {{ 'Get Started' | translate }}&emsp;
             <ion-icon name="arrow-dropright"></ion-icon>
           </button>
@@ -27,21 +31,47 @@
           <h1>{{ 'Conditions' | translate }}</h1>
         </ion-row>
         <ion-row>
-          <h5>{{ 'AgreeToTerms' | translate }}<a href="https://blog.amacz13.fr/workizy-cluf/">{{ 'Terms and Conditions' | translate }}</a></h5>
+          <h5 *ngIf="os == 'windows' || os == 'osx'">{{ 'AgreeToTerms' | translate }}<a href="https://blog.amacz13.fr/workizy-cluf/">{{ 'Terms and Conditions' | translate }}</a></h5>
+          <h5 *ngIf="os == 'android' || os == 'ios'">{{ 'AgreeToTerms' | translate }}<a (click)="openCluf()" href="#">{{ 'Terms and Conditions' | translate }}</a></h5>
         </ion-row>
         <ion-row>
           <ion-col col-6>
-            <button (click)="refuse()" ion-button color="light" block outline>
+            <button (click)="refuse()" ion-button color="light" block round>
               <ion-icon name="close"></ion-icon>
               &emsp;{{ 'Refuse' | translate }}
             </button>
           </ion-col>
           <ion-col col-6>
-            <button (click)="next()" ion-button color="light" block outline>
+            <button (click)="next()" ion-button color="light" block round>
               {{ 'Accept' | translate }}&emsp;
               <ion-icon name="checkmark"></ion-icon>
             </button>
           </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <!-- Account check -->
+    <ion-slide padding>
+      <ion-grid>
+        <ion-row>
+          <h1>{{ 'Account' | translate }}</h1>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-label floating>{{ 'Email' | translate }}</ion-label>
+            <ion-input [(ngModel)]="email" type="email"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <button (click)="noAccount()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
+          </button>
+        </ion-row>
+        <hr>
+        <ion-row>
+          <button (click)="noAccount()" ion-button color="light" block clear>
+            {{ 'Start without an account' | translate }}
+          </button>
         </ion-row>
       </ion-grid>
     </ion-slide>
@@ -55,18 +85,18 @@
           <h5>{{ 'Do you already have Workizy account ?' | translate }}</h5>
         </ion-row>
         <ion-row>
-          <button (click)="register()" ion-button color="light" block outline>
+          <button (click)="register()" ion-button color="light" block round>
             {{ 'No, Create an Account !' | translate }}
           </button>
         </ion-row>
         <ion-row>
-          <button (click)="login()" ion-button color="light" block outline>
+          <button (click)="login()" ion-button color="light" block round>
             {{ 'Yes, Log In !' | translate }}
           </button>
         </ion-row>
         <hr>
         <ion-row>
-          <button (click)="noAccount()" ion-button color="light" block outline>
+          <button (click)="noAccount()" ion-button color="light" block round>
             {{ 'Start without an account' | translate }}
           </button>
         </ion-row>

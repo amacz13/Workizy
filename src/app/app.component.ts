@@ -10,7 +10,6 @@ import {ListItem} from "../providers/list-item/list-item";
 import {Checklist} from "../providers/checklist/checklist";
 import {ChecklistItem} from "../providers/checklist-item/checklist-item";
 import {Link} from "../providers/link/link";
-import {LoginPage} from "../pages/login/login";
 import {FirstStartPage} from "../pages/first-start/first-start";
 
 @Component({
@@ -22,9 +21,19 @@ export class MyApp {
 
   public static storageManager:StorageManager;
   public static internetConnected: boolean = navigator.onLine;
+  public static os: string;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events) {
     MyApp.storageManager = sm;
+    if (platform.is('android')) {
+      MyApp.os = "android";
+    } else if (platform.is('ios')) {
+      MyApp.os = "ios";
+    } else if (platform.is('windows')) {
+      MyApp.os = "windows";
+    } else if (platform.is('osx')) {
+      MyApp.os = "osx";
+    }
 
     // Device is ready, Cordova plugins & Ionic modules are loaded
     platform.ready().then(async() => {

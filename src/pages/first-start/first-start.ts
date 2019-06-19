@@ -10,6 +10,8 @@ import Persistence = firebase.auth.Auth.Persistence;
 import {AngularFireAuth} from "@angular/fire/auth";
 import {TranslateService} from "@ngx-translate/core";
 import {MyApp} from "../../app/app.component";
+import {BrowserTab} from "@ionic-native/browser-tab";
+import {InAppBrowser} from "@ionic-native/in-app-browser";
 
 /**
  * Generated class for the FirstStartPage page.
@@ -27,8 +29,9 @@ export class FirstStartPage {
   @ViewChild(Slides) slides: Slides;
   email: string = "";
   password: string = "";
+  os = MyApp.os;
 
-  constructor(public navCtrl: NavController, public auth: AngularFireAuth, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore) {
+  constructor(public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore) {
     // Define application language
     translate.use(translate.getBrowserLang());
     // Cordova plugins & platform ready
@@ -357,5 +360,15 @@ export class FirstStartPage {
         });
       });
     }
+  }
+
+  openCluf() {
+    this.browserTab.isAvailable().then(isAvailable => {
+      if (isAvailable) {
+        this.browserTab.openUrl("https://blog.amacz13.fr/workizy-cluf/");
+      } else {
+        const browser = this.iab.create("https://blog.amacz13.fr/workizy-cluf/");
+      }
+    });
   }
 }
