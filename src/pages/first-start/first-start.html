@@ -1,6 +1,6 @@
 <ion-content padding fullscreen>
-  <ion-fab top left>
-    <button ion-fab mini color="light"><ion-icon name="arrow-back"></ion-icon></button>
+  <ion-fab *ngIf="backEnabled" (click)="back()" bottom center>
+    <button ion-fab mini color="primary"><ion-icon color="light" name="arrow-back"></ion-icon></button>
   </ion-fab>
 
   <ion-slides ion-fixed>
@@ -63,7 +63,7 @@
           </ion-item>
         </ion-row>
         <ion-row>
-          <button (click)="noAccount()" ion-button color="light" block round>
+          <button (click)="askPassword()" ion-button color="light" block round>
             {{ 'Continue' | translate }}
           </button>
         </ion-row>
@@ -71,6 +71,31 @@
         <ion-row>
           <button (click)="noAccount()" ion-button color="light" block clear>
             {{ 'Start without an account' | translate }}
+          </button>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <!-- Account Password -->
+    <ion-slide padding>
+      <ion-grid>
+        <ion-row>
+          <h1>{{ 'Account' | translate }}</h1>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-label floating>{{ 'Password' | translate }}</ion-label>
+            <ion-input [(ngModel)]="password" type="password"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <button (click)="doLoginOrRegister()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
+          </button>
+        </ion-row>
+        <hr>
+        <ion-row>
+          <button (click)="noAccount()" ion-button color="light" block clear>
+            {{ 'Reset Password' | translate }}
           </button>
         </ion-row>
       </ion-grid>

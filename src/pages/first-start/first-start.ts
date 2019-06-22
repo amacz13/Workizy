@@ -30,6 +30,7 @@ export class FirstStartPage {
   email: string = "";
   password: string = "";
   os = MyApp.os;
+  backEnabled : boolean = false;
 
   constructor(public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore) {
     // Define application language
@@ -93,6 +94,18 @@ export class FirstStartPage {
     this.slides.lockSwipes(false);
     this.slides.slideNext();
     this.slides.lockSwipes(true);
+    this.backEnabled = true;
+  }
+
+
+  back() {
+    this.slides.lockSwipes(false);
+    this.slides.slidePrev();
+    this.slides.lockSwipes(true);
+    console.log(this.slides.getActiveIndex());
+    if(this.slides.getActiveIndex() == 0) {
+      this.backEnabled = false;
+    }
   }
 
   // Refuse EULA, close the app
@@ -370,5 +383,16 @@ export class FirstStartPage {
         const browser = this.iab.create("https://blog.amacz13.fr/workizy-cluf/");
       }
     });
+  }
+
+  askPassword() {
+    // Todo : Check if the account already exist
+    this.slides.lockSwipes(false);
+    this.slides.slideNext();
+    this.slides.lockSwipes(true);
+  }
+
+  doLoginOrRegister() {
+
   }
 }
