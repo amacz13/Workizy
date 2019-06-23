@@ -75,7 +75,7 @@
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.9",
     "@ionic/app-scripts": "^3.2.4",
-    "@types/node": "^11.13.14",
+    "@types/node": "^11.13.15",
     "typescript": "~3.3.3"
   },
   "description": "An Ionic project",
