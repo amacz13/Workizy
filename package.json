@@ -5,6 +5,7 @@
   "homepage": "https://amacz13.fr/",
   "private": true,
   "scripts": {
+    "compodoc": "compodoc -p tsconfig.json",
     "run-osx": "ionic cordova run osx",
     "run-android": "ionic cordova run android",
     "start": "ionic-app-scripts serve",
@@ -72,6 +73,7 @@
     "zone.js": "0.8.29"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.9",
     "@ionic/app-scripts": "^3.2.4",
     "@types/node": "^11.13.14",
     "typescript": "~3.3.3"
