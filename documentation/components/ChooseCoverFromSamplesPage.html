@@ -142,9 +142,6 @@
                             <li>
                                 <a href="#close">close</a>
                             </li>
-                            <li>
-                                <a href="#ionViewDidLoad">ionViewDidLoad</a>
-                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -245,6 +242,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Choose Picture</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -254,6 +253,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -268,6 +268,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>The image choosed by the user</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -307,53 +311,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="23"
-                            class="link-to-prism">src/pages/choose-cover-from-samples/choose-cover-from-samples.ts:23</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">src/pages/choose-cover-from-samples/choose-cover-from-samples.ts:26</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ionViewDidLoad"></a>
-                    <span class="name">
-                        <b>
-                            ionViewDidLoad
-                        </b>
-                        <a href="#ionViewDidLoad"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>ionViewDidLoad()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="14"
-                            class="link-to-prism">src/pages/choose-cover-from-samples/choose-cover-from-samples.ts:14</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
+                    <div class="io-description"><p>Close Page</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -449,15 +416,18 @@ export class ChooseCoverFromSamplesPage {
   constructor(public viewCtrl: ViewController) {
   }
 
-  ionViewDidLoad() {
-    console.log(&#x27;ionViewDidLoad ChooseCoverFromSamplesPage&#x27;);
-  }
-
+  /**
+   * Choose Picture
+   * @param {string} img  The image choosed by the user
+   */
   choose(img: String) {
     //Close the view and transfer the chosen picture
     this.viewCtrl.dismiss({&#x27;picture&#x27;:img});
   }
 
+  /**
+   * Close Page
+   */
   close() {
     //Close the view
     this.viewCtrl.dismiss();
@@ -520,7 +490,7 @@ export class ChooseCoverFromSamplesPage {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><ion-header>  <ion-navbar color="primary">    <ion-title>{{ \'Choose a Cover Picture\' | translate }}</ion-title>    <ion-buttons end>      <button (click)="close()" ion-button icon-only color="royal">        <ion-icon name="close"></ion-icon>      </button>    </ion-buttons>  </ion-navbar></ion-header><ion-content class="card-background-page">  <ion-grid>    <ion-row>      <ion-col *ngFor="let img of imgList" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>        <ion-card (click)="choose(img)">          <img src="assets/covers/{{img}}"/>        </ion-card>      </ion-col>    </ion-row>  </ion-grid></ion-content></div>'
-    var COMPONENTS = [{'name': 'ChooseCoverFromSamplesPage', 'selector': 'page-choose-cover-from-samples'},{'name': 'FirstStartPage', 'selector': 'page-first-start'},{'name': 'HomePage', 'selector': 'page-home'},{'name': 'ListViewerPage', 'selector': 'page-list-viewer'},{'name': 'LocalListsPage', 'selector': 'page-local-lists'},{'name': 'LoginPage', 'selector': 'page-login'},{'name': 'MyApp', 'selector': ''},{'name': 'NewItemPage', 'selector': 'page-new-item'},{'name': 'NewListPage', 'selector': 'page-new-list'},{'name': 'OnlineListsPage', 'selector': 'page-online-lists'},{'name': 'SettingsPage', 'selector': 'page-settings'},{'name': 'TabsPage', 'selector': ''}];
+    var COMPONENTS = [{'name': 'ChooseCoverFromSamplesPage', 'selector': 'page-choose-cover-from-samples'},{'name': 'FirstStartPage', 'selector': 'page-first-start'},{'name': 'HomePage', 'selector': 'page-home'},{'name': 'ListViewerPage', 'selector': 'page-list-viewer'},{'name': 'LocalListsPage', 'selector': 'page-local-lists'},{'name': 'MyApp', 'selector': ''},{'name': 'NewItemPage', 'selector': 'page-new-item'},{'name': 'NewListPage', 'selector': 'page-new-list'},{'name': 'OnlineListsPage', 'selector': 'page-online-lists'},{'name': 'SettingsPage', 'selector': 'page-settings'},{'name': 'TabsPage', 'selector': ''}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'ChooseCoverFromSamplesPage'};
 </script>

@@ -11,15 +11,18 @@ export class ChooseCoverFromSamplesPage {
   constructor(public viewCtrl: ViewController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ChooseCoverFromSamplesPage');
-  }
-
+  /**
+   * Choose Picture
+   * @param {string} img  The image choosed by the user
+   */
   choose(img: String) {
     //Close the view and transfer the chosen picture
     this.viewCtrl.dismiss({'picture':img});
   }
 
+  /**
+   * Close Page
+   */
   close() {
     //Close the view
     this.viewCtrl.dismiss();
