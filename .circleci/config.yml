@@ -32,6 +32,7 @@ jobs:
       - run:
           name: "Generate apk"
           command: |
+            npm install
             ionic cordova build android --verbose
             mkdir -p /tmp/apk
             cp -r platforms/android/app/build/outputs/apk/debug/app-debug.apk /tmp/apk
