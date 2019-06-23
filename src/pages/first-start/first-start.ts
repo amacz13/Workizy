@@ -13,24 +13,19 @@ import {MyApp} from "../../app/app.component";
 import {BrowserTab} from "@ionic-native/browser-tab";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 
-/**
- * Generated class for the FirstStartPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-first-start',
   templateUrl: 'first-start.html',
 })
 export class FirstStartPage {
+
   @ViewChild(Slides) slides: Slides;
   email: string = "";
   password: string = "";
   os = MyApp.os;
   backEnabled : boolean = false;
+  accountExists : boolean = false;
 
   constructor(public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore) {
     // Define application language
