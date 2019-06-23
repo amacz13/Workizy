@@ -38,7 +38,6 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireModule } from "@angular/fire";
 import {environment} from "../environment/environment";
 import { AngularFireAuthModule } from "@angular/fire/auth";
-import { LoginPage } from "../pages/login/login";
 import { UuidGenerator } from '../providers/uuid-generator/uuid-generator';
 import {FirstStartPage} from "../pages/first-start/first-start";
 
@@ -54,7 +53,6 @@ import {FirstStartPage} from "../pages/first-start/first-start";
     ChooseCoverFromSamplesPage,
     ListViewerPage,
     NewItemPage,
-    LoginPage,
     FirstStartPage
   ],
   imports: [
@@ -85,7 +83,6 @@ import {FirstStartPage} from "../pages/first-start/first-start";
     ChooseCoverFromSamplesPage,
     ListViewerPage,
     NewItemPage,
-    LoginPage,
     FirstStartPage
   ],
   providers: [

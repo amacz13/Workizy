@@ -8,6 +8,7 @@
     "compodoc": "compodoc -p tsconfig.json",
     "run-osx": "ionic cordova run osx",
     "run-android": "ionic cordova run android",
+    "serve": "ionic serve --lab",
     "start": "ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
