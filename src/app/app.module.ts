@@ -40,6 +40,8 @@ import {environment} from "../environment/environment";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { UuidGenerator } from '../providers/uuid-generator/uuid-generator';
 import {FirstStartPage} from "../pages/first-start/first-start";
+import {LocalNotifications} from "@ionic-native/local-notifications";
+import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
 
 @NgModule({
   declarations: [
@@ -107,7 +109,9 @@ import {FirstStartPage} from "../pages/first-start/first-start";
     InAppBrowser,
     BrowserTab,
     FirebaseManager,
-    UuidGenerator
+    UuidGenerator,
+    LocalNotifications,
+    InAppPurchase2
   ]
 })
 export class AppModule {}

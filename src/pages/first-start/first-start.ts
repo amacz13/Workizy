@@ -12,6 +12,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {MyApp} from "../../app/app.component";
 import {BrowserTab} from "@ionic-native/browser-tab";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 @IonicPage()
 @Component({
@@ -21,18 +22,23 @@ import {InAppBrowser} from "@ionic-native/in-app-browser";
 export class FirstStartPage {
 
   @ViewChild(Slides) slides: Slides;
+  /**
+   * Email typed by the user
+   */
   email: string = "";
+  /**
+   * Password typed by the user
+   */
   password: string = "";
   os = MyApp.os;
   backEnabled : boolean = false;
   accountExists : boolean = false;
 
-  constructor(public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore) {
+  constructor(public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore, public ln: LocalNotifications) {
     // Define application language
     translate.use(translate.getBrowserLang());
     // Cordova plugins & platform ready
     this.platform.ready().then( () => {
-
       // Customize the slider
       this.slides.lockSwipes(true);
       this.slides.pager = true;
@@ -177,169 +183,6 @@ export class FirstStartPage {
     });
   }
 
-  // Login function
-  doLogin() {
-    if (this.email == "" || this.email == null || this.password == "" || this.password == null){
-      // Some fields are empty, showing an error
-      this.translate.get("Error").toPromise().then(async err => {
-        this.translate.get("Please fill all inputs").toPromise().then(async msg => {
-          let alert = this.alertCtrl.create({
-            title: err,
-            subTitle: msg,
-            buttons: ['OK']
-          });
-          alert.present();
-        });
-      });
-    } else {
-      // Displaying loader
-      this.translate.get("Logging in...").toPromise().then(async msg => {
-        let loading = this.loadingCtrl.create({
-          content: msg
-        });
-
-        loading.present();
-
-        // Auth request to Firebase
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(val => {
-          // Credentials correct
-          console.log("User connected : ", val);
-          if (!val.user.emailVerified) {
-            // Account not verified, send verification email
-            firebase.auth().currentUser.sendEmailVerification().then( () => {
-              loading.dismissAll();
-              this.translate.get("Verify email").toPromise().then(async title => {
-                this.translate.get("Please verify your account by clicking on the link you received by email").toPromise().then(async msg2 => {
-                  let alert = this.alertCtrl.create({
-                    title: title,
-                    subTitle: msg2,
-                    buttons: ['OK']
-                  });
-                  alert.present();
-                });
-              });
-            });
-          } else {
-            // Account verfifed, sign in to Angular Firestore
-            this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
-              this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-                console.log("UserID : "+val2.user.uid);
-
-                // Storing values locally
-                this.nativeStorage.setItem('connected', 1)
-                  .then(() => {
-                    this.nativeStorage.setItem('user', val2.user).then(() => {
-                      this.nativeStorage.setItem('firstStart', 1).then( async() => {
-                        this.settings.user = val2.user;
-                        this.settings.isConnected = true;
-                        await this.fm.sync().then(async () => {
-                          await MyApp.storageManager.getAll();
-                          await loading.dismiss();
-                          // Showing HomePage
-                          this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                        });
-                      });
-                    });
-                  });
-              });
-            });
-          }
-        }).catch(err => {
-          // Error while logging in the user, may be bad credentials...
-          console.error("Error while logging in user : ", err);
-          loading.dismissAll();
-          this.translate.get("Error").toPromise().then(async title => {
-            let alert = this.alertCtrl.create({
-              title: title,
-              subTitle: err.message,
-              buttons: ['OK']
-            });
-            alert.present();
-          });
-        });
-      });
-    }
-  }
-
-  // Register function
-  doRegister() {
-    if (this.email == "" || this.email == null || this.password == "" || this.password == null){
-      // Some fields are empty, showing an error
-      this.translate.get("Error").toPromise().then(async err => {
-        this.translate.get("Please fill all inputs").toPromise().then(async msg => {
-          let alert = this.alertCtrl.create({
-            title: err,
-            subTitle: msg,
-            buttons: ['OK']
-          });
-          alert.present();
-        });
-      });
-    } else {
-      // Displaying loader
-      this.translate.get("Signing in...").toPromise().then(async msg => {
-        let loading = this.loadingCtrl.create({
-          content: msg
-        });
-
-        loading.present();
-        // Firebase Register Request
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(val => {
-          console.log("User registered : ", val);
-          if (!val.user.emailVerified) {
-            // Account not verified, sending verification email
-            firebase.auth().currentUser.sendEmailVerification().then(() => {
-              loading.dismissAll();
-              this.translate.get("Verify email").toPromise().then(async title => {
-                this.translate.get("Please verify your account by clicking on the link you received by email").toPromise().then(async msg2 => {
-                  let alert = this.alertCtrl.create({
-                    title: title,
-                    subTitle: msg2,
-                    buttons: ['OK']
-                  });
-                  alert.present();
-                });
-              });
-            });
-          } else {
-            // Account verified, auth request to Angular Firestore
-            this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
-              this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-                this.nativeStorage.setItem('connected', 1)
-                  .then(() => {
-                    this.nativeStorage.setItem('user', val2.user).then(() => {
-                      this.nativeStorage.setItem('firstStart', 1).then(async () => {
-                        this.settings.user = val2.user;
-                        this.settings.isConnected = true;
-                        await this.fm.sync().then(async () => {
-                          await MyApp.storageManager.getAll();
-                          await loading.dismiss();
-                          // Showing HomePage
-                          this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                        });
-                      });
-                    });
-                  });
-              });
-            });
-          }
-        }).catch(err => {
-          // Can't register user, maybe the email is already registered
-          console.error("Error while logging in user : ", err);
-          loading.dismissAll();
-          this.translate.get("Error").toPromise().then(async title => {
-            let alert = this.alertCtrl.create({
-              title: title,
-              subTitle: err.message,
-              buttons: ['OK']
-            });
-            alert.present();
-          });
-        });
-      });
-    }
-  }
-
   // Password reset
   passwordReset() {
     console.log("Password reset for",this.email);
@@ -381,13 +224,180 @@ export class FirstStartPage {
   }
 
   askPassword() {
-    // Todo : Check if the account already exist
-    this.slides.lockSwipes(false);
-    this.slides.slideNext();
-    this.slides.lockSwipes(true);
+    if (this.email == "" || this.email == null){
+      // Some fields are empty, showing an error
+      this.translate.get("Error").toPromise().then(async err => {
+        this.translate.get("Please type your email first").toPromise().then(async msg => {
+          let alert = this.alertCtrl.create({
+            title: err,
+            subTitle: msg,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
+      });
+    } else {
+      this.translate.get("Please wait...").toPromise().then(async msg => {
+        let loading = this.loadingCtrl.create({
+          content: msg
+        });
+
+        loading.present();
+        firebase.auth().fetchSignInMethodsForEmail(this.email).then(val => {
+          this.accountExists = val.length != 0;
+          this.slides.lockSwipes(false);
+          this.slides.slideNext();
+          this.slides.lockSwipes(true);
+          loading.dismissAll();
+        }).catch(err => {
+          console.log(err);
+        });
+      });
+    }
   }
 
   doLoginOrRegister() {
+    if (this.email == "" || this.email == null || this.password == "" || this.password == null){
+      // Some fields are empty, showing an error
+      this.translate.get("Error").toPromise().then(async err => {
+        this.translate.get("Please fill all inputs").toPromise().then(async msg => {
+          let alert = this.alertCtrl.create({
+            title: err,
+            subTitle: msg,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
+      });
+    } else {
+      if (this.accountExists){
+        this.translate.get("Logging in...").toPromise().then(async msg => {
+          let loading = this.loadingCtrl.create({
+            content: msg
+          });
 
+          loading.present();
+
+          // Auth request to Firebase
+          firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(val => {
+            // Credentials correct
+            console.log("User connected : ", val);
+            if (!val.user.emailVerified) {
+              // Account not verified, send verification email
+              firebase.auth().currentUser.sendEmailVerification().then( () => {
+                loading.dismissAll();
+                this.translate.get("Verify email").toPromise().then(async title => {
+                  this.translate.get("Please verify your account by clicking on the link you received by email").toPromise().then(async msg2 => {
+                    let alert = this.alertCtrl.create({
+                      title: title,
+                      subTitle: msg2,
+                      buttons: ['OK']
+                    });
+                    alert.present();
+                  });
+                });
+              });
+            } else {
+              // Account verfifed, sign in to Angular Firestore
+              this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
+                this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
+                  console.log("UserID : "+val2.user.uid);
+
+                  // Storing values locally
+                  this.nativeStorage.setItem('connected', 1)
+                    .then(() => {
+                      this.nativeStorage.setItem('user', val2.user).then(() => {
+                        this.nativeStorage.setItem('firstStart', 1).then( async() => {
+                          this.settings.user = val2.user;
+                          this.settings.isConnected = true;
+                          await this.fm.sync().then(async () => {
+                            await MyApp.storageManager.getAll();
+                            await loading.dismiss();
+                            // Showing HomePage
+                            this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                          });
+                        });
+                      });
+                    });
+                });
+              });
+            }
+          }).catch(err => {
+            // Error while logging in the user, may be bad credentials...
+            console.error("Error while logging in user : ", err);
+            loading.dismissAll();
+            this.translate.get("Error").toPromise().then(async title => {
+              let alert = this.alertCtrl.create({
+                title: title,
+                subTitle: err.message,
+                buttons: ['OK']
+              });
+              alert.present();
+            });
+          });
+        });
+      } else {
+        this.translate.get("Signing in...").toPromise().then(async msg => {
+          let loading = this.loadingCtrl.create({
+            content: msg
+          });
+
+          loading.present();
+          // Firebase Register Request
+          firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(val => {
+            console.log("User registered : ", val);
+            if (!val.user.emailVerified) {
+              // Account not verified, sending verification email
+              firebase.auth().currentUser.sendEmailVerification().then(() => {
+                loading.dismissAll();
+                this.translate.get("Verify email").toPromise().then(async title => {
+                  this.translate.get("Please verify your account by clicking on the link you received by email").toPromise().then(async msg2 => {
+                    let alert = this.alertCtrl.create({
+                      title: title,
+                      subTitle: msg2,
+                      buttons: ['OK']
+                    });
+                    alert.present();
+                  });
+                });
+              });
+            } else {
+              // Account verified, auth request to Angular Firestore
+              this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
+                this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
+                  this.nativeStorage.setItem('connected', 1)
+                    .then(() => {
+                      this.nativeStorage.setItem('user', val2.user).then(() => {
+                        this.nativeStorage.setItem('firstStart', 1).then(async () => {
+                          this.settings.user = val2.user;
+                          this.settings.isConnected = true;
+                          await this.fm.sync().then(async () => {
+                            await MyApp.storageManager.getAll();
+                            await loading.dismiss();
+                            // Showing HomePage
+                            this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                          });
+                        });
+                      });
+                    });
+                });
+              });
+            }
+          }).catch(err => {
+            // Can't register user, maybe the email is already registered
+            console.error("Error while logging in user : ", err);
+            loading.dismissAll();
+            this.translate.get("Error").toPromise().then(async title => {
+              let alert = this.alertCtrl.create({
+                title: title,
+                subTitle: err.message,
+                buttons: ['OK']
+              });
+              alert.present();
+            });
+          });
+        });
+      }
+    }
   }
 }

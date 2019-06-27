@@ -8,6 +8,8 @@ import {List} from "../../providers/list/list";
 import {ListViewerPage} from "../list-viewer/list-viewer";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
 import {UserSettings} from "../../providers/user-settings/user-settings";
+import {LocalNotifications} from "@ionic-native/local-notifications";
+import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
 
 @Component({
   selector: 'page-home',
@@ -17,7 +19,7 @@ export class HomePage {
 
   public viewmode:boolean = false;
 
-  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings) {
+  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings, public ln: LocalNotifications, public store: InAppPurchase2) {
     //HomePage.storageManager = sm;
     //Account Creation
     //firebase.auth().createUserWithEmailAndPassword("axel.maczkowiak@live.fr","test123").then(val => console.log("User created : ",val));
