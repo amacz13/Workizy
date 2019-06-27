@@ -15,7 +15,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="card-background-page">
+<ion-content padding [ngStyle]="viewmode && {'padding': '0 !important'}" class="card-background-page">
   <!--<div *ngIf="!viewmode">
     <ion-card *ngFor="let list of this.sm.allLists" (click)="showList(list)">
       <img src="assets/covers/{{list.cover}}"/>
@@ -37,14 +37,13 @@
   </ion-grid>
 
   <ion-list *ngIf="viewmode">
-    <ion-item *ngFor="let list of this.sm.allLists">
+    <ion-item *ngFor="let list of this.sm.allLists" (click)="showList(list)">
       <ion-thumbnail item-start>
         <img *ngIf="list.coverSource == 0" src="assets/covers/{{list.cover}}"/>
         <img *ngIf="list.coverSource == 1" src="{{list.cover}}"/>
       </ion-thumbnail>
       <h2>{{list.title}}</h2>
       <p>{{list.getElementCount()}} items</p>
-      <button (click)="showList(list)" ion-button clear item-end><ion-icon name="arrow-forward"></ion-icon></button>
     </ion-item>
   </ion-list>
 

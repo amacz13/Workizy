@@ -11,6 +11,7 @@ import {Checklist} from "../providers/checklist/checklist";
 import {ChecklistItem} from "../providers/checklist-item/checklist-item";
 import {Link} from "../providers/link/link";
 import {FirstStartPage} from "../pages/first-start/first-start";
+import { WebIntent } from '@ionic-native/web-intent';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,10 +24,16 @@ export class MyApp {
   public static internetConnected: boolean = navigator.onLine;
   public static os: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent) {
     MyApp.storageManager = sm;
     if (platform.is('android')) {
       MyApp.os = "android";
+      webIntent.getIntent().then((data) => {
+          console.log('Intent OK', data);
+        },
+        err => {
+          console.log('Intent Error', err);
+        });
     } else if (platform.is('ios')) {
       MyApp.os = "ios";
     } else if (platform.is('windows')) {

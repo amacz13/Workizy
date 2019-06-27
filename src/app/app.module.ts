@@ -42,6 +42,7 @@ import { UuidGenerator } from '../providers/uuid-generator/uuid-generator';
 import {FirstStartPage} from "../pages/first-start/first-start";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
+import {WebIntent} from "@ionic-native/web-intent";
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
     FirebaseManager,
     UuidGenerator,
     LocalNotifications,
-    InAppPurchase2
+    InAppPurchase2,
+    WebIntent
   ]
 })
 export class AppModule {}
