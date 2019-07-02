@@ -236,4 +236,57 @@ export class NewItemPage {
       }
     });
   }
+
+  createTask() {
+    this.translate.get('New Task').toPromise().then( title => {
+      this.translate.get('Text').toPromise().then( placeholder => {
+        this.translate.get('Cancel').toPromise().then( cancel => {
+          this.translate.get('Add').toPromise().then( add => {
+            let alert = this.alertCtrl.create({
+              title: title,
+              inputs: [
+                {
+                  name: 'content',
+                  placeholder: placeholder,
+                  type: 'url'
+                }
+              ],
+              buttons: [
+                {
+                  text: cancel,
+                  role: 'cancel',
+                  handler: data => {
+                    console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: add,
+                  handler: data => {
+                    let task: ChecklistItem = new ChecklistItem();
+                    task.text = data.content;
+                    this.tasks.push(task);
+                  }
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      });
+    });
+  }
+
+  deleteLink(link: Link) {
+    let index = this.links.indexOf(link, 0);
+    if (index > -1) {
+      this.links.splice(index, 1);
+    }
+  }
+
+  deleteTask(task: ChecklistItem) {
+    let index = this.tasks.indexOf(task, 0);
+    if (index > -1) {
+      this.tasks.splice(index, 1);
+    }
+  }
 }

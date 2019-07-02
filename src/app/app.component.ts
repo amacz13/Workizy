@@ -30,6 +30,13 @@ export class MyApp {
       MyApp.os = "android";
       webIntent.getIntent().then((data) => {
           console.log('Intent OK', data);
+          if (data.action == "android.intent.action.SEND"){
+            if (data.type == "image/jpeg") {
+
+            } else if (data.type == "text/plain") {
+
+            }
+          }
         },
         err => {
           console.log('Intent Error', err);

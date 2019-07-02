@@ -73,5 +73,7 @@
   "Are you sure to delete this list?": "Êtes-vous sur de vouloir supprimer cette liste ?",
   "Yes": "Oui",
   "Delete": "Supprimer",
-  "Please fill at least one input": "Merci de remplir au moins un champ"
+  "Please fill at least one input": "Merci de remplir au moins un champ",
+  "Edit": "Modifier",
+  "Remove": "Supprimer"
 }
