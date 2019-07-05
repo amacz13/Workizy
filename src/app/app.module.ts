@@ -14,7 +14,6 @@ import { SQLite } from "@ionic-native/sqlite";
 import { List } from '../providers/list/list';
 import { ListItem } from '../providers/list-item/list-item';
 import { StorageManager } from '../providers/storage-manager/storage-manager';
-import { Checklist } from '../providers/checklist/checklist';
 import { ChecklistItem } from '../providers/checklist-item/checklist-item';
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
@@ -96,7 +95,6 @@ import {WebIntent} from "@ionic-native/web-intent";
     List,
     ListItem,
     StorageManager,
-    Checklist,
     ChecklistItem,
     HttpClient,
     NativeStorage,

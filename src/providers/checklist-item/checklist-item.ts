@@ -1,5 +1,5 @@
-import {Checklist} from "../checklist/checklist";
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {ListItem} from "../list-item/list-item";
 
 @Entity('checklistitem')
 export class ChecklistItem {
@@ -11,10 +11,10 @@ export class ChecklistItem {
   @Column()
   isChecked : boolean;
 
-  @ManyToOne(type => Checklist, cl => cl.items, {
+  @ManyToOne(type => ListItem, cl => cl.checklistitems, {
     cascade: ['insert']
   })
-  checklist: Checklist;
+  listitem: ListItem;
 
   constructor() {
   }

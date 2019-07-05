@@ -7,7 +7,6 @@ import { createConnection } from 'typeorm';
 import {List} from "../providers/list/list";
 import {StorageManager} from "../providers/storage-manager/storage-manager";
 import {ListItem} from "../providers/list-item/list-item";
-import {Checklist} from "../providers/checklist/checklist";
 import {ChecklistItem} from "../providers/checklist-item/checklist-item";
 import {Link} from "../providers/link/link";
 import {FirstStartPage} from "../pages/first-start/first-start";
@@ -65,7 +64,6 @@ export class MyApp {
           entities: [
             List,
             ListItem,
-            Checklist,
             ChecklistItem,
             Link
           ]
@@ -85,7 +83,6 @@ export class MyApp {
           entities: [
             List,
             ListItem,
-            Checklist,
             ChecklistItem,
             Link
           ]
@@ -93,7 +90,7 @@ export class MyApp {
           sm.initRepositories()
         });
       }
-      // Hide the splascreen and create the event listeners
+      // Hide the splashcreen and create the event listeners
       splashScreen.hide();
       event.subscribe('theme:dark', () => {
         this.setDarkTheme();

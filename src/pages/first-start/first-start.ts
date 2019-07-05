@@ -184,6 +184,7 @@ export class FirstStartPage {
   }
 
   // Password reset
+
   passwordReset() {
     console.log("Password reset for",this.email);
     if (this.email == "" || this.email == null){

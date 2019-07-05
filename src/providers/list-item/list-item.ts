@@ -1,4 +1,3 @@
-import {Checklist} from "../checklist/checklist";
 import {
   Column,
   Entity,
@@ -10,6 +9,7 @@ import {
 } from "typeorm";
 import {List} from "../list/list";
 import {Link} from "../link/link";
+import {ChecklistItem} from "../checklist-item/checklist-item";
 
 @Entity('listitem')
 export class ListItem {
@@ -23,11 +23,6 @@ export class ListItem {
   @Column({nullable: true}) textContent: String;
 
   @Column({nullable: true}) picture: String;
-  @OneToOne(type => Checklist, cl => cl.listItem, {
-    nullable: true,
-    cascade: true
-  }) checklist: Checklist;
-
   // Date informations
   @Column() creationDate: number;
   @Column() lastEditionDate: number;
@@ -35,6 +30,10 @@ export class ListItem {
 
   @OneToMany(type => Link, link => link.item, {nullable: true,
     cascade: true}) links: Link[];
+
+
+  @OneToMany(type => ChecklistItem, checklistitem => checklistitem.listitem, {nullable: true,
+    cascade: true}) checklistitems: ChecklistItem[];
 
   @ManyToOne(type => List, list => list.items)
   list: List;
