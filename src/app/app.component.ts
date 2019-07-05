@@ -54,8 +54,11 @@ export class MyApp {
       } else if (device.platform == "Mac OS X") {
         console.log("Platform : macOS");
         MyApp.os = "osx";
+      } else if (device.platform == "browser") {
+        console.log("Platform : Electron / WebBrowser");
+        MyApp.os = "browser";
       }
-      if(platform.is('cordova')) {
+      if(platform.is('cordova') && device.platform != "browser") {
         // Device is an app (Windows, MacOS, Android or iOS)
         console.log("[WhatsNext] Using cordova platform...");
         console.log("[WhatsNext] Creating ORM link with database...");

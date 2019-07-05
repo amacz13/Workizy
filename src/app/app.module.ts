@@ -42,6 +42,7 @@ import {FirstStartPage} from "../pages/first-start/first-start";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
 import {WebIntent} from "@ionic-native/web-intent";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -70,7 +71,11 @@ import {WebIntent} from "@ionic-native/web-intent";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot({
+      name: '__workizyKeystore',
+      driverOrder: ['indexeddb', 'localstorage']
+    })
     //IonicModule.forRoot(MyApp, {mode: 'ios'})
   ],
   bootstrap: [IonicApp],

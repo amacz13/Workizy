@@ -13,6 +13,7 @@ import {MyApp} from "../../app/app.component";
 import {BrowserTab} from "@ionic-native/browser-tab";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {LocalNotifications} from "@ionic-native/local-notifications";
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -38,7 +39,7 @@ export class FirstStartPage {
     return MyApp.os;
   }
 
-  constructor(public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore, public ln: LocalNotifications) {
+  constructor(private storage: Storage, public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore, public ln: LocalNotifications) {
     // Define application language
     translate.use(translate.getBrowserLang());
     // Cordova plugins & platform ready
@@ -57,36 +58,70 @@ export class FirstStartPage {
 
       // Check if this is the first start of the app
       console.log("[Login] Platform ready, accessing Native Storage...");
-      this.nativeStorage.getItem('firstStart').then( val => {
-        if (val == 1){
-          // Not first start, init app
-          this.nativeStorage.getItem('connected')
-            .then(data => {
-                if (data == 1) {
-                  // User already authenticated, loading home page and retrieving online lists
-                  this.settings.isConnected = true;
-                  this.navCtrl.setRoot(TabsPage);
-                  this.translate.get("Please wait...").toPromise().then(async text => {
-                    let loading = this.loadingCtrl.create({
-                      content: text
-                    });
-                    loading.present().then(async () => {
-                      await this.fm.sync().then(async () => {
-                        await MyApp.storageManager.getAll();
-                        await loading.dismiss();
+
+      if (MyApp.os != "browser") {
+        this.nativeStorage.getItem('firstStart').then(val => {
+          if (val == 1) {
+            // Not first start, init app
+            this.nativeStorage.getItem('connected')
+              .then(data => {
+                  if (data == 1) {
+                    // User already authenticated, loading home page and retrieving online lists
+                    this.settings.isConnected = true;
+                    this.navCtrl.setRoot(TabsPage);
+                    this.translate.get("Please wait...").toPromise().then(async text => {
+                      let loading = this.loadingCtrl.create({
+                        content: text
+                      });
+                      loading.present().then(async () => {
+                        await this.fm.sync().then(async () => {
+                          await MyApp.storageManager.getAll();
+                          await loading.dismiss();
+                        });
                       });
                     });
-                  });
-                } else {
-                  // User not authenticated, loading home page
-                  this.settings.isConnected = false;
-                  this.navCtrl.setRoot(TabsPage);
-                }
-              },
-              error => console.error(error)
-            );
-        }
-      })
+                  } else {
+                    // User not authenticated, loading home page
+                    this.settings.isConnected = false;
+                    this.navCtrl.setRoot(TabsPage);
+                  }
+                },
+                error => console.error(error)
+              );
+          }
+        });
+      } else {
+        storage.get('firstStart').then((val) => {
+          if (val == 1) {
+            // Not first start, init app
+            storage.get('connected')
+              .then(data => {
+                  if (data == 1) {
+                    // User already authenticated, loading home page and retrieving online lists
+                    this.settings.isConnected = true;
+                    this.navCtrl.setRoot(TabsPage);
+                    this.translate.get("Please wait...").toPromise().then(async text => {
+                      let loading = this.loadingCtrl.create({
+                        content: text
+                      });
+                      loading.present().then(async () => {
+                        await this.fm.sync().then(async () => {
+                          await MyApp.storageManager.getAll();
+                          await loading.dismiss();
+                        });
+                      });
+                    });
+                  } else {
+                    // User not authenticated, loading home page
+                    this.settings.isConnected = false;
+                    this.navCtrl.setRoot(TabsPage);
+                  }
+                },
+                error => console.error(error)
+              );
+          }
+        });
+      }
     });
   }
 
@@ -169,13 +204,23 @@ export class FirstStartPage {
                   text: cont,
                   handler: () => {
                     // User agree to use the app without account, loading home page
-                    this.nativeStorage.setItem('connected', 0).then(() => {
-                      this.nativeStorage.setItem('firstStart', 1).then(() => {
-                        this.settings.isConnected = false;
-                        MyApp.storageManager.getAll();
-                        this.navCtrl.setRoot(TabsPage);
+                    if(MyApp.os != "browser"){
+                      this.nativeStorage.setItem('connected', 0).then(() => {
+                        this.nativeStorage.setItem('firstStart', 1).then(() => {
+                          this.settings.isConnected = false;
+                          MyApp.storageManager.getAll();
+                          this.navCtrl.setRoot(TabsPage);
+                        });
                       });
-                    });
+                    } else {
+                      this.storage.set('connected', 0).then(() => {
+                        this.storage.set('firstStart', 1).then(() => {
+                          this.settings.isConnected = false;
+                          MyApp.storageManager.getAll();
+                          this.navCtrl.setRoot(TabsPage);
+                        });
+                      });
+                    }
                   }
                 }
               ]

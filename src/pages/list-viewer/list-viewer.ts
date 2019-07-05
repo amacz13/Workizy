@@ -132,7 +132,7 @@ export class ListViewerPage {
   }
 
   openLink(content: String) {
-    if (MyApp.os == "osx") {
+    if (MyApp.os == "osx" || MyApp.os == "browser") {
       if (content.includes("http://") || content.includes("https://")){
         const browser = this.iab.create(content.toString(),"_system");
       } else {
@@ -152,8 +152,11 @@ export class ListViewerPage {
           this.browserTab.openUrl("https://"+content.toString());
         }
       }).catch(() => {
-        console.log(MyApp.os);
-        const browser = this.iab.create("https://blog.amacz13.fr/workizy-cluf/");
+        if (content.includes("http://") || content.includes("https://")){
+          const browser = this.iab.create(content.toString());
+        } else {
+          const browser = this.iab.create("https://"+content.toString());
+        }
       });
     }
   }
