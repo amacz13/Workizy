@@ -11,6 +11,7 @@ import {ChecklistItem} from "../providers/checklist-item/checklist-item";
 import {Link} from "../providers/link/link";
 import {FirstStartPage} from "../pages/first-start/first-start";
 import { WebIntent } from '@ionic-native/web-intent';
+import {Device} from "@ionic-native/device";
 
 @Component({
   templateUrl: 'app.html'
@@ -23,33 +24,37 @@ export class MyApp {
   public static internetConnected: boolean = navigator.onLine;
   public static os: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent, device: Device) {
     MyApp.storageManager = sm;
-    if (platform.is('android')) {
-      MyApp.os = "android";
-      webIntent.getIntent().then((data) => {
-          console.log('Intent OK', data);
-          if (data.action == "android.intent.action.SEND"){
-            if (data.type == "image/jpeg") {
-
-            } else if (data.type == "text/plain") {
-
-            }
-          }
-        },
-        err => {
-          console.log('Intent Error', err);
-        });
-    } else if (platform.is('ios')) {
-      MyApp.os = "ios";
-    } else if (platform.is('windows')) {
-      MyApp.os = "windows";
-    } else if (platform.is('osx')) {
-      MyApp.os = "osx";
-    }
-
     // Device is ready, Cordova plugins & Ionic modules are loaded
     platform.ready().then(async() => {
+      console.log(device.platform);
+      if (device.platform == "Android") {
+        console.log("Platform : Android");
+        MyApp.os = "android";
+        webIntent.getIntent().then((data) => {
+            console.log('Intent OK', data);
+            if (data.action == "android.intent.action.SEND"){
+              if (data.type == "image/jpeg") {
+
+              } else if (data.type == "text/plain") {
+
+              }
+            }
+          },
+          err => {
+            console.log('Intent Error', err);
+          });
+      } else if (device.platform == "iOS") {
+        console.log("Platform : iOS");
+        MyApp.os = "ios";
+      } else if (device.platform == "Windows") {
+        console.log("Platform : Windows");
+        MyApp.os = "windows";
+      } else if (device.platform == "Mac OS X") {
+        console.log("Platform : macOS");
+        MyApp.os = "osx";
+      }
       if(platform.is('cordova')) {
         // Device is an app (Windows, MacOS, Android or iOS)
         console.log("[WhatsNext] Using cordova platform...");

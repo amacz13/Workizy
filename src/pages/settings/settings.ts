@@ -26,7 +26,7 @@ export class SettingsPage {
     this.nativeStorage.setItem('connected', 0).then(() => {
       this.nativeStorage.setItem('user', null).then(() => {
         this.nativeStorage.setItem('firstStart', 0).then(() => {
-          this.navCtrl.setRoot(FirstStartPage);
+          this.navCtrl.popAll().then( () => this.navCtrl.setRoot(FirstStartPage));
         });
       });
     });

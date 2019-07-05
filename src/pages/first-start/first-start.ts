@@ -30,9 +30,12 @@ export class FirstStartPage {
    * Password typed by the user
    */
   password: string = "";
-  os = MyApp.os;
   backEnabled : boolean = false;
   accountExists : boolean = false;
+
+  get os() {
+    return MyApp.os;
+  }
 
   constructor(public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore, public ln: LocalNotifications) {
     // Define application language
@@ -215,13 +218,22 @@ export class FirstStartPage {
   }
 
   openCluf() {
-    this.browserTab.isAvailable().then(isAvailable => {
-      if (isAvailable) {
+
+    console.log("Opening EULA...");
+
+    if (MyApp.os == "osx") {
+      console.log("Trying to open EULA in system browser...");
+      const browser = this.iab.create("https://blog.amacz13.fr/workizy-cluf/","_system");
+    } else if (MyApp.os == "windows") {
+      const browser = this.iab.create("https://blog.amacz13.fr/workizy-cluf/");
+    } else {
+      this.browserTab.isAvailable().then(isAvailable => {
         this.browserTab.openUrl("https://blog.amacz13.fr/workizy-cluf/");
-      } else {
+      }).catch(() => {
+        console.log(MyApp.os);
         const browser = this.iab.create("https://blog.amacz13.fr/workizy-cluf/");
-      }
-    });
+      });
+    }
   }
 
   askPassword() {

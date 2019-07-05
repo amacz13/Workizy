@@ -31,8 +31,7 @@
           <h1>{{ 'Conditions' | translate }}</h1>
         </ion-row>
         <ion-row>
-          <h5 *ngIf="os == 'windows' || os == 'osx'">{{ 'AgreeToTerms' | translate }}<a href="https://blog.amacz13.fr/workizy-cluf/">{{ 'Terms and Conditions' | translate }}</a></h5>
-          <h5 *ngIf="os == 'android' || os == 'ios'">{{ 'AgreeToTerms' | translate }}<a (click)="openCluf()" href="#">{{ 'Terms and Conditions' | translate }}</a></h5>
+          <h5>{{ 'AgreeToTerms' | translate }}<a (click)="openCluf()" href="#">{{ 'Terms and Conditions' | translate }}</a></h5>
         </ion-row>
         <ion-row>
           <ion-col col-6>
