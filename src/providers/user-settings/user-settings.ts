@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import {NativeStorage} from "@ionic-native/native-storage";
 import {Platform} from "ionic-angular";
+import {MyApp} from "../../app/app.component";
+import {Storage} from "@ionic/storage";
 
 @Injectable()
 export class UserSettings {
@@ -9,10 +11,11 @@ export class UserSettings {
   public isConnected:boolean = false;
   public user:firebase.User;
 
-  constructor(public ns: NativeStorage, public platform: Platform) {
+  constructor(public storage: Storage, public ns: NativeStorage, public platform: Platform) {
     this.platform.ready().then( () => {
       console.log("[User Settings] Platform ready, accessing Native Storage...");
-      this.ns.getItem('user').then( (val => this.user = val));
+      if (MyApp.os != "browser") this.ns.getItem('user').then( (val => this.user = val));
+      else this.storage.get('user').then( (val => this.user = val));
     });
   }
 

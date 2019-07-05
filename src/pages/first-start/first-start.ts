@@ -360,29 +360,49 @@ export class FirstStartPage {
               // Account verfifed, sign in to Angular Firestore
               this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
                 this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-                  console.log("UserID : "+val2.user.uid);
 
-                  // Storing values locally
-                  this.nativeStorage.setItem('connected', 1)
-                    .then(() => {
-                      this.nativeStorage.setItem('user', val2.user).then(() => {
-                        this.nativeStorage.setItem('firstStart', 1).then( async() => {
-                          this.settings.user = val2.user;
-                          this.settings.isConnected = true;
-                          await this.fm.sync().then(async () => {
-                            await MyApp.storageManager.getAll();
-                            await loading.dismiss();
-                            // Showing HomePage
-                            //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                            if (this.settings.user.displayName == null) {
-                              this.next();
-                            } else {
-                              await this.goToHomePage();
-                            }
+                  if (MyApp.os != "browser") {
+                    this.nativeStorage.setItem('connected', 1) .then(() => {
+                        this.nativeStorage.setItem('user', val2.user).then(() => {
+                          this.nativeStorage.setItem('firstStart', 1).then( async() => {
+                            this.settings.user = val2.user;
+                            this.settings.isConnected = true;
+                            await this.fm.sync().then(async () => {
+                              await MyApp.storageManager.getAll();
+                              await loading.dismiss();
+                              // Showing HomePage
+                              //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                              if (this.settings.user.displayName == null) {
+                                this.next();
+                              } else {
+                                await this.goToHomePage();
+                              }
+                            });
                           });
                         });
                       });
-                    });
+                  } else {
+                    this.storage.set('connected', 1) .then(() => {
+                        this.storage.set('user', val2.user).then(() => {
+                          this.storage.set('firstStart', 1).then( async() => {
+                            this.settings.user = val2.user;
+                            this.settings.isConnected = true;
+                            await this.fm.sync().then(async () => {
+                              await MyApp.storageManager.getAll();
+                              await loading.dismiss();
+                              // Showing HomePage
+                              //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                              if (this.settings.user.displayName == null) {
+                                this.next();
+                              } else {
+                                await this.goToHomePage();
+                              }
+                            });
+                          });
+                        });
+                      });
+                  }
+
                 });
               });
             }
@@ -429,8 +449,9 @@ export class FirstStartPage {
               // Account verified, auth request to Angular Firestore
               this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
                 this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-                  this.nativeStorage.setItem('connected', 1)
-                    .then(() => {
+
+                  if (MyApp.os != "browser") {
+                    this.nativeStorage.setItem('connected', 1).then(() => {
                       this.nativeStorage.setItem('user', val2.user).then(() => {
                         this.nativeStorage.setItem('firstStart', 1).then(async () => {
                           this.settings.user = val2.user;
@@ -445,6 +466,24 @@ export class FirstStartPage {
                         });
                       });
                     });
+                  } else {
+                    this.storage.set('connected', 1).then(() => {
+                      this.storage.set('user', val2.user).then(() => {
+                        this.storage.set('firstStart', 1).then(async () => {
+                          this.settings.user = val2.user;
+                          this.settings.isConnected = true;
+                          await this.fm.sync().then(async () => {
+                            await MyApp.storageManager.getAll();
+                            await loading.dismiss();
+                            // Showing HomePage
+                            //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                            this.next();
+                          });
+                        });
+                      });
+                    });
+                  }
+
                 });
               });
             }
@@ -473,9 +512,15 @@ export class FirstStartPage {
   setDisplayName() {
     this.settings.user.updateProfile({displayName : this.userName}).then(val => {
       console.log(val);
-      this.nativeStorage.setItem('user', firebase.auth().currentUser).then(() => {
-        this.goToHomePage();
-      });
+      if (MyApp.os != "browser") {
+        this.nativeStorage.setItem('user', firebase.auth().currentUser).then(() => {
+          this.goToHomePage();
+        });
+      } else {
+        this.storage.set('user', firebase.auth().currentUser).then(() => {
+          this.goToHomePage();
+        });
+      }
     });
   }
 }

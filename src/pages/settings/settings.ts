@@ -5,6 +5,8 @@ import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager
 import {Events, NavController} from "ionic-angular";
 import {FirstStartPage} from "../first-start/first-start";
 import {NativeStorage} from "@ionic-native/native-storage";
+import {MyApp} from "../../app/app.component";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'page-settings',
@@ -13,15 +15,22 @@ import {NativeStorage} from "@ionic-native/native-storage";
 export class SettingsPage {
   darkTheme: boolean = false;
 
-  constructor(public navCtrl: NavController, public translate: TranslateService, public settings: UserSettings, public fm: FirebaseManager, public event: Events, public nativeStorage: NativeStorage) {
+  constructor(public storage: Storage,public navCtrl: NavController, public translate: TranslateService, public settings: UserSettings, public fm: FirebaseManager, public event: Events, public nativeStorage: NativeStorage) {
     //translate.setDefaultLang('en');
   }
 
   signIn() {
     //this.settings.isConnected = true;
-    this.nativeStorage.setItem('connected', 0).then(() => {
+    if (MyApp.os != "browser") this.nativeStorage.setItem('connected', 0).then(() => {
       this.nativeStorage.setItem('user', null).then(() => {
         this.nativeStorage.setItem('firstStart', 0).then(() => {
+          this.navCtrl.setRoot(FirstStartPage);
+        });
+      });
+    });
+    else this.storage.set('connected', 0).then(() => {
+      this.storage.set('user', null).then(() => {
+        this.storage.set('firstStart', 0).then(() => {
           this.navCtrl.setRoot(FirstStartPage);
         });
       });
@@ -29,9 +38,16 @@ export class SettingsPage {
   }
 
   logout() {
-    this.nativeStorage.setItem('connected', 0).then(() => {
+    if (MyApp.os != "browser") this.nativeStorage.setItem('connected', 0).then(() => {
       this.nativeStorage.setItem('user', null).then(() => {
         this.nativeStorage.setItem('firstStart', 0).then(() => {
+          this.navCtrl.setRoot(FirstStartPage);
+        });
+      });
+    });
+    else this.storage.set('connected', 0).then(() => {
+      this.storage.set('user', null).then(() => {
+        this.storage.set('firstStart', 0).then(() => {
           this.navCtrl.setRoot(FirstStartPage);
         });
       });
