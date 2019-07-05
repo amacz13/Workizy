@@ -39,6 +39,11 @@ export class HomePage {
 
   toggleViewMode() {
     this.viewmode = !this.viewmode;
+    this.ln.schedule({
+      title: 'My first notification',
+      text: 'Thats pretty easy...',
+      foreground: true
+    });
   }
 
   showNewList() {

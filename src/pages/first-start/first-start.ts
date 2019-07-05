@@ -32,6 +32,7 @@ export class FirstStartPage {
   password: string = "";
   backEnabled : boolean = false;
   accountExists : boolean = false;
+  userName: any;
 
   get os() {
     return MyApp.os;
@@ -327,7 +328,12 @@ export class FirstStartPage {
                             await MyApp.storageManager.getAll();
                             await loading.dismiss();
                             // Showing HomePage
-                            this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                            //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                            if (this.settings.user.displayName == null) {
+                              this.next();
+                            } else {
+                              await this.goToHomePage();
+                            }
                           });
                         });
                       });
@@ -388,7 +394,8 @@ export class FirstStartPage {
                             await MyApp.storageManager.getAll();
                             await loading.dismiss();
                             // Showing HomePage
-                            this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                            //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                            this.next();
                           });
                         });
                       });
@@ -412,5 +419,18 @@ export class FirstStartPage {
         });
       }
     }
+  }
+
+  goToHomePage(){
+    this.navCtrl.setRoot(TabsPage);
+  }
+
+  setDisplayName() {
+    this.settings.user.updateProfile({displayName : this.userName}).then(val => {
+      console.log(val);
+      this.nativeStorage.setItem('user', firebase.auth().currentUser).then(() => {
+        this.goToHomePage();
+      });
+    });
   }
 }

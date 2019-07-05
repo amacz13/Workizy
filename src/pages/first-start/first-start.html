@@ -99,5 +99,24 @@
         </ion-row>
       </ion-grid>
     </ion-slide>
+    <!-- User Display Name -->
+    <ion-slide padding>
+      <ion-grid>
+        <ion-row>
+          <h1>{{ 'How should I call you ?' | translate }}</h1>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-label floating>{{ 'Display Name' | translate }}</ion-label>
+            <ion-input [(ngModel)]="userName" type="text"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <button (click)="setDisplayName()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
+          </button>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
   </ion-slides>
 </ion-content>

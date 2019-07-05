@@ -9,6 +9,7 @@ import {BrowserTab} from "@ionic-native/browser-tab";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
 import {TranslateService} from "@ngx-translate/core";
+import {MyApp} from "../../app/app.component";
 
 @Component({
   selector: 'page-list-viewer',
@@ -131,21 +132,30 @@ export class ListViewerPage {
   }
 
   openLink(content: String) {
-    this.browserTab.isAvailable().then(isAvailable => {
-      if (isAvailable) {
+    if (MyApp.os == "osx") {
+      if (content.includes("http://") || content.includes("https://")){
+        const browser = this.iab.create(content.toString(),"_system");
+      } else {
+        const browser = this.iab.create("https://"+content.toString(),"_system");
+      }
+    } else if (MyApp.os == "windows") {
+      if (content.includes("http://") || content.includes("https://")){
+        const browser = this.iab.create(content.toString());
+      } else {
+        const browser = this.iab.create("https://"+content.toString());
+      }
+    } else {
+      this.browserTab.isAvailable().then(isAvailable => {
         if (content.includes("http://") || content.includes("https://")){
           this.browserTab.openUrl(content.toString());
         } else {
           this.browserTab.openUrl("https://"+content.toString());
         }
-      } else {
-        if (content.includes("http://") || content.includes("https://")){
-          const browser = this.iab.create(content.toString());
-        } else {
-          const browser = this.iab.create("https://"+content.toString());
-        }
-      }
-    });
+      }).catch(() => {
+        console.log(MyApp.os);
+        const browser = this.iab.create("https://blog.amacz13.fr/workizy-cluf/");
+      });
+    }
   }
 
   deleteItem(item: ListItem) {
