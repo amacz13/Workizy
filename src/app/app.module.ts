@@ -43,6 +43,7 @@ import {LocalNotifications} from "@ionic-native/local-notifications";
 import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
 import {WebIntent} from "@ionic-native/web-intent";
 import {IonicStorageModule} from "@ionic/storage";
+import {LocalStorage} from '../providers/local-storage/local-storage';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import {IonicStorageModule} from "@ionic/storage";
     UuidGenerator,
     LocalNotifications,
     InAppPurchase2,
-    WebIntent
+    WebIntent,
+    LocalStorage
   ]
 })
 export class AppModule {}
