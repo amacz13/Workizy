@@ -90,6 +90,7 @@ export class FirstStartPage {
               );
           }
         });
+        this.nativeStorage.getItem('accentColor').then(value => this.settings.accentColor = value);
       } else {
         storage.get('firstStart').then((val) => {
           if (val == 1) {
@@ -121,6 +122,7 @@ export class FirstStartPage {
               );
           }
         });
+        this.storage.get('accentColor').then(value => this.settings.accentColor = value);
       }
     });
   }

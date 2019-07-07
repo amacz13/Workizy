@@ -4,6 +4,7 @@ import {NewListPage} from "../new-list/new-list";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {List} from "../../providers/list/list";
 import {ListViewerPage} from "../list-viewer/list-viewer";
+import {UserSettings} from "../../providers/user-settings/user-settings";
 
 @Component({
   selector: 'page-local-lists',
@@ -13,7 +14,7 @@ export class LocalListsPage {
 
   public viewmode:boolean = false;
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public sm: StorageManager) {
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public sm: StorageManager, public settings: UserSettings) {
 
   }
 

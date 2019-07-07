@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="{{this.settings.accentColor}}">
     <ion-title>{{ 'New Item' | translate }}</ion-title>
     <ion-buttons left>
       <button (click)="close()" ion-button icon-only color="royal">
@@ -57,13 +57,13 @@
     </ion-list>
 
     <div padding>
-      <button (click)="createLink()" ion-button block>{{ 'Add link' | translate }}</button>
+      <button color="{{this.settings.accentColor}}" (click)="createLink()" ion-button block>{{ 'Add link' | translate }}</button>
     </div>
 
     <ion-list>
       <ion-item-sliding  *ngFor="let task of tasks">
         <ion-item>
-          <ion-checkbox item-start [ngModel]="task.isChecked"></ion-checkbox>
+          <ion-checkbox item-start [ngModel]="task.isChecked" color="{{this.settings.accentColor}}"></ion-checkbox>
           <ion-label>{{task.text}}</ion-label>
         </ion-item>
         <ion-item-options side="right">
@@ -80,10 +80,10 @@
     </ion-list>
 
     <div padding>
-      <button (click)="createTask()" ion-button block>{{ 'Add task' | translate }}</button>
+      <button (click)="createTask()" ion-button block color="{{this.settings.accentColor}}">{{ 'Add task' | translate }}</button>
     </div>
 </ion-content>
 
 <ion-footer padding>
-  <button (click)="createItem()" ion-button block>{{ 'Create' | translate }}</button>
+  <button (click)="createItem()" ion-button block color="{{this.settings.accentColor}}">{{ 'Create' | translate }}</button>
 </ion-footer>

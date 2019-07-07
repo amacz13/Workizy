@@ -1,4 +1,4 @@
-<ion-tabs>
+<ion-tabs color="{{this.settings.accentColor}}">
   <ion-tab [root]="tab1Root" tabTitle=" {{ 'Home' | translate }}" tabIcon="home"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle=" {{ 'Local lists' | translate }}" tabIcon="phone-portrait"></ion-tab>
   <ion-tab [show]="settings.isConnected && internetConnected" [root]="tab3Root" tabTitle=" {{ 'Synced lists' | translate }}" tabIcon="cloudy"></ion-tab>

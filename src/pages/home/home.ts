@@ -20,20 +20,7 @@ export class HomePage {
   public viewmode:boolean = false;
 
   constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings, public ln: LocalNotifications, public store: InAppPurchase2) {
-    //HomePage.storageManager = sm;
-    //Account Creation
-    //firebase.auth().createUserWithEmailAndPassword("axel.maczkowiak@live.fr","test123").then(val => console.log("User created : ",val));
 
-    //Account Login
-    //firebase.auth().signInWithEmailAndPassword("axel.maczkowiak@outlook.fr","test123").then(val => console.log("User created : ",val));
-
-    //FB Login
-    //this.auth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(val => console.log("User connected : ",val));
-    //firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(val => console.log("User connected : ",val));
-
-
-    //Google Login
-    //this.auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(val => console.log("User connected : ",val));
   }
 
 

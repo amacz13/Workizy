@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar  color="{{this.settings.accentColor}}">
     <ion-title>Workizy</ion-title>
     <ion-buttons end>
       <button *ngIf="settings.isConnected" (click)="forceSync()" ion-button icon-only color="royal">
@@ -48,7 +48,7 @@
   </ion-list>
 
   <ion-fab right bottom>
-    <button (click)="showNewList()" ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+    <button (click)="showNewList()" ion-fab color="{{this.settings.accentColor}}"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
   <div id="recaptcha-container"></div>

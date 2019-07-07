@@ -58,4 +58,10 @@ export class SettingsPage {
     if (this.darkTheme) this.event.publish('theme:dark');
     else this.event.publish('theme:light');
   }
+
+  setAccentColor(color: string) {
+    this.settings.accentColor = color;
+    if (MyApp.os != "browser") this.nativeStorage.setItem('accentColor',this.settings.accentColor);
+    else this.storage.set('accentColor',this.settings.accentColor);
+  }
 }

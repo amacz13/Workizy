@@ -11,6 +11,7 @@ import {List} from "../../providers/list/list";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
 import {MyApp} from "../../app/app.component";
+import {UserSettings} from "../../providers/user-settings/user-settings";
 
 @Component({
   selector: 'page-new-item',
@@ -45,7 +46,7 @@ export class NewItemPage {
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController, public settings: UserSettings) {
     this.list = navParams.get('list');
   }
 
