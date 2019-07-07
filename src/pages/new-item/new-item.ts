@@ -94,6 +94,9 @@ export class NewItemPage {
       console.log(this.list);
       await this.sm.saveLocalList(this.list);
       await this.sm.getAll();
+      for (let l of this.sm.allLists){
+        if (l.id == this.list.id) this.list = l;
+      }
       this.viewCtrl.dismiss({'list': this.list});
     }
   }

@@ -9,20 +9,14 @@
       <button (click)="toggleSearch()" ion-button icon-only color="royal">
         <ion-icon name="search"></ion-icon>
       </button>
-      <!--<button *ngIf="viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
-        <ion-icon name="apps"></ion-icon>
-      </button>
-      <button *ngIf="!viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
-        <ion-icon name="list"></ion-icon>
-      </button>-->
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding [ngStyle]="viewmode && {'padding': '0 !important'}">
 
-  <h4>{{welcomePhrase}} {{this.settings.user.displayName}} ! </h4><h6>{{'These are some of your last added items :' | translate}}</h6>
-  <ion-grid>
+  <h4>{{welcomePhrase}} {{this.settings.user.displayName}} ! </h4><h5>{{'Latest items' | translate}} <ion-icon name="arrow-dropright"></ion-icon></h5>
+  <ion-grid *ngIf="this.sm.allItems.length > 0">
     <ion-row>
       <ion-col *ngFor="let item of this.sm.allItems.slice(0,5)" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
         <ion-card (click)="showListFromItem(item)">
@@ -42,9 +36,11 @@
     </ion-row>
   </ion-grid>
 
-  <h6>{{'Check out your latest lists :' | translate}}</h6>
+  <h6 *ngIf="this.sm.allItems.length <= 0">{{"Sadly, you don't have any item. Go and create some then come back ;)" | translate}}</h6>
 
-  <ion-grid *ngIf="!viewmode" class="card-background-page">
+  <h5>{{'Latest lists' | translate}} <ion-icon name="arrow-dropright"></ion-icon></h5>
+
+  <ion-grid *ngIf="this.sm.allLists.length > 0" class="card-background-page">
     <ion-row>
       <ion-col *ngFor="let list of this.sm.allLists.slice(0,5)" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
         <ion-card (click)="showList(list)">
@@ -57,16 +53,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-list *ngIf="viewmode" class="home-list">
-    <ion-item *ngFor="let list of this.sm.allLists" (click)="showList(list)">
-      <ion-thumbnail item-start>
-        <img *ngIf="list.coverSource == 0" src="assets/covers/{{list.cover}}"/>
-        <img *ngIf="list.coverSource == 1" src="{{list.cover}}"/>
-      </ion-thumbnail>
-      <h2>{{list.title}}</h2>
-      <p>{{list.getElementCount()}} items</p>
-    </ion-item>
-  </ion-list>
+  <h6 *ngIf="this.sm.allLists.length <= 0">{{"Sadly, you don't have any list. Go and create one then come back ;)" | translate}}</h6>
 
   <ion-fab right bottom>
     <button (click)="showNewList()" ion-fab color="{{this.settings.accentColor}}"><ion-icon name="add"></ion-icon></button>

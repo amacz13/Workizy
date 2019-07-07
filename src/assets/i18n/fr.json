@@ -76,11 +76,14 @@
   "Please fill at least one input": "Merci de remplir au moins un champ",
   "Edit": "Modifier",
   "Remove": "Supprimer",
-  "Check out your latest lists :": "Jetez un oeil à vos dernières listes :",
-  "These are some of your last added items :": "Voilà les derniers éléments modifiés :",
+  "Latest lists": "Dernières listes",
+  "Latest items": "Derniers éléments",
   "Good night": "Bonne nuit",
   "Good morning": "Bonjour",
   "Good afternoon": "Bonjour",
   "Good evening": "Bonsoir",
-  "Accent color": "Couleur d'accentuation"
+  "Accent color": "Couleur d'accentuation",
+  "Hi ": "Bonjour ",
+  "Sadly, you don't have any item. Go and create some then come back ;)": "Malheureusement, vous n'avez aucun item. Créez-en quelques-uns et revenez ;)",
+  "Sadly, you don't have any list. Go and create one then come back ;)": "Malheureusement, vous n'avez aucune liste. Créez-en une et revenez ;)"
 }

@@ -40,8 +40,6 @@ export class FirstStartPage {
   }
 
   constructor(private storage: LocalStorage, public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore, public ln: LocalNotifications, public sb: StatusbarManager) {
-    // Define application language
-    translate.use(translate.getBrowserLang());
     // Cordova plugins & platform ready
     this.platform.ready().then( () => {
       // Customize the slider
@@ -90,7 +88,8 @@ export class FirstStartPage {
         }
       });
       this.storage.get('accentColor').then(value => {
-        this.settings.accentColor = value
+        this.settings.accentColor = value;
+        this.sb.setStatusBarColor(value);
       });
 
     });

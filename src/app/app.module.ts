@@ -75,11 +75,11 @@ import { LinkUtils } from '../providers/link-utils/link-utils';
     AngularFirestoreModule,
     AngularFireAuthModule,
     IonicModule.forRoot(MyApp),
+    //IonicModule.forRoot(MyApp, {mode: 'ios'}),
     IonicStorageModule.forRoot({
       name: '__workizyKeystore',
       driverOrder: ['indexeddb', 'localstorage']
     })
-    //IonicModule.forRoot(MyApp, {mode: 'ios'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [

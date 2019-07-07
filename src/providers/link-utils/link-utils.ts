@@ -33,6 +33,11 @@ export class LinkUtils {
   }
 
   openLink(content: String) {
+    if (content.includes("youtube.com")){
+      let videoID = content.split("=")[1];
+      content="https://www.youtube.com/embed/"+videoID;
+    }
+
     if (MyApp.os == "osx" || MyApp.os == "browser") {
       if (content.includes("http://") || content.includes("https://")){
         const browser = this.iab.create(content.toString(),"_system");

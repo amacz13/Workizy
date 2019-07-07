@@ -10,6 +10,7 @@ export class UserSettings {
   public isConnected:boolean = false;
   public user:firebase.User;
   public accentColor: string = "primary";
+  public displayMode;
 
   constructor(public storage: LocalStorage, public platform: Platform) {
     this.platform.ready().then( () => {
