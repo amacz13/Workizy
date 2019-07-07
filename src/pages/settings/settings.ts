@@ -4,9 +4,9 @@ import {UserSettings} from "../../providers/user-settings/user-settings";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
 import {Events, NavController} from "ionic-angular";
 import {FirstStartPage} from "../first-start/first-start";
-import {NativeStorage} from "@ionic-native/native-storage";
 import {MyApp} from "../../app/app.component";
-import {Storage} from "@ionic/storage";
+import {StatusbarManager} from "../../providers/statusbar-manager/statusbar-manager";
+import {LocalStorage} from "../../providers/local-storage/local-storage";
 
 @Component({
   selector: 'page-settings',
@@ -16,27 +16,15 @@ export class SettingsPage {
   darkTheme: boolean = false;
   accentColors = ['primary','amber','teal','red','pink','purple','cyan','green','orange','brown'];
 
-  constructor(public storage: Storage,public navCtrl: NavController, public translate: TranslateService, public settings: UserSettings, public fm: FirebaseManager, public event: Events, public nativeStorage: NativeStorage) {
-    //translate.setDefaultLang('en');
-    if (MyApp.os != "browser") this.nativeStorage.getItem('darkTheme').then(val => {
-        this.darkTheme = val;
-
-    });
-    else this.storage.get('darkTheme').then(val => {
+  constructor(public storage: LocalStorage,public navCtrl: NavController, public translate: TranslateService, public settings: UserSettings, public fm: FirebaseManager, public event: Events, public sb: StatusbarManager) {
+    this.storage.get('darkTheme').then(val => {
       this.darkTheme = val;
     });
   }
 
   signIn() {
     //this.settings.isConnected = true;
-    if (MyApp.os != "browser") this.nativeStorage.setItem('connected', 0).then(() => {
-      this.nativeStorage.setItem('user', null).then(() => {
-        this.nativeStorage.setItem('firstStart', 0).then(() => {
-          this.navCtrl.setRoot(FirstStartPage);
-        });
-      });
-    });
-    else this.storage.set('connected', 0).then(() => {
+    this.storage.set('connected', 0).then(() => {
       this.storage.set('user', null).then(() => {
         this.storage.set('firstStart', 0).then(() => {
           this.navCtrl.setRoot(FirstStartPage);
@@ -46,14 +34,7 @@ export class SettingsPage {
   }
 
   logout() {
-    if (MyApp.os != "browser") this.nativeStorage.setItem('connected', 0).then(() => {
-      this.nativeStorage.setItem('user', null).then(() => {
-        this.nativeStorage.setItem('firstStart', 0).then(() => {
-          this.navCtrl.setRoot(FirstStartPage);
-        });
-      });
-    });
-    else this.storage.set('connected', 0).then(() => {
+    this.storage.set('connected', 0).then(() => {
       this.storage.set('user', null).then(() => {
         this.storage.set('firstStart', 0).then(() => {
           this.navCtrl.setRoot(FirstStartPage);
@@ -69,13 +50,12 @@ export class SettingsPage {
     else {
       this.event.publish('theme:light');
     }
-    if (MyApp.os != "browser") this.nativeStorage.setItem('darkTheme',this.darkTheme);
-    else this.storage.set('accentColor',this.darkTheme);
+    this.storage.set('accentColor',this.darkTheme);
   }
 
   setAccentColor(color: string) {
     this.settings.accentColor = color;
-    if (MyApp.os != "browser") this.nativeStorage.setItem('accentColor',this.settings.accentColor);
-    else this.storage.set('accentColor',this.settings.accentColor);
+    this.sb.setStatusBarColor(color);
+    this.storage.set('accentColor',this.settings.accentColor);
   }
 }

@@ -8,6 +8,7 @@
     "compodoc": "compodoc -p tsconfig.json",
     "run-osx": "ionic cordova run osx",
     "run-android": "ionic cordova run android",
+    "run-electron": "ionic cordova run electron",
     "serve": "ionic serve --lab",
     "start": "ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
@@ -86,7 +87,8 @@
     "@compodoc/compodoc": "^1.1.9",
     "@ionic/app-scripts": "^3.2.4",
     "@types/node": "^11.13.15",
-    "typescript": "~3.3.3"
+    "typescript": "~3.3.3",
+    "mem": ">=4.0.0"
   },
   "description": "An Ionic project",
   "cordova": {

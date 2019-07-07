@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
-import {NativeStorage} from "@ionic-native/native-storage";
 import {Platform} from "ionic-angular";
-import {MyApp} from "../../app/app.component";
-import {Storage} from "@ionic/storage";
+import {LocalStorage} from "../local-storage/local-storage";
+
 
 @Injectable()
 export class UserSettings {
@@ -12,11 +11,10 @@ export class UserSettings {
   public user:firebase.User;
   public accentColor: string = "primary";
 
-  constructor(public storage: Storage, public ns: NativeStorage, public platform: Platform) {
+  constructor(public storage: LocalStorage, public platform: Platform) {
     this.platform.ready().then( () => {
       console.log("[User Settings] Platform ready, accessing Native Storage...");
-      if (MyApp.os != "browser") this.ns.getItem('user').then( (val => this.user = val));
-      else this.storage.get('user').then( (val => this.user = val));
+      this.storage.get('user').then( (val => this.user = val));
     });
   }
 

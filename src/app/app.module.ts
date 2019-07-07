@@ -44,6 +44,7 @@ import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
 import {WebIntent} from "@ionic-native/web-intent";
 import {IonicStorageModule} from "@ionic/storage";
 import {LocalStorage} from '../providers/local-storage/local-storage';
+import { StatusbarManager } from '../providers/statusbar-manager/statusbar-manager';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import {LocalStorage} from '../providers/local-storage/local-storage';
     LocalNotifications,
     InAppPurchase2,
     WebIntent,
-    LocalStorage
+    LocalStorage,
+    StatusbarManager
   ]
 })
 export class AppModule {}

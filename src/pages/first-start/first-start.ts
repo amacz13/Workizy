@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams, Platform, Slides} from 'ionic-angular';
-import {NativeStorage} from "@ionic-native/native-storage";
 import {TabsPage} from "../tabs/tabs";
 import {UserSettings} from "../../providers/user-settings/user-settings";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
@@ -13,7 +12,8 @@ import {MyApp} from "../../app/app.component";
 import {BrowserTab} from "@ionic-native/browser-tab";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {LocalNotifications} from "@ionic-native/local-notifications";
-import { Storage } from '@ionic/storage';
+import {StatusbarManager} from "../../providers/statusbar-manager/statusbar-manager";
+import {LocalStorage} from "../../providers/local-storage/local-storage";
 
 @IonicPage()
 @Component({
@@ -39,7 +39,7 @@ export class FirstStartPage {
     return MyApp.os;
   }
 
-  constructor(private storage: Storage, public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public nativeStorage: NativeStorage, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore, public ln: LocalNotifications) {
+  constructor(private storage: LocalStorage, public navCtrl: NavController, public auth: AngularFireAuth, private browserTab: BrowserTab, private iab: InAppBrowser, public navParams: NavParams, public platform: Platform, public settings: UserSettings, public loadingCtrl: LoadingController, public fm: FirebaseManager, public alertCtrl: AlertController, public translate: TranslateService, public afs:AngularFirestore, public ln: LocalNotifications, public sb: StatusbarManager) {
     // Define application language
     translate.use(translate.getBrowserLang());
     // Cordova plugins & platform ready
@@ -59,71 +59,40 @@ export class FirstStartPage {
       // Check if this is the first start of the app
       console.log("[Login] Platform ready, accessing Native Storage...");
 
-      if (MyApp.os != "browser") {
-        this.nativeStorage.getItem('firstStart').then(val => {
-          if (val == 1) {
-            // Not first start, init app
-            this.nativeStorage.getItem('connected')
-              .then(data => {
-                  if (data == 1) {
-                    // User already authenticated, loading home page and retrieving online lists
-                    this.settings.isConnected = true;
-                    this.navCtrl.setRoot(TabsPage);
-                    this.translate.get("Please wait...").toPromise().then(async text => {
-                      let loading = this.loadingCtrl.create({
-                        content: text
-                      });
-                      loading.present().then(async () => {
-                        await this.fm.sync().then(async () => {
-                          await MyApp.storageManager.getAll();
-                          await loading.dismiss();
-                        });
+      storage.get('firstStart').then((val) => {
+        if (val == 1) {
+          // Not first start, init app
+          storage.get('connected')
+            .then(data => {
+                if (data == 1) {
+                  // User already authenticated, loading home page and retrieving online lists
+                  this.settings.isConnected = true;
+                  this.navCtrl.setRoot(TabsPage);
+                  this.translate.get("Please wait...").toPromise().then(async text => {
+                    let loading = this.loadingCtrl.create({
+                      content: text
+                    });
+                    loading.present().then(async () => {
+                      await this.fm.sync().then(async () => {
+                        await MyApp.storageManager.getAll();
+                        await loading.dismiss();
                       });
                     });
-                  } else {
-                    // User not authenticated, loading home page
-                    this.settings.isConnected = false;
-                    this.navCtrl.setRoot(TabsPage);
-                  }
-                },
-                error => console.error(error)
-              );
-          }
-        });
-        this.nativeStorage.getItem('accentColor').then(value => this.settings.accentColor = value);
-      } else {
-        storage.get('firstStart').then((val) => {
-          if (val == 1) {
-            // Not first start, init app
-            storage.get('connected')
-              .then(data => {
-                  if (data == 1) {
-                    // User already authenticated, loading home page and retrieving online lists
-                    this.settings.isConnected = true;
-                    this.navCtrl.setRoot(TabsPage);
-                    this.translate.get("Please wait...").toPromise().then(async text => {
-                      let loading = this.loadingCtrl.create({
-                        content: text
-                      });
-                      loading.present().then(async () => {
-                        await this.fm.sync().then(async () => {
-                          await MyApp.storageManager.getAll();
-                          await loading.dismiss();
-                        });
-                      });
-                    });
-                  } else {
-                    // User not authenticated, loading home page
-                    this.settings.isConnected = false;
-                    this.navCtrl.setRoot(TabsPage);
-                  }
-                },
-                error => console.error(error)
-              );
-          }
-        });
-        this.storage.get('accentColor').then(value => this.settings.accentColor = value);
-      }
+                  });
+                } else {
+                  // User not authenticated, loading home page
+                  this.settings.isConnected = false;
+                  this.navCtrl.setRoot(TabsPage);
+                }
+              },
+              error => console.error(error)
+            );
+        }
+      });
+      this.storage.get('accentColor').then(value => {
+        this.settings.accentColor = value
+      });
+
     });
   }
 
@@ -205,24 +174,13 @@ export class FirstStartPage {
                 {
                   text: cont,
                   handler: () => {
-                    // User agree to use the app without account, loading home page
-                    if(MyApp.os != "browser"){
-                      this.nativeStorage.setItem('connected', 0).then(() => {
-                        this.nativeStorage.setItem('firstStart', 1).then(() => {
-                          this.settings.isConnected = false;
-                          MyApp.storageManager.getAll();
-                          this.navCtrl.setRoot(TabsPage);
-                        });
+                    this.storage.set('connected', 0).then(() => {
+                      this.storage.set('firstStart', 1).then(() => {
+                        this.settings.isConnected = false;
+                        MyApp.storageManager.getAll();
+                        this.navCtrl.setRoot(TabsPage);
                       });
-                    } else {
-                      this.storage.set('connected', 0).then(() => {
-                        this.storage.set('firstStart', 1).then(() => {
-                          this.settings.isConnected = false;
-                          MyApp.storageManager.getAll();
-                          this.navCtrl.setRoot(TabsPage);
-                        });
-                      });
-                    }
+                    });
                   }
                 }
               ]
@@ -336,9 +294,7 @@ export class FirstStartPage {
           let loading = this.loadingCtrl.create({
             content: msg
           });
-
           loading.present();
-
           // Auth request to Firebase
           firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(val => {
             // Credentials correct
@@ -362,49 +318,25 @@ export class FirstStartPage {
               // Account verfifed, sign in to Angular Firestore
               this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
                 this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-
-                  if (MyApp.os != "browser") {
-                    this.nativeStorage.setItem('connected', 1) .then(() => {
-                        this.nativeStorage.setItem('user', val2.user).then(() => {
-                          this.nativeStorage.setItem('firstStart', 1).then( async() => {
-                            this.settings.user = val2.user;
-                            this.settings.isConnected = true;
-                            await this.fm.sync().then(async () => {
-                              await MyApp.storageManager.getAll();
-                              await loading.dismiss();
-                              // Showing HomePage
-                              //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                              if (this.settings.user.displayName == null) {
-                                this.next();
-                              } else {
-                                await this.goToHomePage();
-                              }
-                            });
+                  this.storage.set('connected', 1) .then(() => {
+                      this.storage.set('user', val2.user.toJSON().toString()).then(() => {
+                        this.storage.set('firstStart', 1).then( async() => {
+                          this.settings.user = val2.user;
+                          this.settings.isConnected = true;
+                          await this.fm.sync().then(async () => {
+                            await MyApp.storageManager.getAll();
+                            await loading.dismiss();
+                            // Showing HomePage
+                            //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                            if (this.settings.user.displayName == null) {
+                              this.next();
+                            } else {
+                              await this.goToHomePage();
+                            }
                           });
                         });
                       });
-                  } else {
-                    this.storage.set('connected', 1) .then(() => {
-                        this.storage.set('user', val2.user).then(() => {
-                          this.storage.set('firstStart', 1).then( async() => {
-                            this.settings.user = val2.user;
-                            this.settings.isConnected = true;
-                            await this.fm.sync().then(async () => {
-                              await MyApp.storageManager.getAll();
-                              await loading.dismiss();
-                              // Showing HomePage
-                              //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                              if (this.settings.user.displayName == null) {
-                                this.next();
-                              } else {
-                                await this.goToHomePage();
-                              }
-                            });
-                          });
-                        });
-                      });
-                  }
-
+                    });
                 });
               });
             }
@@ -451,41 +383,21 @@ export class FirstStartPage {
               // Account verified, auth request to Angular Firestore
               this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
                 this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
-
-                  if (MyApp.os != "browser") {
-                    this.nativeStorage.setItem('connected', 1).then(() => {
-                      this.nativeStorage.setItem('user', val2.user).then(() => {
-                        this.nativeStorage.setItem('firstStart', 1).then(async () => {
-                          this.settings.user = val2.user;
-                          this.settings.isConnected = true;
-                          await this.fm.sync().then(async () => {
-                            await MyApp.storageManager.getAll();
-                            await loading.dismiss();
-                            // Showing HomePage
-                            //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                            this.next();
-                          });
+                  this.storage.set('connected', 1).then(() => {
+                    this.storage.set('user', val2.user).then(() => {
+                      this.storage.set('firstStart', 1).then(async () => {
+                        this.settings.user = val2.user;
+                        this.settings.isConnected = true;
+                        await this.fm.sync().then(async () => {
+                          await MyApp.storageManager.getAll();
+                          await loading.dismiss();
+                          // Showing HomePage
+                          //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
+                          this.next();
                         });
                       });
                     });
-                  } else {
-                    this.storage.set('connected', 1).then(() => {
-                      this.storage.set('user', val2.user).then(() => {
-                        this.storage.set('firstStart', 1).then(async () => {
-                          this.settings.user = val2.user;
-                          this.settings.isConnected = true;
-                          await this.fm.sync().then(async () => {
-                            await MyApp.storageManager.getAll();
-                            await loading.dismiss();
-                            // Showing HomePage
-                            //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                            this.next();
-                          });
-                        });
-                      });
-                    });
-                  }
-
+                  });
                 });
               });
             }
@@ -514,15 +426,9 @@ export class FirstStartPage {
   setDisplayName() {
     this.settings.user.updateProfile({displayName : this.userName}).then(val => {
       console.log(val);
-      if (MyApp.os != "browser") {
-        this.nativeStorage.setItem('user', firebase.auth().currentUser).then(() => {
-          this.goToHomePage();
-        });
-      } else {
-        this.storage.set('user', firebase.auth().currentUser).then(() => {
-          this.goToHomePage();
-        });
-      }
+      this.storage.set('user', firebase.auth().currentUser).then(() => {
+        this.goToHomePage();
+      });
     });
   }
 }
