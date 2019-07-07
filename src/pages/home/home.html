@@ -1,38 +1,52 @@
 <ion-header>
-  <ion-navbar  color="{{this.settings.accentColor}}">
-    <ion-title>Workizy</ion-title>
-    <ion-buttons end>
+  <ion-navbar color="{{this.settings.accentColor}}">
+    <ion-searchbar *ngIf="showSearch" [(ngModel)]="searchInput" [showCancelButton]="true" (ionCancel)="toggleSearch()"></ion-searchbar>
+    <ion-title *ngIf="!showSearch">Workizy</ion-title>
+    <ion-buttons *ngIf="!showSearch" end>
       <button *ngIf="settings.isConnected" (click)="forceSync()" ion-button icon-only color="royal">
         <ion-icon name="sync"></ion-icon>
       </button>
-      <button *ngIf="viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
+      <button (click)="toggleSearch()" ion-button icon-only color="royal">
+        <ion-icon name="search"></ion-icon>
+      </button>
+      <!--<button *ngIf="viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
         <ion-icon name="apps"></ion-icon>
       </button>
       <button *ngIf="!viewmode" (click)="toggleViewMode()" ion-button icon-only color="royal">
         <ion-icon name="list"></ion-icon>
-      </button>
+      </button>-->
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding [ngStyle]="viewmode && {'padding': '0 !important'}" class="card-background-page">
-  <!--<div *ngIf="!viewmode">
-    <ion-card *ngFor="let list of this.sm.allLists" (click)="showList(list)">
-      <img src="assets/covers/{{list.cover}}"/>
-      <div class="card-title">{{list.title}}</div>
-      <div class="card-subtitle">{{list.getElementCount()}} items</div>
-    </ion-card>
-  </div>-->
+<ion-content padding [ngStyle]="viewmode && {'padding': '0 !important'}">
 
-  <h1>Hello Axel !</h1>
-  <h3>These are some of your last added items :</h3>
-
-
-  <h3>Latest lists :</h3>
-
-  <ion-grid *ngIf="!viewmode">
+  <h4>{{welcomePhrase}} {{this.settings.user.displayName}} ! </h4><h6>{{'These are some of your last added items :' | translate}}</h6>
+  <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let list of this.sm.allLists" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
+      <ion-col *ngFor="let item of this.sm.allItems.slice(0,5)" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
+        <ion-card (click)="showListFromItem(item)">
+          <img *ngIf="item.picture != null" src="{{item.picture}}"/>
+          <ion-card-content>
+            <ion-card-title *ngIf="item.title != null">{{item.title}}</ion-card-title>
+            <p *ngIf="item.textContent != null">{{item.textContent}}</p>
+          </ion-card-content>
+          <ion-list *ngIf="item.links != null && item.links.length > 0">
+            <button *ngFor="let link of item.links" (click)="linkUtils.openLink(link.content)" ion-item>
+              <ion-icon name="{{linkUtils.getIcon(link)}}" item-start></ion-icon>
+              <ion-label>{{link.content}}</ion-label>
+            </button>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <h6>{{'Check out your latest lists :' | translate}}</h6>
+
+  <ion-grid *ngIf="!viewmode" class="card-background-page">
+    <ion-row>
+      <ion-col *ngFor="let list of this.sm.allLists.slice(0,5)" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
         <ion-card (click)="showList(list)">
           <img *ngIf="list.coverSource == 0" src="assets/covers/{{list.cover}}"/>
           <img *ngIf="list.coverSource == 1" src="{{list.cover}}"/>

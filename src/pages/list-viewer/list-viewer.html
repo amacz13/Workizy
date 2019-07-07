@@ -20,8 +20,8 @@
             <p *ngIf="item.textContent != null">{{item.textContent}}</p>
           </ion-card-content>
           <ion-list *ngIf="item.links != null && item.links.length > 0">
-            <button *ngFor="let link of item.links" (click)="openLink(link.content)" ion-item>
-              <ion-icon name="{{getIcon(link)}}" item-start></ion-icon>
+            <button *ngFor="let link of item.links" (click)="linkUtils.openLink(link.content)" ion-item>
+              <ion-icon name="{{linkUtils.getIcon(link)}}" item-start></ion-icon>
               <ion-label>{{link.content}}</ion-label>
             </button>
           </ion-list>

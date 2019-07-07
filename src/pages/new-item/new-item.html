@@ -39,8 +39,8 @@
 
     <ion-list>
       <ion-item-sliding *ngFor="let link of links">
-        <button (click)="openLink(link.content)" ion-item>
-          <ion-icon name="{{getIcon(link)}}" item-start></ion-icon>
+        <button (click)="linkUtils.openLink(link.content)" ion-item>
+          <ion-icon name="{{linkUtils.getIcon(link)}}" item-start></ion-icon>
           <ion-label>{{link.content}}</ion-label>
         </button>
         <ion-item-options side="right">

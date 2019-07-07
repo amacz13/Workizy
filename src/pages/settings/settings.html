@@ -46,7 +46,7 @@
       </ion-card-title>
       <ion-item>
         <ion-label>{{ 'Dark Theme' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="darkTheme" checked="false" (ionChange)="applyTheme()"></ion-toggle>
+        <ion-toggle [(ngModel)]="darkTheme" checked="false" color="{{this.settings.accentColor}}" (ionChange)="applyTheme()"></ion-toggle>
       </ion-item>
       <ion-item>
         <ion-label>{{ 'Accent color' | translate }}</ion-label>

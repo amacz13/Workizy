@@ -75,5 +75,12 @@
   "Delete": "Supprimer",
   "Please fill at least one input": "Merci de remplir au moins un champ",
   "Edit": "Modifier",
-  "Remove": "Supprimer"
+  "Remove": "Supprimer",
+  "Check out your latest lists :": "Jetez un oeil à vos dernières listes :",
+  "These are some of your last added items :": "Voilà les derniers éléments modifiés :",
+  "Good night": "Bonne nuit",
+  "Good morning": "Bonjour",
+  "Good afternoon": "Bonjour",
+  "Good evening": "Bonsoir",
+  "Accent color": "Couleur d'accentuation"
 }

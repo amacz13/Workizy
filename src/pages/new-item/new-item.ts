@@ -10,8 +10,8 @@ import {ListItem} from "../../providers/list-item/list-item";
 import {List} from "../../providers/list/list";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
-import {MyApp} from "../../app/app.component";
 import {UserSettings} from "../../providers/user-settings/user-settings";
+import {LinkUtils} from "../../providers/link-utils/link-utils";
 
 @Component({
   selector: 'page-new-item',
@@ -46,7 +46,7 @@ export class NewItemPage {
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController, public settings: UserSettings) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController, public settings: UserSettings, public linkUtils: LinkUtils) {
     this.list = navParams.get('list');
   }
 
@@ -195,46 +195,6 @@ export class NewItemPage {
           });
         });
       });
-    });
-  }
-
-  getIcon(link: Link) {
-    if (link.content.includes("youtube.com") || link.content.includes("youtu.be")) {
-      return "logo-youtube";
-    } else if (link.content.includes("facebook.com") || link.content.includes("fb.me")){
-      return "logo-facebook";
-    } else if (link.content.includes("twitter.com") || link.content.includes("t.co")){
-      return "logo-twitter";
-    } else if (link.content.includes("twitch.com")){
-      return "logo-twitch";
-    } else if (link.content.includes("github.com")){
-      return "logo-github";
-    } else if (link.content.includes("instagram.com")){
-      return "logo-instagram";
-    } else if (link.content.includes("linkedin.com") || link.content.includes("linked.in")){
-      return "logo-linkedin";
-    } else if (link.content.includes("pinterest.com")){
-      return "logo-pinterest";
-    } else {
-      return "link";
-    }
-  }
-
-  openLink(content: String) {
-    this.browserTab.isAvailable().then(isAvailable => {
-      if (isAvailable) {
-        if (content.includes("http://") || content.includes("https://")){
-          this.browserTab.openUrl(content.toString());
-        } else {
-          this.browserTab.openUrl("https://"+content.toString());
-        }
-      } else {
-        if (content.includes("http://") || content.includes("https://")){
-          const browser = this.iab.create(content.toString());
-        } else {
-          const browser = this.iab.create("https://"+content.toString());
-        }
-      }
     });
   }
 
