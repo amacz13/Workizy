@@ -1,0 +1,42 @@
+.dark-theme {
+  @import "ionic.theme.dark";
+
+  ion-content {
+    background-color: #3c3c3c;
+    color: white;
+  }
+
+  ion-card {
+    background-color: #272b2d;
+  }
+
+  ion-card-title{
+    color: white;
+  }
+
+  ion-label{
+    color: white;
+  }
+
+  ion-card-content p {
+    color: white;
+  }
+
+  ion-item {
+    background-color: #272b2d;
+  }
+
+  ion-list {
+    background-color: #272b2d;
+    color: white;
+  }
+
+  .home-list {
+    background-color: #3c3c3c !important;
+  }
+
+  ion-list button {
+    background-color: #272b2d;
+    color: white;
+  }
+}

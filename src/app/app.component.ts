@@ -12,19 +12,22 @@ import {Link} from "../providers/link/link";
 import {FirstStartPage} from "../pages/first-start/first-start";
 import { WebIntent } from '@ionic-native/web-intent';
 import {Device} from "@ionic-native/device";
+import {NativeStorage} from "@ionic-native/native-storage";
+import {Storage} from "@ionic/storage";
+import {UserSettings} from "../providers/user-settings/user-settings";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   rootPage:any = FirstStartPage;
-  theme:string = ""
+  theme:string = "light-theme";
 
   public static storageManager:StorageManager;
   public static internetConnected: boolean = navigator.onLine;
   public static os: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent, device: Device) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent, device: Device, ns: NativeStorage, storage: Storage) {
     MyApp.storageManager = sm;
     // Device is ready, Cordova plugins & Ionic modules are loaded
     platform.ready().then(async() => {
@@ -58,6 +61,18 @@ export class MyApp {
         console.log("Platform : Electron / WebBrowser");
         MyApp.os = "browser";
       }
+
+      if (MyApp.os != "browser") ns.getItem('darkTheme').then(val => {
+        if (val) {
+          this.theme = "dark-theme";
+        }
+      });
+      else storage.get('darkTheme').then(val => {
+        if (val) {
+          this.theme = "dark-theme";
+        }
+      });
+
       if(platform.is('cordova') && device.platform != "browser") {
         // Device is an app (Windows, MacOS, Android or iOS)
         console.log("[WhatsNext] Using cordova platform...");
@@ -110,10 +125,10 @@ export class MyApp {
   }
 
   private setDarkTheme() {
-    this.theme = "ionic.theme.dark";
+    this.theme = "dark-theme";
   }
 
   private setLightTheme() {
-    this.theme = "ionic.theme.default";
+    this.theme = "light-theme";
   }
 }

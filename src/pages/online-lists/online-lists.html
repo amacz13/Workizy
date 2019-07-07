@@ -32,7 +32,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-list *ngIf="viewmode">
+  <ion-list *ngIf="viewmode" class="home-list">
     <ion-item *ngFor="let list of this.sm.onlineLists">
       <ion-thumbnail item-start>
         <img *ngIf="list.coverSource == 0" src="assets/covers/{{list.cover}}"/>

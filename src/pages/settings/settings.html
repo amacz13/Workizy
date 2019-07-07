@@ -46,21 +46,12 @@
       </ion-card-title>
       <ion-item>
         <ion-label>{{ 'Dark Theme' | translate }}</ion-label>
-        <ion-toggle disabled [(ngModel)]="darkTheme" checked="false"></ion-toggle>
+        <ion-toggle [(ngModel)]="darkTheme" checked="false" (ionChange)="applyTheme()"></ion-toggle>
       </ion-item>
       <ion-item>
         <ion-label>{{ 'Accent color' | translate }}</ion-label>
       </ion-item>
-      <button ion-button round color="primary" (click)="setAccentColor('primary')"><ion-icon *ngIf="settings.accentColor == 'primary'" name="checkmark"></ion-icon></button>
-      <button ion-button round color="amber" (click)="setAccentColor('amber')"><ion-icon *ngIf="settings.accentColor == 'amber'" name="checkmark"></ion-icon></button>
-      <button ion-button round color="teal" (click)="setAccentColor('teal')"><ion-icon *ngIf="settings.accentColor == 'teal'" name="checkmark"></ion-icon></button>
-      <button ion-button round color="red" (click)="setAccentColor('red')"><ion-icon *ngIf="settings.accentColor == 'red'" name="checkmark"></ion-icon></button>
+      <button *ngFor="let col of accentColors" ion-button round color="{{col}}" (click)="setAccentColor(col)"><ion-icon *ngIf="settings.accentColor == col" name="checkmark"></ion-icon></button>
     </ion-card-content>
-    <ion-item>
-      <button color="{{this.settings.accentColor}}" disabled (click)="applyTheme()" ion-button icon-start clear item-end>
-        <ion-icon name="save"></ion-icon>
-        {{ 'Apply' | translate }}
-      </button>
-    </ion-item>
   </ion-card>
 </ion-content>

@@ -40,9 +40,18 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   white:      #FFF,
-  amber:      #ffc107,
+  amber:      (
+    base: #ffc107,
+    contrast: #ffffff
+  ),
   teal:       #009688,
-  red:        #f44336
+  red:        #f44336,
+  pink:       #e91e63,
+  purple:     #9c27b0,
+  cyan:       #00bcd4,
+  green:      #4caf50,
+  orange:     #ff9800,
+  brown:      #795548
 );
 
 
@@ -75,7 +84,7 @@ $colors: (
 // default are overridden.
 
 //@import "ionic.theme.dark";
-@import "ionic.theme.default";
+//@import "ionic.theme.default";
 
 
 // Ionicons

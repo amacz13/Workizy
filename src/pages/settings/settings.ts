@@ -14,9 +14,17 @@ import {Storage} from "@ionic/storage";
 })
 export class SettingsPage {
   darkTheme: boolean = false;
+  accentColors = ['primary','amber','teal','red','pink','purple','cyan','green','orange','brown'];
 
   constructor(public storage: Storage,public navCtrl: NavController, public translate: TranslateService, public settings: UserSettings, public fm: FirebaseManager, public event: Events, public nativeStorage: NativeStorage) {
     //translate.setDefaultLang('en');
+    if (MyApp.os != "browser") this.nativeStorage.getItem('darkTheme').then(val => {
+        this.darkTheme = val;
+
+    });
+    else this.storage.get('darkTheme').then(val => {
+      this.darkTheme = val;
+    });
   }
 
   signIn() {
@@ -55,8 +63,14 @@ export class SettingsPage {
   }
 
   applyTheme() {
-    if (this.darkTheme) this.event.publish('theme:dark');
-    else this.event.publish('theme:light');
+    if (this.darkTheme) {
+      this.event.publish('theme:dark');
+    }
+    else {
+      this.event.publish('theme:light');
+    }
+    if (MyApp.os != "browser") this.nativeStorage.setItem('darkTheme',this.darkTheme);
+    else this.storage.set('accentColor',this.darkTheme);
   }
 
   setAccentColor(color: string) {
