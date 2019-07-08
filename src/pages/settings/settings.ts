@@ -4,7 +4,6 @@ import {UserSettings} from "../../providers/user-settings/user-settings";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
 import {Events, NavController} from "ionic-angular";
 import {FirstStartPage} from "../first-start/first-start";
-import {MyApp} from "../../app/app.component";
 import {StatusbarManager} from "../../providers/statusbar-manager/statusbar-manager";
 import {LocalStorage} from "../../providers/local-storage/local-storage";
 
@@ -46,9 +45,11 @@ export class SettingsPage {
   applyTheme() {
     if (this.darkTheme) {
       this.event.publish('theme:dark');
+      this.settings.theme = "dark-theme";
     }
     else {
       this.event.publish('theme:light');
+      this.settings.theme = "light-theme";
     }
     this.storage.set('accentColor',this.darkTheme);
   }

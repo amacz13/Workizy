@@ -27,12 +27,12 @@
 
       <ion-item>
         <ion-label>{{ 'Reminder' | translate }}</ion-label>
-        <ion-toggle disabled [(ngModel)]="reminderEnabled"></ion-toggle>
+        <ion-toggle [(ngModel)]="reminderEnabled" color="{{this.settings.accentColor}}"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="reminderEnabled">
         <ion-label>{{ 'Reminder date' | translate }}</ion-label>
-        <ion-datetime min="{{getDateNow()}}" max="{{getMaxDate()}}" displayFormat="DD/MM/YYYY HH:mm" [(ngModel)]="reminderDate"></ion-datetime>
+        <ion-datetime min="{{todaysDate}}" max="{{maxDate}}" displayFormat="{{'DateFormat' | translate}}" [(ngModel)]="reminderDate" cancelText="{{'Cancel' | translate}}" doneText="{{'Done' | translate}}"></ion-datetime>
       </ion-item>
 
     </ion-list>

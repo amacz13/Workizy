@@ -167,4 +167,11 @@ export class ListViewerPage {
       });
     });
   }
+
+  getFormattedDate(reminderDate: number):string {
+    let d = new Date(reminderDate);
+    let today = new Date();
+    if (d.getDay() == today.getDay() && d.getMonth() == today.getMonth() && d.getFullYear() == today.getFullYear()) return d.getHours() +":"+d.getMinutes();
+    else return d.toLocaleString();
+  }
 }

@@ -46,6 +46,7 @@ import {IonicStorageModule} from "@ionic/storage";
 import {LocalStorage} from '../providers/local-storage/local-storage';
 import { StatusbarManager } from '../providers/statusbar-manager/statusbar-manager';
 import { LinkUtils } from '../providers/link-utils/link-utils';
+import {WhatsNextPage} from "../pages/whats-next/whats-next";
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { LinkUtils } from '../providers/link-utils/link-utils';
     ChooseCoverFromSamplesPage,
     ListViewerPage,
     NewItemPage,
-    FirstStartPage
+    FirstStartPage,
+    WhatsNextPage
   ],
   imports: [
     BrowserModule,
@@ -93,7 +95,8 @@ import { LinkUtils } from '../providers/link-utils/link-utils';
     ChooseCoverFromSamplesPage,
     ListViewerPage,
     NewItemPage,
-    FirstStartPage
+    FirstStartPage,
+    WhatsNextPage
   ],
   providers: [
     StatusBar,

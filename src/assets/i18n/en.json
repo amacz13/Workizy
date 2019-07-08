@@ -75,5 +75,7 @@
   "Delete": "Delete",
   "Please fill at least one input": "Please fill at least one input",
   "Edit": "Edit",
-  "Remove": "Remove"
+  "Remove": "Remove",
+  "Whats Next ?": "What's Next ?",
+  "DateFormat": "MM/DD/YYYY HH:mm"
 }

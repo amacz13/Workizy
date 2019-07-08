@@ -26,6 +26,12 @@
             </button>
           </ion-list>
           <ion-item>
+            <ion-col *ngIf="item.reminderDate != null" align-self-center text-center>
+              <ion-icon name="clock" item-start></ion-icon>
+              <ion-note>
+                {{getFormattedDate(item.reminderDate)}}
+              </ion-note>
+            </ion-col>
             <button color="{{this.settings.accentColor}}" (click)="deleteItem(item)" ion-button icon-start clear item-end>
               <ion-icon name="trash"></ion-icon>
               {{ 'Delete' | translate }}

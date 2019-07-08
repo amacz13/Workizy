@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar color="{{this.settings.accentColor}}">
+    <ion-title>{{"Whats Next ?" | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngFor="let date of this.reminders.keys()">
+    <h5>{{date.toLocaleString()}}</h5>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let item of this.reminders.get(date)" col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3>
+          <ion-card (click)="showListFromItem(item)">
+            <img *ngIf="item.picture != null" src="{{item.picture}}"/>
+            <ion-card-content>
+              <ion-card-title *ngIf="item.title != null">{{item.title}}</ion-card-title>
+              <p *ngIf="item.textContent != null">{{item.textContent}}</p>
+            </ion-card-content>
+            <ion-list *ngIf="item.links != null && item.links.length > 0">
+              <button *ngFor="let link of item.links" (click)="linkUtils.openLink(link.content)" ion-item>
+                <ion-icon name="{{linkUtils.getIcon(link)}}" item-start></ion-icon>
+                <ion-label>{{link.content}}</ion-label>
+              </button>
+            </ion-list>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

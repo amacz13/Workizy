@@ -41,6 +41,7 @@ export class HomePage {
 
   showNewList() {
     const modal = this.modalCtrl.create(NewListPage);
+    //const modal = this.modalCtrl.create(NewListPage,null,{cssClass: this.settings.theme});
     modal.present();
   }
 

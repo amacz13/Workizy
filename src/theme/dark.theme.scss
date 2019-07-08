@@ -1,5 +1,4 @@
 .dark-theme {
-  @import "ionic.theme.dark";
 
   ion-content {
     background-color: #3c3c3c;
@@ -37,6 +36,10 @@
 
   ion-list button {
     background-color: #272b2d;
+    color: white;
+  }
+
+  ion-select {
     color: white;
   }
 }

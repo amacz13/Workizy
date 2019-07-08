@@ -25,6 +25,9 @@ export class NewItemPage {
   reminderDate: any = null;
   picture: String = null;
 
+  maxDate:string;
+  todaysDate: string;
+
   links: Link[] = new Array<Link>();
   tasks: ChecklistItem[] = new Array<ChecklistItem>();
   list: List;
@@ -48,6 +51,8 @@ export class NewItemPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController, public settings: UserSettings, public linkUtils: LinkUtils) {
     this.list = navParams.get('list');
+    this.getMaxDate();
+    this.getDateNow();
   }
 
   ionViewDidLoad() {
@@ -154,12 +159,12 @@ export class NewItemPage {
   }
 
   getDateNow() {
-    return new Date().toISOString();
+    this.todaysDate =  new Date().toISOString();
   }
 
   getMaxDate() {
     let date = new Date();
-    return new Date(date.getFullYear()+25,12,31,23,59).toISOString();
+    this.maxDate = new Date(date.getFullYear()+25,12,31,23,59).toISOString();
   }
 
   createLink() {
