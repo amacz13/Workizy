@@ -47,6 +47,8 @@ import {LocalStorage} from '../providers/local-storage/local-storage';
 import { StatusbarManager } from '../providers/statusbar-manager/statusbar-manager';
 import { LinkUtils } from '../providers/link-utils/link-utils';
 import {WhatsNextPage} from "../pages/whats-next/whats-next";
+import {File} from "@ionic-native/file";
+import {FilePath} from "@ionic-native/file-path";
 
 @NgModule({
   declarations: [
@@ -125,7 +127,9 @@ import {WhatsNextPage} from "../pages/whats-next/whats-next";
     WebIntent,
     LocalStorage,
     StatusbarManager,
-    LinkUtils
+    LinkUtils,
+    File,
+    FilePath
   ]
 })
 export class AppModule {}

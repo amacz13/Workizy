@@ -1,4 +1,4 @@
-# Workizy [![CodeFactor](https://www.codefactor.io/repository/github/amacz13/workizy/badge)](https://www.codefactor.io/repository/github/amacz13/workizy) [![CircleCI](https://circleci.com/gh/amacz13/Workizy.svg?style=svg)](https://circleci.com/gh/amacz13/Workizy)
+# Workizy [![CodeFactor](https://www.codefactor.io/repository/github/amacz13/workizy/badge)] [![CircleCI](https://circleci.com/gh/amacz13/Workizy.svg?style=svg)](https://circleci.com/gh/amacz13/Workizy)
 
 Manage your tasks and work easily !
 

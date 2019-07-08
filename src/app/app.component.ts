@@ -13,6 +13,8 @@ import { WebIntent } from '@ionic-native/web-intent';
 import {Device} from "@ionic-native/device";
 import {LocalStorage} from "../providers/local-storage/local-storage";
 import {TranslateService} from "@ngx-translate/core";
+import { File } from '@ionic-native/file';
+import {FilePath} from "@ionic-native/file-path";
 
 @Component({
   templateUrl: 'app.html'
@@ -25,7 +27,7 @@ export class MyApp {
   public static internetConnected: boolean = navigator.onLine;
   public static os: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent, device: Device, storage: LocalStorage, translate: TranslateService) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent, device: Device, storage: LocalStorage, translate: TranslateService, file: File, filePath: FilePath) {
     MyApp.storageManager = sm;
     // Device is ready, Cordova plugins & Ionic modules are loaded
     platform.ready().then(async() => {
@@ -37,10 +39,40 @@ export class MyApp {
         webIntent.getIntent().then((data) => {
             console.log('Intent OK', data);
             if (data.action == "android.intent.action.SEND"){
+              let item: ListItem = new ListItem();
               if (data.type == "image/jpeg") {
+                if (data.extras["android.intent.extra.STREAM"] != null) {
+                  console.log("Picture : ", data.extras["android.intent.extra.STREAM"]);
 
+                  filePath.resolveNativePath(data.extras["android.intent.extra.STREAM"]).then( fileUri => {
+                    console.log("File URI : ",fileUri);
+                    let fileURL = fileUri.split("/");
+                    let path = "";
+                    for (let i = 0; i < fileURL.length-1; i++){
+                      path+= fileURL[i]+"/";
+                    }
+                    let fileName = fileURL[fileURL.length-1];
+                    console.log("Path : ",path);
+                    console.log("File : ",fileName);
+                    file.readAsDataURL(path,fileName).then( base64 => {
+                      console.log("Picture base64 : ",base64);
+                    }).catch( err => console.error("Error while fetching picture : ",err));
+
+                  }).catch(error => console.error("Error while converting picture uri : ",error));
+
+                }
+                if (data.extras["android.intent.extra.SUBJECT"] != null) {
+                  console.log("Title : ", data.extras["android.intent.extra.SUBJECT"]);
+                }
+                if (data.extras["android.intent.extra.TEXT"] != null) {
+                  console.log("Text : ", data.extras["android.intent.extra.TEXT"]);
+                }
               } else if (data.type == "text/plain") {
 
+              }
+            } else if (data.action == "android.intent.action.RUN") {
+              if (data.extras["android.intent.extra.SUBJECT"] == "QUICK_NEW_ITEM"){
+                console.log("Quick New Item !");
               }
             }
             (<any>window).plugins.Shortcuts.supportsPinned(function(supported) {
