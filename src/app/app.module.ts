@@ -20,8 +20,6 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { SettingsPage } from "../pages/settings/settings";
-import { Encryption } from '../providers/encryption/encryption';
-import { AES256 } from "@ionic-native/aes-256";
 import { Device } from "@ionic-native/device";
 import { UserSettings } from '../providers/user-settings/user-settings';
 import { NewListPage } from "../pages/new-list/new-list";
@@ -49,6 +47,7 @@ import { LinkUtils } from '../providers/link-utils/link-utils';
 import {WhatsNextPage} from "../pages/whats-next/whats-next";
 import {File} from "@ionic-native/file";
 import {FilePath} from "@ionic-native/file-path";
+import { HTTP } from '@ionic-native/http';
 
 @NgModule({
   declarations: [
@@ -111,9 +110,8 @@ import {FilePath} from "@ionic-native/file-path";
     ChecklistItem,
     HttpClient,
     NativeStorage,
+    HTTP,
     SQLite,
-    Encryption,
-    AES256,
     Device,
     UserSettings,
     Camera,

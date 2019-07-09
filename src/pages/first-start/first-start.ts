@@ -34,6 +34,7 @@ export class FirstStartPage {
   backEnabled : boolean = false;
   accountExists : boolean = false;
   userName: any;
+  accentColors = ['primary','amber','teal','red','pink','purple','cyan','green','orange','brown'];
 
   get os() {
     return MyApp.os;
@@ -327,11 +328,7 @@ export class FirstStartPage {
                             await loading.dismiss();
                             // Showing HomePage
                             //this.navCtrl.setRoot(TabsPage).then(() => loading.dismissAll());
-                            if (this.settings.user.displayName == null) {
-                              this.next();
-                            } else {
-                              await this.goToHomePage();
-                            }
+                            this.next();
                           });
                         });
                       });
@@ -422,6 +419,14 @@ export class FirstStartPage {
     this.navCtrl.setRoot(TabsPage);
   }
 
+  async goToDisplayName(){
+    if (this.settings.user.displayName == null) {
+      this.next();
+    } else {
+      await this.goToHomePage();
+    }
+  }
+
   setDisplayName() {
     this.settings.user.updateProfile({displayName : this.userName}).then(val => {
       console.log(val);
@@ -429,5 +434,11 @@ export class FirstStartPage {
         this.goToHomePage();
       });
     });
+  }
+
+  setAccentColor(color: string) {
+    this.settings.accentColor = color;
+    this.sb.setStatusBarColor(color);
+    this.storage.set('accentColor',this.settings.accentColor);
   }
 }

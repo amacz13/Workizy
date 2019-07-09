@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {LoadingController, ModalController, NavController} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
-import {Encryption} from "../../providers/encryption/encryption";
 import {NewListPage} from "../new-list/new-list";
 import {List} from "../../providers/list/list";
 import {ListViewerPage} from "../list-viewer/list-viewer";
@@ -25,7 +24,7 @@ export class HomePage {
   searchInput: string;
   welcomePhrase:String;
 
-  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public crypt: Encryption, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings, public ln: LocalNotifications, public store: InAppPurchase2, public linkUtils: LinkUtils) {
+  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings, public ln: LocalNotifications, public store: InAppPurchase2, public linkUtils: LinkUtils) {
     this.getWelcomePhrase().subscribe(val => this.welcomePhrase = val);
   }
 

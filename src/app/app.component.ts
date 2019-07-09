@@ -15,6 +15,7 @@ import {LocalStorage} from "../providers/local-storage/local-storage";
 import {TranslateService} from "@ngx-translate/core";
 import { File } from '@ionic-native/file';
 import {FilePath} from "@ionic-native/file-path";
+import { HTTP } from '@ionic-native/http';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,7 +28,7 @@ export class MyApp {
   public static internetConnected: boolean = navigator.onLine;
   public static os: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent, device: Device, storage: LocalStorage, translate: TranslateService, file: File, filePath: FilePath) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, sm: StorageManager, event: Events, webIntent: WebIntent, device: Device, storage: LocalStorage, translate: TranslateService, file: File, filePath: FilePath, http: HTTP) {
     MyApp.storageManager = sm;
     // Device is ready, Cordova plugins & Ionic modules are loaded
     platform.ready().then(async() => {
@@ -68,7 +69,22 @@ export class MyApp {
                   console.log("Text : ", data.extras["android.intent.extra.TEXT"]);
                 }
               } else if (data.type == "text/plain") {
+                if (data.extras["android.intent.extra.SUBJECT"] != null && data.extras["android.intent.extra.TEXT"] != null) {
+                  let subject: string = data.extras["android.intent.extra.SUBJECT"];
+                  let text: string = data.extras["android.intent.extra.TEXT"];
+                  if (text.includes("http://www.deezer.com")){
+                    console.log("Catching Share infos from Deezer App");
+                    let url = "https://api.deezer.com/2.0/search?q="+subject;
+                    console.log(url);
+                    http.get(url, {}, {'Content-Type': 'application/json'}).then( data => {
+                      console.log("Deezer API Result : ",JSON.parse(data.data));
+                      console.log("Deezer Preview URL : ",JSON.parse(data.data)['data'][0].preview);
+                    }).catch( err => console.error("Error while loading Title from Deezer : ",err));
+                  }
+                } else if (data.extras["android.intent.extra.TEXT"] != null) {
+                  let text: string = data.extras["android.intent.extra.TEXT"];
 
+                }
               }
             } else if (data.action == "android.intent.action.RUN") {
               if (data.extras["android.intent.extra.SUBJECT"] == "QUICK_NEW_ITEM"){

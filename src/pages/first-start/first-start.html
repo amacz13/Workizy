@@ -99,6 +99,22 @@
         </ion-row>
       </ion-grid>
     </ion-slide>
+    <!-- Choose Color -->
+    <ion-slide padding>
+      <ion-grid>
+        <ion-row>
+          <h1>{{ "Let's customize your application" | translate }}</h1>
+        </ion-row>
+        <ion-row>
+          <button *ngFor="let col of accentColors" ion-button round color="{{col}}" (click)="setAccentColor(col)"><ion-icon *ngIf="settings.accentColor == col" name="checkmark"></ion-icon></button>
+        </ion-row>
+        <ion-row>
+          <button (click)="goToDisplayName()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
+          </button>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
     <!-- User Display Name -->
     <ion-slide padding>
       <ion-grid>
