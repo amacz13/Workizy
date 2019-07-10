@@ -48,6 +48,7 @@ import {WhatsNextPage} from "../pages/whats-next/whats-next";
 import {File} from "@ionic-native/file";
 import {FilePath} from "@ionic-native/file-path";
 import { HTTP } from '@ionic-native/http';
+import { IntentManager } from '../providers/intent-manager/intent-manager';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import { HTTP } from '@ionic-native/http';
     StatusbarManager,
     LinkUtils,
     File,
-    FilePath
+    FilePath,
+    IntentManager
   ]
 })
 export class AppModule {}
