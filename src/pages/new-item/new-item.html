@@ -63,7 +63,7 @@
     <ion-list>
       <ion-item-sliding  *ngFor="let task of tasks">
         <ion-item>
-          <ion-checkbox item-start [ngModel]="task.isChecked" color="{{this.settings.accentColor}}"></ion-checkbox>
+          <ion-checkbox item-start [ngModel]="task.isChecked" (click)="toggleCheck(task)" color="{{this.settings.accentColor}}"></ion-checkbox>
           <ion-label>{{task.text}}</ion-label>
         </ion-item>
         <ion-item-options side="right">

@@ -31,6 +31,12 @@
               <ion-label>{{link.content}}</ion-label>
             </button>
           </ion-list>
+          <ion-list *ngIf="item.checklistitems != null && item.checklistitems.length > 0">
+            <button *ngFor="let task of item.checklistitems" ion-item>
+              <ion-checkbox item-start [ngModel]="task.isChecked" disabled color="{{this.settings.accentColor}}"></ion-checkbox>
+              <ion-label>{{task.text}}</ion-label>
+            </button>
+          </ion-list>
         </ion-card>
       </ion-col>
     </ion-row>

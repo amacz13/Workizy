@@ -20,9 +20,15 @@
             <p *ngIf="item.textContent != null">{{item.textContent}}</p>
           </ion-card-content>
           <ion-list *ngIf="item.links != null && item.links.length > 0">
-            <button *ngFor="let link of item.links" (click)="linkUtils.openLink(link.content)" ion-item>
+            <button *ngFor="let link of item.links.slice(0,3)" (click)="linkUtils.openLink(link.content)" ion-item>
               <ion-icon name="{{linkUtils.getIcon(link)}}" item-start></ion-icon>
               <ion-label>{{link.content}}</ion-label>
+            </button>
+          </ion-list>
+          <ion-list *ngIf="item.checklistitems != null && item.checklistitems.length > 0">
+            <button *ngFor="let task of item.checklistitems.slice(0,3)" ion-item>
+              <ion-checkbox item-start [ngModel]="task.isChecked" disabled color="{{this.settings.accentColor}}"></ion-checkbox>
+              <ion-label>{{task.text}}</ion-label>
             </button>
           </ion-list>
           <ion-item>

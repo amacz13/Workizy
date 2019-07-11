@@ -154,6 +154,12 @@ export class ListViewerPage {
             await this.sm.removeLink(l);
           }
         }
+        if(item.checklistitems != null && item.checklistitems.length > 0) {
+          for (let clitem of item.checklistitems) {
+            console.log("Removing ChecklistItem : ", clitem);
+            await this.sm.removeChecklistItem(clitem);
+          }
+        }
         console.log("Removing item : ",item);
         if (this.list.isSynchronized)  this.fm.deleteItem(item);
         await this.sm.removeItem(item);
@@ -174,4 +180,5 @@ export class ListViewerPage {
     if (d.getDay() == today.getDay() && d.getMonth() == today.getMonth() && d.getFullYear() == today.getFullYear()) return d.getHours() +":"+d.getMinutes();
     else return d.toLocaleString();
   }
+
 }

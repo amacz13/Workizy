@@ -54,4 +54,28 @@
       <button *ngFor="let col of accentColors" ion-button round color="{{col}}" (click)="setAccentColor(col)"><ion-icon *ngIf="settings.accentColor == col" name="checkmark"></ion-icon></button>
     </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>
+        {{ 'About Workizy' | translate }}
+      </ion-card-title>
+      <p><b>{{ 'Workizy Beta 0.2' | translate }}</b> - {{ 'Build 071119' | translate }}</p>
+      <p>{{ 'Developped and maintained with ❤ by Axel Maczkowiak' | translate }}</p>
+      <ion-list>
+        <button (click)="linkUtils.openLink('https://twitter.com/workizy')" ion-item>
+          <ion-icon name="logo-twitter" item-start></ion-icon>
+          <ion-label>@workizy</ion-label>
+        </button>
+        <button (click)="linkUtils.openLink('https://twitter.com/amaczkowiak')" ion-item>
+          <ion-icon name="logo-twitter" item-start></ion-icon>
+          <ion-label>@amaczkowiak</ion-label>
+        </button>
+        <button (click)="linkUtils.openLink('https://support.amacz13.com')" ion-item>
+          <ion-icon name="help-circle" item-start></ion-icon>
+          <ion-label>{{ 'Support Center' | translate }}</ion-label>
+        </button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -83,7 +83,7 @@ export class NewItemPage {
       item.reminderDate = this.reminderDate;
       item.links = this.links;
       item.firebaseId = "NOTAPPLICABLE";
-      this.list.items.push(item);
+      item.checklistitems = this.tasks;
 
       if (this.list.isSynchronized) {
         await this.sm.addSyncedItem(item);
@@ -92,8 +92,14 @@ export class NewItemPage {
           link.item = item;
           await this.sm.saveLink(link);
         }
+        for (let task of this.tasks) {
+          task.listitem = item;
+          await this.sm.saveChecklistItem(task);
+        }
         await this.sm.saveListItem(item);
       }
+
+      this.list.items.push(item);
 
       console.log("Saving new item...");
       console.log(this.list);
@@ -232,6 +238,7 @@ export class NewItemPage {
                   text: add,
                   handler: data => {
                     let task: ChecklistItem = new ChecklistItem();
+                    task.isChecked = false;
                     task.text = data.content;
                     this.tasks.push(task);
                   }
@@ -257,5 +264,15 @@ export class NewItemPage {
     if (index > -1) {
       this.tasks.splice(index, 1);
     }
+  }
+
+  toggleCheck(task: ChecklistItem) {
+    let index = this.tasks.indexOf(task, 0);
+    if (index > -1) {
+      this.tasks.splice(index, 1);
+    }
+    task.isChecked = !task.isChecked;
+    this.tasks.splice(index, 0,task);
+    console.log("Item Tasks : ",this.tasks);
   }
 }

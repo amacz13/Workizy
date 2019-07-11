@@ -6,6 +6,7 @@ import {Events, NavController} from "ionic-angular";
 import {FirstStartPage} from "../first-start/first-start";
 import {StatusbarManager} from "../../providers/statusbar-manager/statusbar-manager";
 import {LocalStorage} from "../../providers/local-storage/local-storage";
+import {LinkUtils} from "../../providers/link-utils/link-utils";
 
 @Component({
   selector: 'page-settings',
@@ -15,7 +16,7 @@ export class SettingsPage {
   darkTheme: boolean = false;
   accentColors = ['primary','amber','teal','red','pink','purple','cyan','green','orange','brown'];
 
-  constructor(public storage: LocalStorage,public navCtrl: NavController, public translate: TranslateService, public settings: UserSettings, public fm: FirebaseManager, public event: Events, public sb: StatusbarManager) {
+  constructor(public storage: LocalStorage,public navCtrl: NavController, public translate: TranslateService, public settings: UserSettings, public fm: FirebaseManager, public event: Events, public sb: StatusbarManager, public linkUtils: LinkUtils) {
     this.storage.get('darkTheme').then(val => {
       this.darkTheme = val;
     });
