@@ -79,8 +79,8 @@ import {Media} from "@ionic-native/media";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    IonicModule.forRoot(MyApp),
-    //IonicModule.forRoot(MyApp, {mode: 'ios'}),
+    //IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {mode: 'md',tabsHideOnSubPages:true}),
     IonicStorageModule.forRoot({
       name: '__workizyKeystore',
       driverOrder: ['indexeddb', 'localstorage']
