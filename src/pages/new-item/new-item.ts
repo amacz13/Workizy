@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import {ActionSheetController, AlertController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {
+  ActionSheetController,
+  AlertController,
+  ModalController,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import {Link} from "../../providers/link/link";
@@ -12,6 +19,7 @@ import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
 import {UserSettings} from "../../providers/user-settings/user-settings";
 import {LinkUtils} from "../../providers/link-utils/link-utils";
+import {SearchOnDeezerPage} from "../search-on-deezer/search-on-deezer";
 
 @Component({
   selector: 'page-new-item',
@@ -50,7 +58,7 @@ export class NewItemPage {
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController, public settings: UserSettings, public linkUtils: LinkUtils) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController, public settings: UserSettings, public linkUtils: LinkUtils, public modalCtrl: ModalController) {
     this.list = navParams.get('list');
     this.getMaxDate();
     this.getDateNow();
@@ -276,5 +284,75 @@ export class NewItemPage {
     task.isChecked = !task.isChecked;
     this.tasks.splice(index, 0,task);
     console.log("Item Tasks : ",this.tasks);
+  }
+
+  chooseMusic() {
+    this.translate.get('Choose a Music').toPromise().then( title => {
+      this.translate.get('From URL').toPromise().then( url => {
+        this.translate.get('Search on Deezer').toPromise().then( deezer => {
+          this.translate.get('Cancel').toPromise().then( cancel => {
+            const actionSheet = this.asCtrl.create({
+              title: title,
+              buttons: [
+                {
+                  text: url,
+                  handler: () => {
+                    console.log('Music From URL');
+                    this.translate.get('Music From URL').toPromise().then( title1 => {
+                      this.translate.get('URL').toPromise().then( placeholder => {
+                        this.translate.get('Cancel').toPromise().then( cancel => {
+                          this.translate.get('Confirm').toPromise().then( add => {
+                            let alert = this.alertCtrl.create({
+                              title: title1,
+                              inputs: [
+                                {
+                                  name: 'content',
+                                  placeholder: placeholder,
+                                  type: 'url'
+                                }
+                              ],
+                              buttons: [
+                                {
+                                  text: cancel,
+                                  role: 'cancel',
+                                  handler: data => {
+                                    console.log('Cancel clicked');
+                                  }
+                                },
+                                {
+                                  text: add,
+                                  handler: data => {
+                                    this.music = data.content;
+                                  }
+                                }
+                              ]
+                            });
+                            alert.present();
+                          });
+                        });
+                      });
+                    });
+                  }
+                },{
+                  text: deezer,
+                  handler: () => {
+                    console.log('Music From Deezer');
+                    let modal = this.modalCtrl.create(SearchOnDeezerPage);
+                    modal.present();
+                  }
+                },{
+                  text: cancel,
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                  }
+                }
+              ]
+            });
+            actionSheet.present();
+          });
+        });
+      });
+    });
   }
 }

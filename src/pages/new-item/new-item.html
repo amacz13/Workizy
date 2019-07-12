@@ -21,10 +21,9 @@
         <ion-textarea [(ngModel)]="textContent" type="text"></ion-textarea>
       </ion-item>
 
-      <ion-item>
-        <ion-label floating>{{ 'Music' | translate }}</ion-label>
-        <ion-textarea [(ngModel)]="music" type="text"></ion-textarea>
-      </ion-item>
+      <button ion-item (click)="chooseMusic()">
+        {{ 'Music' | translate }}
+      </button>
 
       <button ion-item (click)="choosePicture()">
         {{ 'Picture' | translate }}

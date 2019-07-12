@@ -50,6 +50,7 @@ import {FilePath} from "@ionic-native/file-path";
 import { HTTP } from '@ionic-native/http';
 import { IntentManager } from '../providers/intent-manager/intent-manager';
 import {Media} from "@ionic-native/media";
+import {SearchOnDeezerPage} from "../pages/search-on-deezer/search-on-deezer";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import {Media} from "@ionic-native/media";
     ListViewerPage,
     NewItemPage,
     FirstStartPage,
-    WhatsNextPage
+    WhatsNextPage,
+    SearchOnDeezerPage
   ],
   imports: [
     BrowserModule,
@@ -99,7 +101,8 @@ import {Media} from "@ionic-native/media";
     ListViewerPage,
     NewItemPage,
     FirstStartPage,
-    WhatsNextPage
+    WhatsNextPage,
+    SearchOnDeezerPage
   ],
   providers: [
     StatusBar,

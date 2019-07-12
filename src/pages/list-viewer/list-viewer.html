@@ -18,8 +18,9 @@
           <ion-card-content>
             <ion-card-title *ngIf="item.title != null">{{item.title}}</ion-card-title>
             <p *ngIf="item.textContent != null">{{item.textContent}}</p>
-            <button *ngIf="item.musicURL != null" (click)="playMusic(item.musicURL)" ion-item>
-              <ion-icon name="play" item-start></ion-icon>
+            <button *ngIf="item.musicURL != null" (click)="playOrStopMusic(item.musicURL)" ion-item>
+              <ion-icon *ngIf="currentMusic == item.musicURL" name="pause" item-start></ion-icon>
+              <ion-icon *ngIf="currentMusic == null || currentMusic != item.musicURL" name="play" item-start></ion-icon>
               <ion-label>{{item.musicURL}}</ion-label>
             </button>
           </ion-card-content>

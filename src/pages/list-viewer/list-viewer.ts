@@ -22,6 +22,11 @@ export class ListViewerPage {
   list: List;
   items: ListItem[] = new Array<ListItem>();
 
+  currentMusic: string = null;
+
+  audioMedia: MediaObject;
+  jsAudio : any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager, public settings: UserSettings, public linkUtils: LinkUtils, public media: Media) {
     this.list = navParams.get("list");
     //this.items = this.sm.getListItems(this.list);
@@ -183,14 +188,14 @@ export class ListViewerPage {
     else return d.toLocaleString();
   }
 
-  playMusic(musicURL: string) {
+  playOrStopMusic(musicURL: string) {
     console.log("Playing song : ",musicURL);
     if (MyApp.os == "osx"){
-      let audio = new Audio(musicURL);
-      audio.play();
+      this.jsAudio = new Audio(musicURL);
+      this.jsAudio.play();
     } else {
-      let file: MediaObject = this.media.create(musicURL);
-      file.play();
+      this.audioMedia = this.media.create(musicURL);
+      this.audioMedia.play();
     }
   }
 }
