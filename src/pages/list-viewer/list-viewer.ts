@@ -10,6 +10,8 @@ import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager
 import {TranslateService} from "@ngx-translate/core";
 import {UserSettings} from "../../providers/user-settings/user-settings";
 import {LinkUtils} from "../../providers/link-utils/link-utils";
+import { Media, MediaObject } from '@ionic-native/media';
+import {MyApp} from "../../app/app.component";
 
 @Component({
   selector: 'page-list-viewer',
@@ -20,7 +22,7 @@ export class ListViewerPage {
   list: List;
   items: ListItem[] = new Array<ListItem>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager, public settings: UserSettings, public linkUtils: LinkUtils) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager, public settings: UserSettings, public linkUtils: LinkUtils, public media: Media) {
     this.list = navParams.get("list");
     //this.items = this.sm.getListItems(this.list);
     this.items = this.list.items;
@@ -181,4 +183,14 @@ export class ListViewerPage {
     else return d.toLocaleString();
   }
 
+  playMusic(musicURL: string) {
+    console.log("Playing song : ",musicURL);
+    if (MyApp.os == "osx"){
+      let audio = new Audio(musicURL);
+      audio.play();
+    } else {
+      let file: MediaObject = this.media.create(musicURL);
+      file.play();
+    }
+  }
 }

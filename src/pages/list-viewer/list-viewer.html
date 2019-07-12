@@ -18,6 +18,10 @@
           <ion-card-content>
             <ion-card-title *ngIf="item.title != null">{{item.title}}</ion-card-title>
             <p *ngIf="item.textContent != null">{{item.textContent}}</p>
+            <button *ngIf="item.musicURL != null" (click)="playMusic(item.musicURL)" ion-item>
+              <ion-icon name="play" item-start></ion-icon>
+              <ion-label>{{item.musicURL}}</ion-label>
+            </button>
           </ion-card-content>
           <ion-list *ngIf="item.links != null && item.links.length > 0">
             <button *ngFor="let link of item.links.slice(0,3)" (click)="linkUtils.openLink(link.content)" ion-item>

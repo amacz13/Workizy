@@ -24,6 +24,7 @@ export class NewItemPage {
   reminderEnabled: boolean = false;
   reminderDate: any = null;
   picture: String = null;
+  music: String = null;
 
   maxDate:string;
   todaysDate: string;
@@ -84,6 +85,7 @@ export class NewItemPage {
       item.links = this.links;
       item.firebaseId = "NOTAPPLICABLE";
       item.checklistitems = this.tasks;
+      item.musicURL = this.music;
 
       if (this.list.isSynchronized) {
         await this.sm.addSyncedItem(item);

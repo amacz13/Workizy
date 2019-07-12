@@ -49,6 +49,7 @@ import {File} from "@ionic-native/file";
 import {FilePath} from "@ionic-native/file-path";
 import { HTTP } from '@ionic-native/http';
 import { IntentManager } from '../providers/intent-manager/intent-manager';
+import {Media} from "@ionic-native/media";
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { IntentManager } from '../providers/intent-manager/intent-manager';
     LinkUtils,
     File,
     FilePath,
-    IntentManager
+    IntentManager,
+    Media
   ]
 })
 export class AppModule {}

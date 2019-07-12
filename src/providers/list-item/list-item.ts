@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn
-} from "typeorm";
+import {Column, Entity, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
 import {List} from "../list/list";
 import {Link} from "../link/link";
 import {ChecklistItem} from "../checklist-item/checklist-item";
@@ -23,6 +15,8 @@ export class ListItem {
   @Column({nullable: true}) textContent: String;
 
   @Column({nullable: true}) picture: String;
+  @Column({nullable: true}) musicURL: String;
+
   // Date informations
   @Column() creationDate: number;
   @Column() lastEditionDate: number;

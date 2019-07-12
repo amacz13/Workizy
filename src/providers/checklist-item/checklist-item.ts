@@ -12,7 +12,7 @@ export class ChecklistItem {
   isChecked : boolean;
 
   @ManyToOne(type => ListItem, cl => cl.checklistitems, {
-    cascade: ['insert']
+    cascade: ['insert'], onDelete: 'CASCADE'
   })
   listitem: ListItem;
 
