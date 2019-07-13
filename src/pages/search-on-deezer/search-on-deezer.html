@@ -10,5 +10,18 @@
 </ion-header>
 
 <ion-content padding>
-
+  <ion-content padding>
+    <ion-searchbar [(ngModel)]="searchval" (ionInput)="search(searchval)" animated="true"></ion-searchbar>
+    <ion-card>
+      <ion-list>
+        <button ion-item *ngFor="let track of this.list" (click)="select(track)">
+          <ion-thumbnail item-start>
+            <img src="{{track.coverUrl}}">
+          </ion-thumbnail>
+          <h2>{{track.title}}</h2>
+          <p>{{track.artist}}</p>
+        </button>
+      </ion-list>
+    </ion-card>
+  </ion-content>
 </ion-content>

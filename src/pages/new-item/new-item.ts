@@ -338,6 +338,19 @@ export class NewItemPage {
                   handler: () => {
                     console.log('Music From Deezer');
                     let modal = this.modalCtrl.create(SearchOnDeezerPage);
+                    modal.onDidDismiss( data => {
+                      if (data.autofill){
+                        console.log("Autofill Item");
+                        this.music = data.track.previewUrl;
+                        this.title = data.track.title;
+                        this.textContent = data.track.artist;
+                        this.picture = data.track.coverUrl;
+                        this.createItem();
+                      } else {
+                        console.log("No Autofill Item");
+                        this.music = data.track.previewUrl;
+                      }
+                    });
                     modal.present();
                   }
                 },{
