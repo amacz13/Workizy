@@ -102,7 +102,7 @@
     "mem": ">=4.0.0",
     "lodash": ">=4.17.13"
   },
-  "description": "An Ionic project",
+  "description": "Task and work manager",
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},

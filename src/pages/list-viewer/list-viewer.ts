@@ -189,7 +189,8 @@ export class ListViewerPage {
     else return d.toLocaleString();
   }
 
-  playOrStopMusic(musicURL: string) {
+  playOrStopMusic(item: ListItem) {
+    let musicURL = item.musicURL.toString();
     console.log("Playing song : ",musicURL);
     if (MyApp.os == "osx"){
       if (this.currentMusic == null) {
@@ -199,7 +200,9 @@ export class ListViewerPage {
         this.jsAudio.onended = (event) => {
           console.log("End of playback !");
           this.currentMusic = null;
+          document.title = "Workizy";
         };
+        if (item.title != null || item.textContent != null) document.title = item.title + " - " + item.textContent;
       } else {
         this.jsAudio.pause();
         this.currentMusic = null;
