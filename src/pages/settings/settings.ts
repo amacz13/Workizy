@@ -52,7 +52,7 @@ export class SettingsPage {
       this.event.publish('theme:light');
       this.settings.theme = "light-theme";
     }
-    this.storage.set('accentColor',this.darkTheme);
+    this.storage.set('darkTheme',this.darkTheme);
   }
 
   setAccentColor(color: string) {

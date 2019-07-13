@@ -29,7 +29,8 @@ export class SearchOnDeezerPage {
     if (MyApp.os == "android" || MyApp.os == "ios") {
       this.http.get("https://api.deezer.com/search?q=" + value, {}, {'Content-Type': 'application/json'}).then(data => {
         //nbResp = data['total'];
-        for (let element of data['data']) {
+        //console.log(data);
+        for (let element of JSON.parse(data.data)['data']) {
           //console.log(element);
           let song: DeezerSong = new DeezerSong(element.title, element.artist.name, element.preview, element.album.cover_medium);
           this.list.push(song);
