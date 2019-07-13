@@ -191,11 +191,31 @@ export class ListViewerPage {
   playOrStopMusic(musicURL: string) {
     console.log("Playing song : ",musicURL);
     if (MyApp.os == "osx"){
-      this.jsAudio = new Audio(musicURL);
-      this.jsAudio.play();
+      if (this.currentMusic == null) {
+        this.jsAudio = new Audio(musicURL);
+        this.currentMusic = musicURL;
+        this.jsAudio.play();
+        this.jsAudio.onended = (event) => {
+          console.log("End of playback !");
+          this.currentMusic = null;
+        };
+      } else {
+        this.jsAudio.pause();
+        this.currentMusic = null;
+      }
     } else {
-      this.audioMedia = this.media.create(musicURL);
-      this.audioMedia.play();
+      if (this.currentMusic == null) {
+        this.audioMedia = this.media.create(musicURL);
+        this.currentMusic = musicURL;
+        this.audioMedia.onStatusUpdate.subscribe(status => {
+          console.log("Audio status : ",status);
+          if (status == 4) this.currentMusic = null;
+        });
+        this.audioMedia.play();
+      } else {
+        this.audioMedia.stop();
+        this.currentMusic = null;
+      }
     }
   }
 }
