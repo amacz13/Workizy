@@ -51,6 +51,7 @@ import { HTTP } from '@ionic-native/http';
 import { IntentManager } from '../providers/intent-manager/intent-manager';
 import {Media} from "@ionic-native/media";
 import {SearchOnDeezerPage} from "../pages/search-on-deezer/search-on-deezer";
+import {MusicControls} from "@ionic-native/music-controls";
 
 @NgModule({
   declarations: [
@@ -134,7 +135,8 @@ import {SearchOnDeezerPage} from "../pages/search-on-deezer/search-on-deezer";
     File,
     FilePath,
     IntentManager,
-    Media
+    Media,
+    MusicControls
   ]
 })
 export class AppModule {}

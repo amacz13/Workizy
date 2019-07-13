@@ -2,6 +2,9 @@
   <ion-navbar color="{{this.settings.accentColor}}">
     <ion-title>{{list.title}}</ion-title>
     <ion-buttons end>
+      <button (click)="editList()" ion-button icon-only color="royal">
+        <ion-icon name="create"></ion-icon>
+      </button>
       <button (click)="deleteList()" ion-button icon-only color="royal">
         <ion-icon name="trash"></ion-icon>
       </button>
@@ -18,12 +21,14 @@
           <ion-card-content>
             <ion-card-title *ngIf="item.title != null">{{item.title}}</ion-card-title>
             <p *ngIf="item.textContent != null">{{item.textContent}}</p>
-            <button *ngIf="item.musicURL != null" (click)="playOrStopMusic(item.musicURL)" ion-item>
+          </ion-card-content>
+          <ion-list *ngIf="item.musicURL != null">
+            <button (click)="playOrStopMusic(item.musicURL)" ion-item>
               <ion-icon *ngIf="currentMusic == item.musicURL" name="pause" item-start></ion-icon>
               <ion-icon *ngIf="currentMusic == null || currentMusic != item.musicURL" name="play" item-start></ion-icon>
               <ion-label>{{item.musicURL}}</ion-label>
             </button>
-          </ion-card-content>
+          </ion-list>
           <ion-list *ngIf="item.links != null && item.links.length > 0">
             <button *ngFor="let link of item.links.slice(0,3)" (click)="linkUtils.openLink(link.content)" ion-item>
               <ion-icon name="{{linkUtils.getIcon(link)}}" item-start></ion-icon>
