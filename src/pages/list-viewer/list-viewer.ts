@@ -13,6 +13,7 @@ import {LinkUtils} from "../../providers/link-utils/link-utils";
 import { Media, MediaObject } from '@ionic-native/media';
 import {MyApp} from "../../app/app.component";
 import {MusicControls} from "@ionic-native/music-controls";
+import {AudioManager} from "../../providers/audio-manager/audio-manager";
 
 @Component({
   selector: 'page-list-viewer',
@@ -23,12 +24,7 @@ export class ListViewerPage {
   list: List;
   items: ListItem[] = new Array<ListItem>();
 
-  currentMusic: string = null;
-
-  audioMedia: MediaObject;
-  jsAudio : any;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager, public settings: UserSettings, public linkUtils: LinkUtils, public media: Media, public musicControls: MusicControls) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager, public settings: UserSettings, public linkUtils: LinkUtils, public am: AudioManager) {
     this.list = navParams.get("list");
     //this.items = this.sm.getListItems(this.list);
     this.items = this.list.items;
@@ -187,78 +183,6 @@ export class ListViewerPage {
     let today = new Date();
     if (d.getDay() == today.getDay() && d.getMonth() == today.getMonth() && d.getFullYear() == today.getFullYear()) return d.getHours() +":"+d.getMinutes();
     else return d.toLocaleString();
-  }
-
-  playOrStopMusic(item: ListItem) {
-    let musicURL = item.musicURL.toString();
-    console.log("Playing song : ",musicURL);
-    if (MyApp.os == "osx"){
-      if (this.currentMusic == null) {
-        this.jsAudio = new Audio(musicURL);
-        this.currentMusic = musicURL;
-        this.jsAudio.play();
-        this.jsAudio.onended = (event) => {
-          console.log("End of playback !");
-          this.currentMusic = null;
-          document.title = "Workizy";
-        };
-        if (item.title != null || item.textContent != null) document.title = item.title + " - " + item.textContent;
-      } else {
-        this.jsAudio.pause();
-        this.currentMusic = null;
-      }
-    } else {
-      if (this.currentMusic == null) {
-        this.audioMedia = this.media.create(musicURL);
-        this.currentMusic = musicURL;
-        this.audioMedia.onStatusUpdate.subscribe(status => {
-          console.log("Audio status : ",status);
-          if (status == 4) {
-            console.log("Audio Stopped !");
-            this.currentMusic = null;
-          }
-        });
-        this.audioMedia.play();
-        this.musicControls.create({
-          track       : 'Song Preview',        // optional, default : ''
-          artist      : 'Unknown Artist',                       // optional, default : ''
-          cover       : 'assets/imgs/logo.png',      // optional, default : nothing
-          // cover can be a local path (use fullpath 'file:///storage/emulated/...', or only 'my_image.jpg' if my_image.jpg is in the www folder of your app)
-          //           or a remote url ('http://...', 'https://...', 'ftp://...')
-          isPlaying   : true,                         // optional, default : true
-          dismissable : false,                         // optional, default : false
-
-          // hide previous/next/close buttons:
-          hasPrev   : false,      // show previous button, optional, default: true
-          hasNext   : false,      // show next button, optional, default: true
-          hasClose  : true,       // show close button, optional, default: false
-
-          // iOS only, optional
-          album       : 'Unknown Album',     // optional, default: ''
-          //duration : 60, // optional, default: 0
-          //elapsed : 10, // optional, default: 0
-          //hasSkipForward : true,  // show skip forward button, optional, default: false
-          //hasSkipBackward : true, // show skip backward button, optional, default: false
-          //skipForwardInterval: 15, // display number for skip forward, optional, default: 0
-          //skipBackwardInterval: 15, // display number for skip backward, optional, default: 0
-          //hasScrubbing: false, // enable scrubbing from control center and lockscreen progress bar, optional
-
-          // Android only, optional
-          // text displayed in the status bar when the notification (and the ticker) are updated, optional
-          ticker    : 'Now playing "Song Preview"',
-          // All icons default to their built-in android equivalents
-          playIcon: 'media_play',
-          pauseIcon: 'media_pause',
-          prevIcon: 'media_prev',
-          nextIcon: 'media_next',
-          closeIcon: 'media_close',
-          notificationIcon: 'notification'
-        });
-      } else {
-        this.audioMedia.stop();
-        this.currentMusic = null;
-      }
-    }
   }
 
   editList() {

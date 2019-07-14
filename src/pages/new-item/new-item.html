@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content>
+    <ion-card *ngIf="picture != null">
+      <img src="{{picture}}"/>
+    </ion-card>
     <ion-list no-padding>
       <ion-item>
         <ion-label floating>{{ 'Title' | translate }}</ion-label>
@@ -24,6 +27,11 @@
       <button ion-item (click)="chooseMusic()">
         {{ 'Music' | translate }}
       </button>
+
+      <ion-item>
+        <ion-label floating>{{ 'Music URL' | translate }}</ion-label>
+        <ion-input color="{{this.settings.accentColor}}" [(ngModel)]="music" type="text" disabled></ion-input>
+      </ion-item>
 
       <button ion-item (click)="choosePicture()">
         {{ 'Picture' | translate }}

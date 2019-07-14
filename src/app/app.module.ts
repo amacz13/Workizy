@@ -54,6 +54,7 @@ import {SearchOnDeezerPage} from "../pages/search-on-deezer/search-on-deezer";
 import {MusicControls} from "@ionic-native/music-controls";
 import { DeezerSong } from '../providers/deezer-song/deezer-song';
 import { LoggerProvider } from '../providers/logger/logger';
+import { AudioManager } from '../providers/audio-manager/audio-manager';
 
 @NgModule({
   declarations: [
@@ -140,7 +141,8 @@ import { LoggerProvider } from '../providers/logger/logger';
     Media,
     MusicControls,
     DeezerSong,
-    LoggerProvider
+    LoggerProvider,
+    AudioManager
   ]
 })
 export class AppModule {}
