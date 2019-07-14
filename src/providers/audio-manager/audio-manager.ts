@@ -117,6 +117,7 @@ export class AudioManager {
           this.musicControls.updateDismissable(false);
           break;
         case 'music-controls-destroy':
+          this.audioMedia.stop();
           this.musicControls.destroy();
           break;
       }

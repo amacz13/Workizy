@@ -26,7 +26,7 @@
             <button (click)="this.am.playOrStopMusic(item)" ion-item>
               <ion-icon *ngIf="this.am.currentMusic == item.musicURL" name="pause" item-start></ion-icon>
               <ion-icon *ngIf="this.am.currentMusic == null || this.am.currentMusic != item.musicURL" name="play" item-start></ion-icon>
-              <ion-label>{{item.musicURL}}</ion-label>
+              <ion-label>{{ 'Play Audio' | translate }}</ion-label>
             </button>
           </ion-list>
           <ion-list *ngIf="item.links != null && item.links.length > 0">
