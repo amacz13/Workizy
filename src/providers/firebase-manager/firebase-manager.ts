@@ -250,7 +250,7 @@ export class FirebaseManager {
               }
             }
             i.checklistitems = new Array<ChecklistItem>();
-            if(itemData.links != null && itemData.links.length > 0) {
+            if(itemData.checklistitemsContent != null && itemData.checklistitemsContent.length > 0) {
               let counter = 0;
               for (let l of itemData.checklistitemsContent) {
                 console.log("Checklist Item : ",l);
@@ -297,6 +297,20 @@ export class FirebaseManager {
               link.item = newItem;
               newItem.links.push(link);
               await MyApp.storageManager.saveLink(link);
+            }
+          }
+          newItem.checklistitems = new Array<ChecklistItem>();
+          if(itemData.checklistitemsContent != null && itemData.checklistitemsContent.length > 0) {
+            let counter = 0;
+            for (let l of itemData.checklistitemsContent) {
+              console.log("Checklist Item : ",l);
+              let clitem: ChecklistItem = new ChecklistItem();
+              clitem.text = this.simpleCrypto.decrypt(l);
+              clitem.isChecked = itemData.checklistitemsCheck[counter];
+              clitem.listitem = newItem;
+              newItem.checklistitems.push(clitem);
+              await MyApp.storageManager.saveChecklistItem(clitem);
+              counter++;
             }
           }
           if (l.items == null) {

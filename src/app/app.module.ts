@@ -55,6 +55,8 @@ import {MusicControls} from "@ionic-native/music-controls";
 import { DeezerSong } from '../providers/deezer-song/deezer-song';
 import { LoggerProvider } from '../providers/logger/logger';
 import { AudioManager } from '../providers/audio-manager/audio-manager';
+import {PictureChooser} from '../providers/picture-chooser/picture-chooser';
+import {Vibration} from "@ionic-native/vibration";
 
 @NgModule({
   declarations: [
@@ -142,7 +144,9 @@ import { AudioManager } from '../providers/audio-manager/audio-manager';
     MusicControls,
     DeezerSong,
     LoggerProvider,
-    AudioManager
+    AudioManager,
+    PictureChooser,
+    Vibration
   ]
 })
 export class AppModule {}

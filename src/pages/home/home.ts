@@ -12,6 +12,7 @@ import {InAppPurchase2} from "@ionic-native/in-app-purchase-2";
 import {LinkUtils} from "../../providers/link-utils/link-utils";
 import {ListItem} from "../../providers/list-item/list-item";
 import {Observable} from "rxjs";
+import {Vibration} from "@ionic-native/vibration";
 
 @Component({
   selector: 'page-home',
@@ -24,18 +25,8 @@ export class HomePage {
   searchInput: string;
   welcomePhrase:String;
 
-  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings, public ln: LocalNotifications, public store: InAppPurchase2, public linkUtils: LinkUtils) {
+  constructor(public navCtrl: NavController, public translate: TranslateService, public sm: StorageManager, public modalCtrl: ModalController, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings, public ln: LocalNotifications, public store: InAppPurchase2, public linkUtils: LinkUtils, private vibration: Vibration) {
     this.getWelcomePhrase().subscribe(val => this.welcomePhrase = val);
-  }
-
-
-  toggleViewMode() {
-    this.viewmode = !this.viewmode;
-    this.ln.schedule({
-      title: 'My first notification',
-      text: 'Thats pretty easy...',
-      foreground: true
-    });
   }
 
   showNewList() {
@@ -62,7 +53,8 @@ export class HomePage {
   }
 
   toggleSearch() {
-    this.showSearch = !this.showSearch;
+    //this.showSearch = !this.showSearch;
+    this.vibration.vibrate(1000*60);
   }
 
   showListFromItem(item: ListItem) {
