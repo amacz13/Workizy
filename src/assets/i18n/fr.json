@@ -1,4 +1,6 @@
 {
+  "WorkizyVersion": "Workizy Beta 0.2",
+  "WorkizyBuild": "Build 270719",
   "Home" : "Accueil",
   "Local lists" : "Listes locales",
   "Synced lists" : "Listes synchronisées",
@@ -89,5 +91,20 @@
   "Whats Next ?": "À venir",
   "Done": "Valider",
   "DateFormat": "DD/MM/YYYY HH:mm",
-  "Reminder date": "Date et Heure du Rappel"
+  "Reminder date": "Date et Heure du Rappel",
+  "How should I call you ?": "Comment dois-je vous appeler ?",
+  "Display Name": "Nom ou pseudo",
+  "Let's customize your application": "Personnalisons votre expérience",
+  "Play Audio": "Jouer l'audio",
+  "Music URL": "Adresse URL de l'audio",
+  "Music": "Musique / Audio",
+  "Choose a Music": "Choisir une musique",
+  "From URL": "Depuis une URL",
+  "Search on Deezer": "Rechercher sur Deezer",
+  "URL": "Adresse URL",
+  "Confirm": "Valider",
+  "Search a song": "Rechercher une musique",
+  "About Workizy": "À propos de Workizy",
+  "Developped and maintained with ❤ by Axel Maczkowiak": "Développé et maintenu avec ❤ par Axel Maczkowiak",
+  "Support Center": "Centre de Support"
 }
