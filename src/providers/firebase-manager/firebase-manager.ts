@@ -8,6 +8,7 @@ import {UuidGenerator} from "../uuid-generator/uuid-generator";
 import {Link} from "../link/link";
 import SimpleCrypto from "simple-crypto-js";
 import {ChecklistItem} from "../checklist-item/checklist-item";
+import {AlertController} from "ionic-angular";
 
 
 @Injectable()
@@ -15,7 +16,7 @@ export class FirebaseManager {
 
   public simpleCrypto;
 
-  constructor(public afs: AngularFirestore, public settings: UserSettings) {
+  constructor(public afs: AngularFirestore, public settings: UserSettings, public alertCtrl: AlertController) {
 
   }
 
@@ -54,6 +55,14 @@ export class FirebaseManager {
         console.log("Refreshing lists...");
         await MyApp.storageManager.getAll();
         console.log("End Firebase addList");
+      }).catch( err => {
+        console.error("FirebaseManager : Error while adding list ! Infos : ",err);
+        const alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: 'We are not able to synchronize the list !',
+          buttons: ['OK']
+        });
+        alert.present();
       });
   }
 
@@ -143,6 +152,14 @@ export class FirebaseManager {
           await MyApp.storageManager.getAll();
         }
       }
+    }).catch( err => {
+      console.error("FirebaseManager : Error while getting list ! Infos : ",err);
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'We are not able to get your lists !',
+        buttons: ['OK']
+      });
+      alert.present();
     });
   }
 
@@ -341,6 +358,14 @@ export class FirebaseManager {
         await MyApp.storageManager.getAll();
         }
       }
+    }).catch( err => {
+      console.error("FirebaseManager : Error while getting item ! Infos : ",err);
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'We are not able to get your items !',
+        buttons: ['OK']
+      });
+      alert.present();
     });
   }
 

@@ -35,6 +35,7 @@ export class MyApp {
     platform.ready().then(async() => {
       // Define application language
       translate.use(translate.getBrowserLang());
+      console.log("Platform : ",device.platform);
       if (device.platform == "Android") {
         console.log("Platform : Android");
         MyApp.os = "android";
@@ -85,7 +86,7 @@ export class MyApp {
       } else if (device.platform == "Mac OS X") {
         console.log("Platform : macOS");
         MyApp.os = "osx";
-      } else if (device.platform == "browser") {
+      } else if (device.platform == "browser" || device.platform == null) {
         console.log("Platform : Electron / WebBrowser");
         MyApp.os = "browser";
       }

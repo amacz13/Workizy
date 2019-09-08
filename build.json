@@ -1,0 +1,17 @@
+{
+  "electron": {
+    "mac": {
+      "package": [
+        "pkg"
+      ]
+    }
+  },
+  "ios": {
+    "debug": {
+      "developmentTeam": "P22FJS3T9C"
+    },
+    "release": {
+      "developmentTeam": "P22FJS3T9C"
+    }
+  }
+}

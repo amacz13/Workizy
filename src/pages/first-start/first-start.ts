@@ -3,9 +3,9 @@ import {AlertController, IonicPage, LoadingController, NavController, NavParams,
 import {TabsPage} from "../tabs/tabs";
 import {UserSettings} from "../../providers/user-settings/user-settings";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
-import * as firebase from 'firebase/app';
+//import * as firebase from 'firebase/app';
 import {AngularFirestore} from "@angular/fire/firestore";
-import Persistence = firebase.auth.Auth.Persistence;
+//import Persistence = firebase.auth.Auth.Persistence;
 import {AngularFireAuth} from "@angular/fire/auth";
 import {TranslateService} from "@ngx-translate/core";
 import {MyApp} from "../../app/app.component";
@@ -14,6 +14,7 @@ import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {StatusbarManager} from "../../providers/statusbar-manager/statusbar-manager";
 import {LocalStorage} from "../../providers/local-storage/local-storage";
+//import Persistence from "@angular/fire/auth";
 
 @IonicPage()
 @Component({
@@ -262,7 +263,7 @@ export class FirstStartPage {
         });
 
         loading.present();
-        firebase.auth().fetchSignInMethodsForEmail(this.email).then(val => {
+        this.auth.auth.fetchSignInMethodsForEmail(this.email).then(val => {
           this.accountExists = val.length != 0;
           this.slides.lockSwipes(false);
           this.slides.slideNext();
@@ -296,12 +297,12 @@ export class FirstStartPage {
           });
           loading.present();
           // Auth request to Firebase
-          firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(val => {
+          this.auth.auth.signInWithEmailAndPassword(this.email, this.password).then(val => {
             // Credentials correct
             console.log("User connected : ", val);
             if (!val.user.emailVerified) {
               // Account not verified, send verification email
-              firebase.auth().currentUser.sendEmailVerification().then( () => {
+              this.auth.auth.currentUser.sendEmailVerification().then( () => {
                 loading.dismissAll();
                 this.translate.get("Verify email").toPromise().then(async title => {
                   this.translate.get("Please verify your account by clicking on the link you received by email").toPromise().then(async msg2 => {
@@ -316,7 +317,7 @@ export class FirstStartPage {
               });
             } else {
               // Account verfifed, sign in to Angular Firestore
-              this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
+              //this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
                 this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
                   this.storage.set('connected', 1) .then(() => {
                       this.storage.set('user', val2.user.toJSON().toString()).then(() => {
@@ -334,7 +335,7 @@ export class FirstStartPage {
                       });
                     });
                 });
-              });
+              //});
             }
           }).catch(err => {
             // Error while logging in the user, may be bad credentials...
@@ -358,11 +359,11 @@ export class FirstStartPage {
 
           loading.present();
           // Firebase Register Request
-          firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(val => {
+          this.auth.auth.createUserWithEmailAndPassword(this.email, this.password).then(val => {
             console.log("User registered : ", val);
             if (!val.user.emailVerified) {
               // Account not verified, sending verification email
-              firebase.auth().currentUser.sendEmailVerification().then(() => {
+              this.auth.auth.currentUser.sendEmailVerification().then(() => {
                 loading.dismissAll();
                 this.translate.get("Verify email").toPromise().then(async title => {
                   this.translate.get("Please verify your account by clicking on the link you received by email").toPromise().then(async msg2 => {
@@ -377,7 +378,7 @@ export class FirstStartPage {
               });
             } else {
               // Account verified, auth request to Angular Firestore
-              this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
+              //this.afs.firestore.app.auth().setPersistence(Persistence.SESSION).then(() => {
                 this.afs.firestore.app.auth().signInWithEmailAndPassword(this.email, this.password).then(val2 => {
                   this.storage.set('connected', 1).then(() => {
                     this.storage.set('user', val2.user).then(() => {
@@ -395,8 +396,9 @@ export class FirstStartPage {
                     });
                   });
                 });
-              });
+             // });
             }
+
           }).catch(err => {
             // Can't register user, maybe the email is already registered
             console.error("Error while logging in user : ", err);
@@ -430,7 +432,7 @@ export class FirstStartPage {
   setDisplayName() {
     this.settings.user.updateProfile({displayName : this.userName}).then(val => {
       console.log(val);
-      this.storage.set('user', firebase.auth().currentUser).then(() => {
+      this.storage.set('user', this.auth.auth.currentUser).then(() => {
         this.goToHomePage();
       });
     });

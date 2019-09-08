@@ -88,7 +88,7 @@ import {Vibration} from "@ionic-native/vibration";
     AngularFirestoreModule,
     AngularFireAuthModule,
     //IonicModule.forRoot(MyApp),
-    IonicModule.forRoot(MyApp, {mode: 'md',tabsHideOnSubPages:true}),
+    IonicModule.forRoot(MyApp, {mode: 'ios',tabsHideOnSubPages:true}),
     IonicStorageModule.forRoot({
       name: '__workizyKeystore',
       driverOrder: ['indexeddb', 'localstorage']
