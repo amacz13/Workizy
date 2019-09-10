@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import {ActionSheetController, AlertController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {
+  ActionSheetController,
+  AlertController,
+  ModalController,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import {Link} from "../../providers/link/link";
@@ -10,7 +17,9 @@ import {ListItem} from "../../providers/list-item/list-item";
 import {List} from "../../providers/list/list";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {UuidGenerator} from "../../providers/uuid-generator/uuid-generator";
-import {MyApp} from "../../app/app.component";
+import {UserSettings} from "../../providers/user-settings/user-settings";
+import {LinkUtils} from "../../providers/link-utils/link-utils";
+import {SearchOnDeezerPage} from "../search-on-deezer/search-on-deezer";
 
 @Component({
   selector: 'page-new-item',
@@ -23,6 +32,10 @@ export class NewItemPage {
   reminderEnabled: boolean = false;
   reminderDate: any = null;
   picture: String = null;
+  music: String = null;
+
+  maxDate:string;
+  todaysDate: string;
 
   links: Link[] = new Array<Link>();
   tasks: ChecklistItem[] = new Array<ChecklistItem>();
@@ -45,8 +58,10 @@ export class NewItemPage {
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public asCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private iab: InAppBrowser, private browserTab: BrowserTab, public sm: StorageManager, public viewCtrl: ViewController, public settings: UserSettings, public linkUtils: LinkUtils, public modalCtrl: ModalController) {
     this.list = navParams.get('list');
+    this.getMaxDate();
+    this.getDateNow();
   }
 
   ionViewDidLoad() {
@@ -77,7 +92,8 @@ export class NewItemPage {
       item.reminderDate = this.reminderDate;
       item.links = this.links;
       item.firebaseId = "NOTAPPLICABLE";
-      this.list.items.push(item);
+      item.checklistitems = this.tasks;
+      item.musicURL = this.music;
 
       if (this.list.isSynchronized) {
         await this.sm.addSyncedItem(item);
@@ -86,13 +102,22 @@ export class NewItemPage {
           link.item = item;
           await this.sm.saveLink(link);
         }
+        for (let task of this.tasks) {
+          task.listitem = item;
+          await this.sm.saveChecklistItem(task);
+        }
         await this.sm.saveListItem(item);
       }
+
+      this.list.items.push(item);
 
       console.log("Saving new item...");
       console.log(this.list);
       await this.sm.saveLocalList(this.list);
       await this.sm.getAll();
+      for (let l of this.sm.allLists){
+        if (l.id == this.list.id) this.list = l;
+      }
       this.viewCtrl.dismiss({'list': this.list});
     }
   }
@@ -150,12 +175,12 @@ export class NewItemPage {
   }
 
   getDateNow() {
-    return new Date().toISOString();
+    this.todaysDate =  new Date().toISOString();
   }
 
   getMaxDate() {
     let date = new Date();
-    return new Date(date.getFullYear()+25,12,31,23,59).toISOString();
+    this.maxDate = new Date(date.getFullYear()+25,12,31,23,59).toISOString();
   }
 
   createLink() {
@@ -197,43 +222,150 @@ export class NewItemPage {
     });
   }
 
-  getIcon(link: Link) {
-    if (link.content.includes("youtube.com") || link.content.includes("youtu.be")) {
-      return "logo-youtube";
-    } else if (link.content.includes("facebook.com") || link.content.includes("fb.me")){
-      return "logo-facebook";
-    } else if (link.content.includes("twitter.com") || link.content.includes("t.co")){
-      return "logo-twitter";
-    } else if (link.content.includes("twitch.com")){
-      return "logo-twitch";
-    } else if (link.content.includes("github.com")){
-      return "logo-github";
-    } else if (link.content.includes("instagram.com")){
-      return "logo-instagram";
-    } else if (link.content.includes("linkedin.com") || link.content.includes("linked.in")){
-      return "logo-linkedin";
-    } else if (link.content.includes("pinterest.com")){
-      return "logo-pinterest";
-    } else {
-      return "link";
+  createTask() {
+    this.translate.get('New Task').toPromise().then( title => {
+      this.translate.get('Text').toPromise().then( placeholder => {
+        this.translate.get('Cancel').toPromise().then( cancel => {
+          this.translate.get('Add').toPromise().then( add => {
+            let alert = this.alertCtrl.create({
+              title: title,
+              inputs: [
+                {
+                  name: 'content',
+                  placeholder: placeholder,
+                  type: 'url'
+                }
+              ],
+              buttons: [
+                {
+                  text: cancel,
+                  role: 'cancel',
+                  handler: data => {
+                    console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: add,
+                  handler: data => {
+                    let task: ChecklistItem = new ChecklistItem();
+                    task.isChecked = false;
+                    task.text = data.content;
+                    this.tasks.push(task);
+                  }
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      });
+    });
+  }
+
+  deleteLink(link: Link) {
+    let index = this.links.indexOf(link, 0);
+    if (index > -1) {
+      this.links.splice(index, 1);
     }
   }
 
-  openLink(content: String) {
-    this.browserTab.isAvailable().then(isAvailable => {
-      if (isAvailable) {
-        if (content.includes("http://") || content.includes("https://")){
-          this.browserTab.openUrl(content.toString());
-        } else {
-          this.browserTab.openUrl("https://"+content.toString());
-        }
-      } else {
-        if (content.includes("http://") || content.includes("https://")){
-          const browser = this.iab.create(content.toString());
-        } else {
-          const browser = this.iab.create("https://"+content.toString());
-        }
-      }
+  deleteTask(task: ChecklistItem) {
+    let index = this.tasks.indexOf(task, 0);
+    if (index > -1) {
+      this.tasks.splice(index, 1);
+    }
+  }
+
+  toggleCheck(task: ChecklistItem) {
+    let index = this.tasks.indexOf(task, 0);
+    if (index > -1) {
+      this.tasks.splice(index, 1);
+    }
+    task.isChecked = !task.isChecked;
+    this.tasks.splice(index, 0,task);
+    console.log("Item Tasks : ",this.tasks);
+  }
+
+  chooseMusic() {
+    this.translate.get('Choose a Music').toPromise().then( title => {
+      this.translate.get('From URL').toPromise().then( url => {
+        this.translate.get('Search on Deezer').toPromise().then( deezer => {
+          this.translate.get('Cancel').toPromise().then( cancel => {
+            const actionSheet = this.asCtrl.create({
+              title: title,
+              buttons: [
+                {
+                  text: url,
+                  handler: () => {
+                    console.log('Music From URL');
+                    this.translate.get('Music From URL').toPromise().then( title1 => {
+                      this.translate.get('URL').toPromise().then( placeholder => {
+                        this.translate.get('Cancel').toPromise().then( cancel => {
+                          this.translate.get('Confirm').toPromise().then( add => {
+                            let alert = this.alertCtrl.create({
+                              title: title1,
+                              inputs: [
+                                {
+                                  name: 'content',
+                                  placeholder: placeholder,
+                                  type: 'url'
+                                }
+                              ],
+                              buttons: [
+                                {
+                                  text: cancel,
+                                  role: 'cancel',
+                                  handler: data => {
+                                    console.log('Cancel clicked');
+                                  }
+                                },
+                                {
+                                  text: add,
+                                  handler: data => {
+                                    this.music = data.content;
+                                  }
+                                }
+                              ]
+                            });
+                            alert.present();
+                          });
+                        });
+                      });
+                    });
+                  }
+                },{
+                  text: deezer,
+                  handler: () => {
+                    console.log('Music From Deezer');
+                    let modal = this.modalCtrl.create(SearchOnDeezerPage);
+                    modal.onDidDismiss( data => {
+                      if (data.autofill){
+                        console.log("Autofill Item");
+                        this.music = data.track.previewUrl;
+                        this.title = data.track.title;
+                        this.textContent = data.track.artist;
+                        this.picture = data.track.coverUrl;
+                        this.createItem();
+                      } else {
+                        console.log("No Autofill Item");
+                        this.music = data.track.previewUrl;
+                      }
+                    });
+                    modal.present();
+                  }
+                },{
+                  text: cancel,
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                  }
+                }
+              ]
+            });
+            actionSheet.present();
+          });
+        });
+      });
     });
   }
 }

@@ -5,6 +5,7 @@ import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {List} from "../../providers/list/list";
 import {ListViewerPage} from "../list-viewer/list-viewer";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
+import {UserSettings} from "../../providers/user-settings/user-settings";
 
 @Component({
   selector: 'page-online-lists',
@@ -14,7 +15,7 @@ export class OnlineListsPage {
 
   public viewmode:boolean = false;
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public sm: StorageManager, public fm: FirebaseManager, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public sm: StorageManager, public fm: FirebaseManager, public loadingCtrl: LoadingController, public settings: UserSettings) {
 
   }
 

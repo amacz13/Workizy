@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "352563001402",
+    "firebase_url": "https://amacz13-whatsnext.firebaseio.com",
+    "project_id": "amacz13-whatsnext",
+    "storage_bucket": "amacz13-whatsnext.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352563001402:android:406e688bfef1789d",
+        "android_client_info": {
+          "package_name": "fr.amacz13.workizy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352563001402-i0kjg2jqo0mdjt4ogcbalitlrbu2op36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu2YayFXT7L9Iwt0_NRWOAj-_2Nq023eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352563001402-i0kjg2jqo0mdjt4ogcbalitlrbu2op36.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "352563001402-ieg2tb6eska472lg113kosid9dof73mi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "fr.amacz13.whatsnext"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {List} from "../list/list";
 import {Connection, getRepository, Repository} from "typeorm";
 import {ListItem} from "../list-item/list-item";
-import {Checklist} from "../checklist/checklist";
 import {ChecklistItem} from "../checklist-item/checklist-item";
 import {Link} from "../link/link";
 import {FirebaseManager} from "../firebase-manager/firebase-manager";
@@ -20,7 +19,6 @@ export class StorageManager {
   public initRepositories() {
     this.listRepository = getRepository('list') as Repository<List>;
     this.listItemRepository = getRepository('listitem') as Repository<ListItem>;
-    this.checklistRepository = getRepository('checklist') as Repository<Checklist>;
     this.checklistItemRepository = getRepository('checklistitem') as Repository<ChecklistItem>;
     this.linkRepository = getRepository('link') as Repository<Link>;
     this.getAll();
@@ -35,7 +33,6 @@ export class StorageManager {
 
   listRepository: Repository<List>;
   listItemRepository: Repository<ListItem>;
-  checklistRepository: Repository<Checklist>;
   checklistItemRepository: Repository<ChecklistItem>;
   linkRepository: Repository<Link>;
 
@@ -132,6 +129,10 @@ export class StorageManager {
     await this.linkRepository.save(link);
   }
 
+  public async saveChecklistItem(item: ChecklistItem){
+    await this.checklistItemRepository.save(item);
+  }
+
   public getListItems(list: List):ListItem[] {
     let listItems: ListItem[] = new Array<ListItem>();
     this.listItemRepository.find({list:list}).then(items => {
@@ -157,7 +158,7 @@ export class StorageManager {
     this.localLists = new Array<List>();
     this.onlineLists = new Array<List>();
 
-    await this.listRepository.find({ relations: ["items","items.links"] }).then(async lists => {
+    await this.listRepository.find({ relations: ["items","items.links","items.checklistitems"] }).then(async lists => {
       this.allLists = lists;
       console.log("LISTS : ",lists);
 
@@ -173,7 +174,7 @@ export class StorageManager {
     this.localItems = new Array<ListItem>();
     this.onlineItems = new Array<ListItem>();
 
-    await this.listItemRepository.find({ relations: ["list","links"] }).then(async items => {
+    await this.listItemRepository.find({ relations: ["list","links","checklistitems"] }).then(async items => {
       this.allItems = items;
       console.log("ITEMS : ",items);
 
@@ -207,6 +208,10 @@ export class StorageManager {
 
   public async removeItem(item: ListItem){
     await this.listItemRepository.remove(item);
+  }
+
+  public async removeChecklistItem(item: ChecklistItem){
+    await this.checklistItemRepository.remove(item);
   }
 
   public removeAllOnlineLists(){

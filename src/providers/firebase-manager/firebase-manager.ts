@@ -7,6 +7,8 @@ import {ListItem} from "../list-item/list-item";
 import {UuidGenerator} from "../uuid-generator/uuid-generator";
 import {Link} from "../link/link";
 import SimpleCrypto from "simple-crypto-js";
+import {ChecklistItem} from "../checklist-item/checklist-item";
+import {AlertController} from "ionic-angular";
 
 
 @Injectable()
@@ -14,7 +16,7 @@ export class FirebaseManager {
 
   public simpleCrypto;
 
-  constructor(public afs: AngularFirestore, public settings: UserSettings) {
+  constructor(public afs: AngularFirestore, public settings: UserSettings, public alertCtrl: AlertController) {
 
   }
 
@@ -53,6 +55,14 @@ export class FirebaseManager {
         console.log("Refreshing lists...");
         await MyApp.storageManager.getAll();
         console.log("End Firebase addList");
+      }).catch( err => {
+        console.error("FirebaseManager : Error while adding list ! Infos : ",err);
+        const alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: 'We are not able to synchronize the list !',
+          buttons: ['OK']
+        });
+        alert.present();
       });
   }
 
@@ -142,6 +152,14 @@ export class FirebaseManager {
           await MyApp.storageManager.getAll();
         }
       }
+    }).catch( err => {
+      console.error("FirebaseManager : Error while getting list ! Infos : ",err);
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'We are not able to get your lists !',
+        buttons: ['OK']
+      });
+      alert.present();
     });
   }
 
@@ -167,8 +185,14 @@ export class FirebaseManager {
     console.log(item);
     let list: List = item.list;
     let links: Array<String> = new Array<String>();
+    let checklistitemsCheck: Array<boolean> = new Array<boolean>();
+    let checklistitemsContent: Array<String> = new Array<String>();
     for (let l of item.links){
       links.push(this.simpleCrypto.encrypt(l.content));
+    }
+    for (let clitem of item.checklistitems){
+      checklistitemsCheck.push(clitem.isChecked);
+      checklistitemsContent.push(this.simpleCrypto.encrypt(clitem.text));
     }
     let picture: string = null;
     let title: string = null;
@@ -184,7 +208,9 @@ export class FirebaseManager {
       textContent: textContent,
       title: title,
       listFbId: item.list.firebaseId,
-      links: links
+      links: links,
+      checklistitemsCheck: checklistitemsCheck,
+      checklistitemsContent: checklistitemsContent
     }).then(
       async (res) => {
         console.log("Item added to Firebase", res);
@@ -226,6 +252,9 @@ export class FirebaseManager {
             for (let l of i.links) {
               await MyApp.storageManager.removeLink(l);
             }
+            for (let l of i.checklistitems) {
+              await MyApp.storageManager.removeChecklistItem(l);
+            }
             i.links = new Array<Link>();
             if(itemData.links != null && itemData.links.length > 0) {
               for (let l of itemData.links) {
@@ -235,6 +264,20 @@ export class FirebaseManager {
                 link.item = i;
                 i.links.push(link);
                 await MyApp.storageManager.saveLink(link);
+              }
+            }
+            i.checklistitems = new Array<ChecklistItem>();
+            if(itemData.checklistitemsContent != null && itemData.checklistitemsContent.length > 0) {
+              let counter = 0;
+              for (let l of itemData.checklistitemsContent) {
+                console.log("Checklist Item : ",l);
+                let clitem: ChecklistItem = new ChecklistItem();
+                clitem.text = this.simpleCrypto.decrypt(l);
+                clitem.isChecked = itemData.checklistitemsCheck[counter];
+                clitem.listitem = i;
+                i.checklistitems.push(clitem);
+                await MyApp.storageManager.saveChecklistItem(clitem);
+                counter++;
               }
             }
             if (l.items.length > 0) {
@@ -273,6 +316,20 @@ export class FirebaseManager {
               await MyApp.storageManager.saveLink(link);
             }
           }
+          newItem.checklistitems = new Array<ChecklistItem>();
+          if(itemData.checklistitemsContent != null && itemData.checklistitemsContent.length > 0) {
+            let counter = 0;
+            for (let l of itemData.checklistitemsContent) {
+              console.log("Checklist Item : ",l);
+              let clitem: ChecklistItem = new ChecklistItem();
+              clitem.text = this.simpleCrypto.decrypt(l);
+              clitem.isChecked = itemData.checklistitemsCheck[counter];
+              clitem.listitem = newItem;
+              newItem.checklistitems.push(clitem);
+              await MyApp.storageManager.saveChecklistItem(clitem);
+              counter++;
+            }
+          }
           if (l.items == null) {
             l.items = new Array<ListItem>();
             l.items.push(newItem);
@@ -301,6 +358,14 @@ export class FirebaseManager {
         await MyApp.storageManager.getAll();
         }
       }
+    }).catch( err => {
+      console.error("FirebaseManager : Error while getting item ! Infos : ",err);
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'We are not able to get your items !',
+        buttons: ['OK']
+      });
+      alert.present();
     });
   }
 

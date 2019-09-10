@@ -8,7 +8,7 @@ export class Link {
   @PrimaryGeneratedColumn() id: number;
 
   @ManyToOne(type => ListItem, listItem => listItem.links, {
-    cascade: ['insert']
+    cascade: ['insert'], onDelete: 'CASCADE'
   }) item: ListItem;
 
   @Column() content: String;

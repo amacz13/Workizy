@@ -4,11 +4,16 @@ import {List} from "../../providers/list/list";
 import {NewItemPage} from "../new-item/new-item";
 import {StorageManager} from "../../providers/storage-manager/storage-manager";
 import {ListItem} from "../../providers/list-item/list-item";
-import {Link} from "../../providers/link/link";
 import {BrowserTab} from "@ionic-native/browser-tab";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {FirebaseManager} from "../../providers/firebase-manager/firebase-manager";
 import {TranslateService} from "@ngx-translate/core";
+import {UserSettings} from "../../providers/user-settings/user-settings";
+import {LinkUtils} from "../../providers/link-utils/link-utils";
+import { Media, MediaObject } from '@ionic-native/media';
+import {MyApp} from "../../app/app.component";
+import {MusicControls} from "@ionic-native/music-controls";
+import {AudioManager} from "../../providers/audio-manager/audio-manager";
 
 @Component({
   selector: 'page-list-viewer',
@@ -19,7 +24,7 @@ export class ListViewerPage {
   list: List;
   items: ListItem[] = new Array<ListItem>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService, public loadingCtrl: LoadingController, public modalCtrl: ModalController, private iab: InAppBrowser, public sm: StorageManager, public alertCtrl: AlertController, private browserTab: BrowserTab, public fm: FirebaseManager, public settings: UserSettings, public linkUtils: LinkUtils, public am: AudioManager) {
     this.list = navParams.get("list");
     //this.items = this.sm.getListItems(this.list);
     this.items = this.list.items;
@@ -108,46 +113,6 @@ export class ListViewerPage {
     });
   }
 
-  getIcon(link: Link) {
-    if (link.content.includes("youtube.com") || link.content.includes("youtu.be")) {
-      return "logo-youtube";
-    } else if (link.content.includes("facebook.com") || link.content.includes("fb.me")){
-      return "logo-facebook";
-    } else if (link.content.includes("twitter.com") || link.content.includes("t.co")){
-      return "logo-twitter";
-    } else if (link.content.includes("twitch.com")){
-      return "logo-twitch";
-    } else if (link.content.includes("github.com")){
-      return "logo-github";
-    } else if (link.content.includes("instagram.com")){
-      return "logo-instagram";
-    } else if (link.content.includes("linkedin.com") || link.content.includes("linked.in")){
-      return "logo-linkedin";
-    } else if (link.content.includes("pinterest.com")){
-      return "logo-pinterest";
-    } else {
-      return "link";
-    }
-  }
-
-  openLink(content: String) {
-    this.browserTab.isAvailable().then(isAvailable => {
-      if (isAvailable) {
-        if (content.includes("http://") || content.includes("https://")){
-          this.browserTab.openUrl(content.toString());
-        } else {
-          this.browserTab.openUrl("https://"+content.toString());
-        }
-      } else {
-        if (content.includes("http://") || content.includes("https://")){
-          const browser = this.iab.create(content.toString());
-        } else {
-          const browser = this.iab.create("https://"+content.toString());
-        }
-      }
-    });
-  }
-
   deleteItem(item: ListItem) {
     this.translate.get('Confirm deletion').toPromise().then( title => {
       this.translate.get('Are you sure to delete this item?').toPromise().then( msg => {
@@ -193,6 +158,12 @@ export class ListViewerPage {
             await this.sm.removeLink(l);
           }
         }
+        if(item.checklistitems != null && item.checklistitems.length > 0) {
+          for (let clitem of item.checklistitems) {
+            console.log("Removing ChecklistItem : ", clitem);
+            await this.sm.removeChecklistItem(clitem);
+          }
+        }
         console.log("Removing item : ",item);
         if (this.list.isSynchronized)  this.fm.deleteItem(item);
         await this.sm.removeItem(item);
@@ -205,5 +176,16 @@ export class ListViewerPage {
         loading.dismiss();
       });
     });
+  }
+
+  getFormattedDate(reminderDate: number):string {
+    let d = new Date(reminderDate);
+    let today = new Date();
+    if (d.getDay() == today.getDay() && d.getMonth() == today.getMonth() && d.getFullYear() == today.getFullYear()) return d.getHours() +":"+d.getMinutes();
+    else return d.toLocaleString();
+  }
+
+  editList() {
+
   }
 }

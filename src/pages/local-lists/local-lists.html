@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="{{this.settings.accentColor}}">
     <ion-title>
       {{ 'Local lists' | translate }}
     </ion-title>
@@ -29,7 +29,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-list *ngIf="viewmode">
+  <ion-list *ngIf="viewmode" class="home-list">
     <ion-item *ngFor="let list of this.sm.localLists">
       <ion-thumbnail item-start>
         <img *ngIf="list.coverSource == 0" src="assets/covers/{{list.cover}}"/>
@@ -42,6 +42,6 @@
   </ion-list>
 
   <ion-fab right bottom>
-    <button (click)="showNewList()"ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+    <button (click)="showNewList()" ion-fab color="{{this.settings.accentColor}}"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 </ion-content>

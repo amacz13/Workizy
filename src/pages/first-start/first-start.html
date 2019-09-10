@@ -1,7 +1,11 @@
 <ion-content padding fullscreen>
+  <ion-fab *ngIf="backEnabled" (click)="back()" bottom center>
+    <button ion-fab mini color="primary"><ion-icon color="light" name="arrow-back"></ion-icon></button>
+  </ion-fab>
+
   <ion-slides ion-fixed>
     <!-- Welcome Slide -->
-    <ion-slide padding>
+    <ion-slide padding fullscreen>
       <ion-grid>
         <ion-row>
           <ion-col col-2 col-sm-4 col-md-4 offset-5 offset-sm-4 offset-md-4>
@@ -13,7 +17,7 @@
           <h3>{{ 'WorikzyDescription' | translate }}</h3>
         </ion-row>
         <ion-row>
-          <button (click)="next()" ion-button color="light" block outline>
+          <button (click)="next()" ion-button color="light" block round>
             {{ 'Get Started' | translate }}&emsp;
             <ion-icon name="arrow-dropright"></ion-icon>
           </button>
@@ -27,17 +31,17 @@
           <h1>{{ 'Conditions' | translate }}</h1>
         </ion-row>
         <ion-row>
-          <h5>{{ 'AgreeToTerms' | translate }}<a href="https://blog.amacz13.fr/workizy-cluf/">{{ 'Terms and Conditions' | translate }}</a></h5>
+          <h5>{{ 'AgreeToTerms' | translate }}<a (click)="openCluf()" href="#">{{ 'Terms and Conditions' | translate }}</a></h5>
         </ion-row>
         <ion-row>
           <ion-col col-6>
-            <button (click)="refuse()" ion-button color="light" block outline>
+            <button (click)="refuse()" ion-button color="light" block round>
               <ion-icon name="close"></ion-icon>
               &emsp;{{ 'Refuse' | translate }}
             </button>
           </ion-col>
           <ion-col col-6>
-            <button (click)="next()" ion-button color="light" block outline>
+            <button (click)="next()" ion-button color="light" block round>
               {{ 'Accept' | translate }}&emsp;
               <ion-icon name="checkmark"></ion-icon>
             </button>
@@ -45,34 +49,32 @@
         </ion-row>
       </ion-grid>
     </ion-slide>
-    <!-- Account Selection -->
+    <!-- Account check -->
     <ion-slide padding>
       <ion-grid>
         <ion-row>
           <h1>{{ 'Account' | translate }}</h1>
         </ion-row>
         <ion-row>
-          <h5>{{ 'Do you already have Workizy account ?' | translate }}</h5>
+          <ion-item>
+            <ion-label floating>{{ 'Email' | translate }}</ion-label>
+            <ion-input [(ngModel)]="email" type="email"></ion-input>
+          </ion-item>
         </ion-row>
         <ion-row>
-          <button (click)="register()" ion-button color="light" block outline>
-            {{ 'No, Create an Account !' | translate }}
-          </button>
-        </ion-row>
-        <ion-row>
-          <button (click)="login()" ion-button color="light" block outline>
-            {{ 'Yes, Log In !' | translate }}
+          <button (click)="askPassword()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
           </button>
         </ion-row>
         <hr>
         <ion-row>
-          <button (click)="noAccount()" ion-button color="light" block outline>
+          <button (click)="noAccount()" ion-button color="light" block clear>
             {{ 'Start without an account' | translate }}
           </button>
         </ion-row>
       </ion-grid>
     </ion-slide>
-    <!-- Account Registration -->
+    <!-- Account Password -->
     <ion-slide padding>
       <ion-grid>
         <ion-row>
@@ -80,50 +82,57 @@
         </ion-row>
         <ion-row>
           <ion-item>
-            <ion-label floating>{{ 'Email' | translate }}</ion-label>
-            <ion-input [(ngModel)]="email" type="email"></ion-input>
-          </ion-item>
-          <ion-item>
             <ion-label floating>{{ 'Password' | translate }}</ion-label>
             <ion-input [(ngModel)]="password" type="password"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <button (click)="doRegister()" ion-button color="light" block outline>
-            {{ 'Register' | translate }}
-          </button>
-        </ion-row>
-      </ion-grid>
-    </ion-slide>
-    <!-- Account Registration -->
-    <ion-slide padding>
-      <ion-grid>
-        <ion-row>
-          <h1>{{ 'Account' | translate }}</h1>
-        </ion-row>
-        <ion-row>
-          <ion-item>
-            <ion-label floating>{{ 'Email' | translate }}</ion-label>
-            <ion-input [(ngModel)]="email" type="email"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label floating>{{ 'Password' | translate }}</ion-label>
-            <ion-input [(ngModel)]="password" type="password"></ion-input>
-          </ion-item>
-        </ion-row>
-        <ion-row>
-          <button (click)="doLogin()" ion-button color="light" block outline>
-            {{ 'Login' | translate }}
+          <button (click)="doLoginOrRegister()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
           </button>
         </ion-row>
         <hr>
         <ion-row>
-          <button (click)="passwordReset()" ion-button color="light" block outline>
+          <button (click)="passwordReset()" ion-button color="light" block clear>
             {{ 'Reset Password' | translate }}
           </button>
         </ion-row>
       </ion-grid>
     </ion-slide>
-
+    <!-- Choose Color -->
+    <ion-slide padding>
+      <ion-grid>
+        <ion-row>
+          <h1>{{ "Let's customize your application" | translate }}</h1>
+        </ion-row>
+        <ion-row>
+          <button *ngFor="let col of accentColors" ion-button round color="{{col}}" (click)="setAccentColor(col)"><ion-icon *ngIf="settings.accentColor == col" name="checkmark"></ion-icon></button>
+        </ion-row>
+        <ion-row>
+          <button (click)="goToDisplayName()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
+          </button>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <!-- User Display Name -->
+    <ion-slide padding>
+      <ion-grid>
+        <ion-row>
+          <h1>{{ 'How should I call you ?' | translate }}</h1>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-label floating>{{ 'Display Name' | translate }}</ion-label>
+            <ion-input [(ngModel)]="userName" type="text"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <button (click)="setDisplayName()" ion-button color="light" block round>
+            {{ 'Continue' | translate }}
+          </button>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
   </ion-slides>
 </ion-content>

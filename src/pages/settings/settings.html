@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="{{this.settings.accentColor}}">
     <ion-title>{{ 'Settings' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -15,7 +15,7 @@
       </p>
     </ion-card-content>
     <ion-item>
-      <button (click)="signIn()" ion-button icon-start clear item-end>
+      <button color="{{this.settings.accentColor}}" (click)="signIn()" ion-button icon-start clear item-end>
         <ion-icon name="log-in"></ion-icon>
         {{ 'Sign In' | translate }}
       </button>
@@ -27,11 +27,12 @@
         {{ 'Account' | translate }}
       </ion-card-title>
       <p>
+        {{ 'Hi ' | translate }}{{settings.user.displayName}} !<br>
         {{ 'You are connected to the following Workizy account : ' | translate }}{{settings.user.email}}
       </p>
     </ion-card-content>
     <ion-item>
-      <button (click)="logout()" ion-button icon-start clear item-end>
+      <button color="{{this.settings.accentColor}}" (click)="logout()" ion-button icon-start clear item-end>
         <ion-icon name="log-out"></ion-icon>
         {{ 'Log Out' | translate }}
       </button>
@@ -45,14 +46,36 @@
       </ion-card-title>
       <ion-item>
         <ion-label>{{ 'Dark Theme' | translate }}</ion-label>
-        <ion-toggle disabled [(ngModel)]="darkTheme" checked="false"></ion-toggle>
+        <ion-toggle [(ngModel)]="darkTheme" checked="false" color="{{this.settings.accentColor}}" (ionChange)="applyTheme()"></ion-toggle>
       </ion-item>
+      <ion-item>
+        <ion-label>{{ 'Accent color' | translate }}</ion-label>
+      </ion-item>
+      <button *ngFor="let col of accentColors" ion-button round color="{{col}}" (click)="setAccentColor(col)"><ion-icon *ngIf="settings.accentColor == col" name="checkmark"></ion-icon></button>
     </ion-card-content>
-    <ion-item>
-      <button disabled (click)="applyTheme()" ion-button icon-start clear item-end>
-        <ion-icon name="save"></ion-icon>
-        {{ 'Apply' | translate }}
-      </button>
-    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>
+        {{ 'About Workizy' | translate }}
+      </ion-card-title>
+      <p><b>{{ 'WorkizyVersion' | translate }}</b> - {{ 'WorkizyBuild' | translate }}</p>
+      <p>{{ 'Developped and maintained with ❤ by Axel Maczkowiak' | translate }}</p>
+      <ion-list>
+        <button (click)="linkUtils.openLink('https://twitter.com/workizy')" ion-item>
+          <ion-icon name="logo-twitter" item-start></ion-icon>
+          <ion-label>@workizy</ion-label>
+        </button>
+        <button (click)="linkUtils.openLink('https://twitter.com/amaczkowiak')" ion-item>
+          <ion-icon name="logo-twitter" item-start></ion-icon>
+          <ion-label>@amaczkowiak</ion-label>
+        </button>
+        <button (click)="linkUtils.openLink('https://support.amacz13.com')" ion-item>
+          <ion-icon name="help-circle" item-start></ion-icon>
+          <ion-label>{{ 'Support Center' | translate }}</ion-label>
+        </button>
+      </ion-list>
+    </ion-card-content>
   </ion-card>
 </ion-content>
