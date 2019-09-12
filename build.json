@@ -4,6 +4,17 @@
       "package": [
         "pkg"
       ]
+    },
+    "linux": {
+      "package": [
+        "deb"
+      ]
+    },
+    "windows": {
+      "package": [
+        "portable",
+        "nsis"
+      ]
     }
   },
   "ios": {
