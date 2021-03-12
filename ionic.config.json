@@ -1,8 +1,7 @@
 {
-  "name": "Workizy",
-  "app_id": "",
-  "type": "ionic-angular",
+  "name": "Workizy2",
   "integrations": {
-    "cordova": {}
-  }
+    "capacitor": {}
+  },
+  "type": "angular"
 }
