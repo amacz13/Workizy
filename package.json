@@ -1,8 +1,8 @@
 {
-  "name": "Workizy2",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "name": "workizy",
+  "version": "1.0.0-SNAPSHOT",
+  "author": "Axel MACZKOWIAK",
+  "homepage": "https://amacz13.fr/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -19,7 +19,9 @@
     "@angular/platform-browser": "~11.2.0",
     "@angular/platform-browser-dynamic": "~11.2.0",
     "@angular/router": "~11.2.0",
+    "@capacitor/android": "^2.4.7",
     "@capacitor/core": "2.4.7",
+    "@capacitor/ios": "^2.4.7",
     "@ionic/angular": "^5.5.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
@@ -49,6 +51,5 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.0.2"
-  },
-  "description": "An Ionic project"
+  }
 }
