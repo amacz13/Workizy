@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "Workizy2",
+  "appId": "fr.amacz13.workizy",
+  "appName": "Workizy",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

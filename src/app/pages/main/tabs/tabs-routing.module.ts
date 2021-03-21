@@ -12,6 +12,10 @@ const routes: Routes = [
         loadChildren: () => import('../welcome/welcome.module').then(m => m.WelcomePageModule)
       },
       {
+        path: 'todo',
+        loadChildren: () => import('../to-do/to-do.module').then(m => m.ToDoPageModule)
+      },
+      {
         path: 'search',
         loadChildren: () => import('../search/search.module').then(m => m.SearchPageModule)
       },

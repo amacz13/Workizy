@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { WelcomePageRoutingModule } from './welcome-routing.module';
 
 import { WelcomePage } from './welcome.page';
+import {CardComponent} from '../../../components/card/card.component';
+import {LinklistElementComponent} from '../../../components/linklist-element/linklist-element.component';
+import {ChecklistElementComponent} from '../../../components/checklist-element/checklist-element.component';
 
 @NgModule({
   imports: [
@@ -15,6 +18,6 @@ import { WelcomePage } from './welcome.page';
     IonicModule,
     WelcomePageRoutingModule
   ],
-  declarations: [WelcomePage]
+    declarations: [WelcomePage, CardComponent, LinklistElementComponent, ChecklistElementComponent]
 })
 export class WelcomePageModule {}
