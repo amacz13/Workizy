@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from '../../../model/card/card.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
@@ -10,7 +11,7 @@ export class WelcomePage implements OnInit {
 
   card: Card = new Card();
 
-  constructor() {
+  constructor(private router: Router) {
     this.card.title = 'Title';
     this.card.description = 'This is a description';
     this.card.creationDate = '04/09/2021';
@@ -19,4 +20,7 @@ export class WelcomePage implements OnInit {
   ngOnInit() {
   }
 
+  goToSettings() {
+      this.router.navigate(['/settings'])
+  }
 }
