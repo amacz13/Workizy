@@ -6,5 +6,6 @@ export class List {
     title: string;
     cards: Card[];
     owner: User;
+    background: string;
 }
 

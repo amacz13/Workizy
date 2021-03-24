@@ -10,6 +10,7 @@ import { WelcomePage } from './welcome.page';
 import {CardComponent} from '../../../components/card/card.component';
 import {LinklistElementComponent} from '../../../components/linklist-element/linklist-element.component';
 import {ChecklistElementComponent} from '../../../components/checklist-element/checklist-element.component';
+import {ListComponent} from '../../../components/list/list.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import {ChecklistElementComponent} from '../../../components/checklist-element/c
     IonicModule,
     WelcomePageRoutingModule
   ],
-    declarations: [WelcomePage, CardComponent, LinklistElementComponent, ChecklistElementComponent]
+    declarations: [WelcomePage, CardComponent, LinklistElementComponent, ChecklistElementComponent, ListComponent]
 })
 export class WelcomePageModule {}
