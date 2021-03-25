@@ -14,6 +14,9 @@ export class WelcomePage implements OnInit {
   list1: List = new List();
   list2: List = new List();
   list3: List = new List();
+  list4: List = new List();
+  list5: List = new List();
+  list6: List = new List();
 
   constructor(private router: Router) {
     this.card.title = 'Title';
@@ -26,6 +29,12 @@ export class WelcomePage implements OnInit {
     this.list2.background = 'background2';
     this.list3.title = 'List 3';
     this.list3.background = 'background3';
+    this.list4.title = 'List 4';
+    this.list4.background = 'background4';
+    this.list5.title = 'List 5';
+    this.list5.background = 'background5';
+    this.list6.title = 'List 6';
+    this.list6.background = 'background6';
   }
 
   ngOnInit() {
@@ -33,5 +42,14 @@ export class WelcomePage implements OnInit {
 
   goToSettings() {
       this.router.navigate(['/settings'])
+  }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
   }
 }
