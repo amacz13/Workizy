@@ -14,6 +14,10 @@ const routes: Routes = [
     path: 'first-run',
     loadChildren: () => import('./pages/first-run/first-run/first-run.module').then( m => m.FirstRunPageModule)
   },
+  {
+    path: 'list-creation',
+    loadChildren: () => import('./pages/list-creation/list-creation.module').then( m => m.ListCreationPageModule)
+  },
 ];
 @NgModule({
   imports: [

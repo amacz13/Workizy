@@ -10,7 +10,20 @@
       <ion-title size="large">Search</ion-title>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-searchbar></ion-searchbar>
+      <ion-searchbar [(ngModel)]="search"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
+
+  <ion-grid *ngIf="!search">
+    <ion-row>
+      <ion-col>
+        <h1>A</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="3" size-lg="4" size-md="6">
+        <workizy-list [list]="list1"></workizy-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

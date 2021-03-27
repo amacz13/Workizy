@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {List} from '../../../model/list/list.model';
 
 @Component({
   selector: 'app-search',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchPage implements OnInit {
 
-  constructor() { }
+  search: string;
+  list1: List = new List();
+
+  constructor() {
+    this.list1.title = 'A List';
+    this.list1.background = 'background1';
+  }
 
   ngOnInit() {
   }

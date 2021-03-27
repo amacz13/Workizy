@@ -13,12 +13,15 @@ import {ChecklistElementComponent} from '../../../components/checklist-element/c
 import {ListComponent} from '../../../components/list/list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    WelcomePageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        WelcomePageRoutingModule
+    ],
+    exports: [
+        ListComponent
+    ],
     declarations: [WelcomePage, CardComponent, LinklistElementComponent, ChecklistElementComponent, ListComponent]
 })
 export class WelcomePageModule {}
