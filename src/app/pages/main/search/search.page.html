@@ -10,19 +10,38 @@
       <ion-title size="large">Search</ion-title>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-searchbar [(ngModel)]="search"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="search" (ngModelChange)="onSearch($event)"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
 
   <ion-grid *ngIf="!search">
-    <ion-row>
-      <ion-col>
-        <h1>A</h1>
+    <div *ngFor="let letter of mapKeys">
+      <ion-row>
+        <ion-col>
+          <h1>{{ letter }}</h1>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let list of allListsAlphabetically.get(letter)" size="12" size-xl="3" size-lg="4" size-md="6">
+          <workizy-list [list]="list" (onDelete)="refreshLists()"></workizy-list>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+
+  <ion-grid *ngIf="search">
+    <ion-row *ngIf="searchResults && searchResults.length > 0">
+      <ion-col *ngFor="let list of searchResults" size="12" size-xl="3" size-lg="4" size-md="6">
+        <workizy-list [list]="list" (onDelete)="refreshLists()"></workizy-list>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col size="12" size-xl="3" size-lg="4" size-md="6">
-        <workizy-list [list]="list1"></workizy-list>
+    <ion-row *ngIf="!searchResults || searchResults.length === 0"class="ion-align-items-center">
+      <ion-col size="12" size-lg="4" offset-lg="4" size-md="6" offset-md="3">
+        <ion-card class="nothing">
+          <ion-icon class="nothing" name="close-circle-outline"></ion-icon>
+          <ion-card-title class="nothing">No result</ion-card-title>
+          <ion-card-subtitle class="nothing">Try to update your query</ion-card-subtitle>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>

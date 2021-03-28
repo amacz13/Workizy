@@ -1,0 +1,24 @@
+ion-card.nothing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 300px;
+}
+
+ion-icon.nothing {
+  font-size: 128px;
+}
+
+ion-card-title.nothing {
+  margin: 16px;
+}
+
+ion-card-subtitle.nothing {
+  margin: 16px;
+  text-align: center;
+}
+
+h1 {
+  margin-left: 16px;
+}

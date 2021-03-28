@@ -17,7 +17,7 @@ export class LocalStorageService {
     return Storage.set({key: 'list_' + list.id, value: JSON.stringify(list)});
   }
 
-  getList(listId: number): Promise<List> {
+  getList(listId: string): Promise<List> {
     return this._getList('list_'+listId);
   }
 
@@ -43,7 +43,7 @@ export class LocalStorageService {
     });
   }
 
-  async deleteList(listId: number){
+  async deleteList(listId: string){
     await Storage.remove({key: 'list_'+listId});
   }
 }

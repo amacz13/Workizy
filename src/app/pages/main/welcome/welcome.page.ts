@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { List } from '../../../model/list/list.model';
 import {IonRouterOutlet, ModalController} from '@ionic/angular';
 import {ListCreationPage} from '../../list-creation/list-creation.page';
-import {LocalStorageService} from '../../../services/local-storage/local-storage.service';
+import {ListService} from '../../../services/list/list.service';
 
 @Component({
   selector: 'app-welcome',
@@ -16,14 +16,14 @@ export class WelcomePage implements OnInit {
   card: Card = new Card();
   lists: List[] = [];
 
-  constructor(private router: Router, public modalController: ModalController, public routerOutlet: IonRouterOutlet, private localStorageService: LocalStorageService) {
+  constructor(private router: Router, public modalController: ModalController, public routerOutlet: IonRouterOutlet, private listService: ListService) {
     this.card.title = 'Title';
     this.card.description = 'This is a description';
     this.card.creationDate = '04/09/2021';
   }
 
   ngOnInit() {
-    this.localStorageService.getLists().then( lists => this.lists = lists);
+    this.refreshLists();
   }
 
   goToSettings() {
@@ -48,11 +48,15 @@ export class WelcomePage implements OnInit {
     modal.onDidDismiss().then( modalResult => {
       if (modalResult && modalResult.data) {
         console.log('Saving list : ',modalResult.data);
-        this.localStorageService.saveList(modalResult.data).then( () => {
-          this.localStorageService.getLists().then( lists => this.lists = lists);
+        this.listService.saveList(modalResult.data).then( () => {
+          this.refreshLists();
         });
       }
     });
     await modal.present();
+  }
+
+  refreshLists() {
+    this.listService.getAllLists().then( lists => this.lists = lists.sort(((a, b) => Date.parse(a.creationDate) >= Date.parse(b.creationDate) ? 1 : -1)));
   }
 }

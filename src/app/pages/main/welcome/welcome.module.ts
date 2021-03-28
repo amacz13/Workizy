@@ -11,13 +11,15 @@ import {CardComponent} from '../../../components/card/card.component';
 import {LinklistElementComponent} from '../../../components/linklist-element/linklist-element.component';
 import {ChecklistElementComponent} from '../../../components/checklist-element/checklist-element.component';
 import {ListComponent} from '../../../components/list/list.component';
+import {LongPressModule} from '../../../directives/long-press/long-press.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        WelcomePageRoutingModule
+        WelcomePageRoutingModule,
+        LongPressModule
     ],
     exports: [
         ListComponent
