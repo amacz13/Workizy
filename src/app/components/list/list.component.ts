@@ -12,12 +12,14 @@ export class ListComponent implements OnInit {
 
   @Output() onDelete: EventEmitter<any> = new EventEmitter<any>();
   @Input() list: List;
+  @Input() preview: boolean = false;
 
   constructor(public actionSheetController: ActionSheetController, public alertController: AlertController, public listService: ListService) { }
 
   ngOnInit() {}
 
   async onLongPress() {
+    if (this.preview) return;
     const actionSheet = await this.actionSheetController.create({
       header: 'Actions',
       cssClass: 'my-custom-class',

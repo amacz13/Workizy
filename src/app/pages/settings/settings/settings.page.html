@@ -8,5 +8,13 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
+  <ion-list-header>
+    <ion-label>Personalization</ion-label>
+  </ion-list-header>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label>Dark theme</ion-label>
+      <ion-toggle [(ngModel)]="darkTheme"></ion-toggle>
+    </ion-item>
+  </ion-list>
 </ion-content>

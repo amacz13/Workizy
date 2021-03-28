@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
+  darkTheme: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
