@@ -1,7 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {List} from '../../model/list/list.model';
-import {ActionSheetController, AlertController} from '@ionic/angular';
+import {ActionSheetController, AlertController, IonRouterOutlet, ModalController} from '@ionic/angular';
 import {ListService} from '../../services/list/list.service';
+import {ListCreationPage} from '../../pages/list-creation/list-creation.page';
+import {ListViewerPage} from '../../pages/list-viewer/list-viewer.page';
 
 @Component({
   selector: 'workizy-list',
@@ -11,6 +13,7 @@ import {ListService} from '../../services/list/list.service';
 export class ListComponent implements OnInit {
 
   @Output() onDelete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
   @Input() list: List;
   @Input() preview: boolean = false;
 
@@ -74,5 +77,9 @@ export class ListComponent implements OnInit {
   performDelete() {
     this.listService.deleteList(this.list);
     this.onDelete.emit();
+  }
+
+  viewList() {
+    this.onClick.emit();
   }
 }

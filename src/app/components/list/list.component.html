@@ -1,5 +1,5 @@
 <div>
-  <ion-card long-press (contextmenu)="onLongPress()" (onLongPress)="onLongPress()" [class]="list.background">
+  <ion-card long-press (click)="viewList()" (contextmenu)="onLongPress()" (onLongPress)="onLongPress()" [class]="list.background">
     <ion-card-title>{{list.title}}</ion-card-title>
   </ion-card>
 </div>

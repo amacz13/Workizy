@@ -10,8 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "run ios": "ionic cap run ios",
-    "run android": "ionic cap run android",
+    "run ios": "ionic cap run ios && cordova-res ios --skip-config --copy",
+    "run android": "ionic cap run android && cordova-res android --skip-config --copy --icon-background-source '#FFFFFF' --icon-foreground-trim",
     "run electron": "ionic cap run electron"
   },
   "private": true,

@@ -5,6 +5,7 @@ import { List } from '../../../model/list/list.model';
 import {IonRouterOutlet, ModalController} from '@ionic/angular';
 import {ListCreationPage} from '../../list-creation/list-creation.page';
 import {ListService} from '../../../services/list/list.service';
+import {ListViewerPage} from '../../list-viewer/list-viewer.page';
 
 @Component({
   selector: 'app-welcome',
@@ -58,5 +59,17 @@ export class WelcomePage implements OnInit {
 
   refreshLists() {
     this.listService.getAllLists().then( lists => this.lists = lists.sort(((a, b) => Date.parse(a.creationDate) >= Date.parse(b.creationDate) ? 1 : -1)));
+  }
+
+  async showList(list: List) {
+    const modal = await this.modalController.create({
+      component: ListViewerPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.parentOutlet.nativeEl,
+      componentProps: {
+        'list': list
+      }
+    });
+    await modal.present();
   }
 }
