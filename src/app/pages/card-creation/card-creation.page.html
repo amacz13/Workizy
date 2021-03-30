@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+    <ion-title>New card</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!isCardValid()" (click)="create()">Create</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Card title</ion-label>
+    <ion-input [(ngModel)]="card.title" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Card text content</ion-label>
+    <ion-textarea [(ngModel)]="card.description"></ion-textarea>
+  </ion-item>
+</ion-content>

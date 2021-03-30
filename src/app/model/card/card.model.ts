@@ -9,5 +9,6 @@ export class Card {
   linklist: LinklistElement[];
   creationDate: string;
   lastUpdateDate: string;
+  image: string;
 
 }

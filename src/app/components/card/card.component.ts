@@ -12,14 +12,8 @@ import {ChecklistElement} from '../../model/checklist-element/checklist-element.
 export class CardComponent implements OnInit {
 
   @Input() card: Card;
-  link: LinklistElement = new LinklistElement();
-  check: ChecklistElement = new ChecklistElement();
 
   constructor() {
-    this.link.title = 'My Link';
-    this.link.link = 'https://google.com';
-    this.check.text = 'Checklist';
-    this.check.checked = false;
   }
 
   ngOnInit() {}

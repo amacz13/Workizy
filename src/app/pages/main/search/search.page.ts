@@ -2,6 +2,7 @@ import {AfterContentInit, AfterViewInit, Component, OnInit} from '@angular/core'
 import {List} from '../../../model/list/list.model';
 import {ListService} from '../../../services/list/list.service';
 import {ViewDidEnter} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -16,7 +17,7 @@ export class SearchPage implements ViewDidEnter {
   mapKeys: string[] = [];
   allListsAlphabetically: Map<string,List[]> = new Map<string, List[]>();
 
-  constructor(private listService: ListService) {
+  constructor(private listService: ListService, private router: Router) {
   }
 
   ionViewDidEnter(): void {
@@ -25,7 +26,6 @@ export class SearchPage implements ViewDidEnter {
 
 
   onSearch($event: any) {
-    console.log("On search : ",$event);
     this.listService.searchList($event).then( results => {
       this.searchResults = results;
     });
@@ -41,7 +41,10 @@ export class SearchPage implements ViewDidEnter {
         this.allListsAlphabetically.set(list.title[0], listsWithSameLetter);
       }
       this.mapKeys = Array.from(this.allListsAlphabetically.keys()).sort();
-      console.log('Keys: ',this.mapKeys)
     });
   }
+
+    showList(list: List) {
+      this.router.navigate(['/list-viewer'], {state: {list: list}});
+    }
 }

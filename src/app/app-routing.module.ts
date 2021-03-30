@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'list-viewer',
     loadChildren: () => import('./pages/list-viewer/list-viewer.module').then( m => m.ListViewerPageModule)
   },
+  {
+    path: 'card-creation',
+    loadChildren: () => import('./pages/card-creation/card-creation.module').then( m => m.CardCreationPageModule)
+  },
 ];
 @NgModule({
   imports: [

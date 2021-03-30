@@ -1,7 +1,7 @@
 <ion-card>
-  <img src="https://ionicframework.com/docs/demos/api/card/madison.jpg">
+  <img *ngIf="card.image" [src]="card.image">
   <ion-card-header>
-    <ion-card-title *ngIf="card.title">{{ card.title }}</ion-card-title>
+    <ion-card-title>{{ card.title }}</ion-card-title>
     <ion-card-subtitle>{{ card.creationDate }}</ion-card-subtitle>
   </ion-card-header>
 
@@ -9,8 +9,8 @@
     {{ card.description }}
   </ion-card-content>
   <ion-list>
-    <workizy-linklist-element [link]="link"></workizy-linklist-element>
-    <workizy-checklist-element [checklistElement]="check"></workizy-checklist-element>
+    <workizy-linklist-element *ngFor="let link of card.linklist" [link]="link"></workizy-linklist-element>
+    <workizy-checklist-element *ngFor="let check of card.checklist"  [checklistElement]="check"></workizy-checklist-element>
   </ion-list>
 
 </ion-card>

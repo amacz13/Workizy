@@ -62,14 +62,6 @@ export class WelcomePage implements OnInit {
   }
 
   async showList(list: List) {
-    const modal = await this.modalController.create({
-      component: ListViewerPage,
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.parentOutlet.nativeEl,
-      componentProps: {
-        'list': list
-      }
-    });
-    await modal.present();
+    this.router.navigate(['/list-viewer'], {state: {list: list}});
   }
 }

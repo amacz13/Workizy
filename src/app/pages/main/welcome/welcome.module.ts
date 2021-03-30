@@ -22,7 +22,8 @@ import {LongPressModule} from '../../../directives/long-press/long-press.module'
         LongPressModule
     ],
     exports: [
-        ListComponent
+        ListComponent,
+        CardComponent
     ],
     declarations: [WelcomePage, CardComponent, LinklistElementComponent, ChecklistElementComponent, ListComponent]
 })

@@ -1,6 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {List} from '../../model/list/list.model';
-import {ModalController} from '@ionic/angular';
+import {IonRouterOutlet, ModalController} from '@ionic/angular';
+import {CardCreationPage} from '../card-creation/card-creation.page';
+import {Router} from '@angular/router';
+import {Card} from '../../model/card/card.model';
+import {ListService} from '../../services/list/list.service';
 
 @Component({
   selector: 'app-list-viewer',
@@ -9,14 +13,34 @@ import {ModalController} from '@ionic/angular';
 })
 export class ListViewerPage implements OnInit {
 
-  @Input() list: List;
+  list: List;
 
-  constructor(private modalController: ModalController) { }
+
+  constructor(private modalController: ModalController, private router: Router, private routerOutlet: IonRouterOutlet, private listService: ListService) {
+    this.list = this.router.getCurrentNavigation().extras.state.list;
+  }
 
   ngOnInit() {
   }
 
-  close() {
-    this.modalController.dismiss();
+  async addNewCard() {
+    const modal = await this.modalController.create({
+      component: CardCreationPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+      componentProps: {
+        'card': new Card()
+      }
+    });
+
+    modal.onDidDismiss().then( modalResult => {
+      if (modalResult && modalResult.data) {
+        console.log('Saving card : ',modalResult.data);
+        if (!this.list.cards) this.list.cards = [];
+        this.list.cards.push(modalResult.data);
+        this.listService.saveList(this.list);
+      }
+    });
+    await modal.present();
   }
 }

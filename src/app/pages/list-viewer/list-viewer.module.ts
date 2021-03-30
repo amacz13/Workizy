@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ListViewerPageRoutingModule } from './list-viewer-routing.module';
 
 import { ListViewerPage } from './list-viewer.page';
+import {WelcomePageModule} from '../main/welcome/welcome.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ListViewerPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        ListViewerPageRoutingModule,
+        WelcomePageModule
+    ],
   declarations: [ListViewerPage]
 })
 export class ListViewerPageModule {}

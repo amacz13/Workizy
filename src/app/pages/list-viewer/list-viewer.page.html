@@ -1,16 +1,32 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="close()">Close</ion-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>{{ list.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row *ngIf="!list.cards || list.cards.length === 0" class="ion-align-items-center">
+      <ion-col size="12" size-lg="4" offset-lg="4" size-md="6" offset-md="3">
+        <ion-card class="nothing">
+          <ion-icon class="nothing" name="file-tray-outline"></ion-icon>
+          <ion-card-title class="nothing">Empty list</ion-card-title>
+          <ion-card-subtitle class="nothing">There is nothing to show...<br>...for the moment</ion-card-subtitle>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="3" size-lg="4" size-md="6" *ngFor="let card of list.cards">
+        <workizy-card [card]="card"></workizy-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
+    <ion-fab-button (click)="addNewCard()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
