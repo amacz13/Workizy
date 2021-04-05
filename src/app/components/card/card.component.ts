@@ -21,4 +21,8 @@ export class CardComponent implements OnInit {
   linkClicked() {
 
   }
+
+  getFormattedDate(): string {
+    return this.card.creationDate
+  }
 }

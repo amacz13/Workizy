@@ -2,7 +2,7 @@
   <img *ngIf="card.image" [src]="card.image">
   <ion-card-header>
     <ion-card-title>{{ card.title }}</ion-card-title>
-    <ion-card-subtitle>{{ card.creationDate }}</ion-card-subtitle>
+    <ion-card-subtitle>{{ getFormattedDate()}}</ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content *ngIf="card.description">

@@ -14,13 +14,9 @@ import {ListViewerPage} from '../../list-viewer/list-viewer.page';
 })
 export class WelcomePage implements OnInit {
 
-  card: Card = new Card();
   lists: List[] = [];
 
   constructor(private router: Router, public modalController: ModalController, public routerOutlet: IonRouterOutlet, private listService: ListService) {
-    this.card.title = 'Title';
-    this.card.description = 'This is a description';
-    this.card.creationDate = '04/09/2021';
   }
 
   ngOnInit() {

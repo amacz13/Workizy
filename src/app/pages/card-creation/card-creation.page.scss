@@ -1,0 +1,18 @@
+ion-card-title {
+  text-align: center;
+  height: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-size: cover;
+}
+
+ion-card {
+  margin: 12px;
+}
+
+ion-card:hover {
+  transform: scale(0.95);
+  transition: 2s;
+}

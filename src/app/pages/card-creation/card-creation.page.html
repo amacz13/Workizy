@@ -11,6 +11,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-card [ngStyle]="{'background-image': card.image ? 'url(&quot;'+card.image+'&quot;)' : 'linear-gradient(0deg, #4158D0 0%, #4158D0 100%)'}">
+    <!--<img *ngIf="card.image" [src]="card.image">-->
+    <ion-card-title (click)="selectPicture()">Select picture</ion-card-title>
+  </ion-card>
   <ion-item>
     <ion-label position="floating">Card title</ion-label>
     <ion-input [(ngModel)]="card.title" required></ion-input>
