@@ -1,0 +1,62 @@
+{
+  "page": {
+    "welcome": {
+      "title": "Bienvenue",
+      "recent": "Récents"
+    },
+    "search": {
+      "title": "Recherche",
+      "placeholder": "Rechercher...",
+      "nothing-title": "Aucun résultat",
+      "nothing-content": "Essayez de modifier votre recherche"
+    },
+    "todo": {
+      "title": "À faire",
+      "nothing-title": "Tout est fait !",
+      "nothing-content": "Créez une nouvelle tâche ou profitez de votre journée"
+    },
+    "list-creation": {
+      "title": "Nouvelle liste",
+      "input-list-title": "Titre de la liste"
+    },
+    "list-viewer": {
+      "nothing-title": "Liste vide",
+      "nothing-content": "Il n'y a rien à voir ici...<br>...pour le moment"
+    },
+    "card-creation": {
+      "title": "Nouvelle carte",
+      "input-card-picture": "Choisir une image",
+      "input-card-title": "Titre de la carte",
+      "input-card-content": "Contenu de la carte"
+    }
+  },
+  "tabs": {
+    "home": "Accueil",
+    "todo": "À faire",
+    "search": "Recherche"
+  },
+  "dialog": {
+    "delete-list": {
+      "title": "Supprimer la liste",
+      "message": "Êtes-vous sûr de vouloir supprimer cette liste et l'ensemble des cartes associées ?<br>Les données seront irrécupérables !"
+    },
+    "delete-card": {
+      "title": "Supprimer la carte",
+      "message": "Êtes-vous sûr de vouloir supprimer cette carte ?<br>Les données seront irrécupérables !"
+    }
+  },
+  "general": {
+    "button": {
+      "create": "Créer",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "back": "Retour",
+      "delete": "Supprimer",
+      "share": "Partager",
+      "synchronize": "Synchroniser"
+    },
+    "action-sheet": {
+      "title": "Actions"
+    }
+  }
+}

@@ -8,6 +8,7 @@ import { SearchPageRoutingModule } from './search-routing.module';
 
 import { SearchPage } from './search.page';
 import {WelcomePageModule} from '../welcome/welcome.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {WelcomePageModule} from '../welcome/welcome.module';
         FormsModule,
         IonicModule,
         SearchPageRoutingModule,
-        WelcomePageModule
+        WelcomePageModule,
+        TranslateModule
     ],
   declarations: [SearchPage]
 })

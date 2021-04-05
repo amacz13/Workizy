@@ -5,6 +5,7 @@ import { List } from '../../../model/list/list.model';
 import {IonRouterOutlet, ModalController} from '@ionic/angular';
 import {ListCreationPage} from '../../list-creation/list-creation.page';
 import {ListService} from '../../../services/list/list.service';
+import { TranslateService } from '@ngx-translate/core';
 import {ListViewerPage} from '../../list-viewer/list-viewer.page';
 
 @Component({
@@ -16,7 +17,8 @@ export class WelcomePage implements OnInit {
 
   lists: List[] = [];
 
-  constructor(private router: Router, public modalController: ModalController, public routerOutlet: IonRouterOutlet, private listService: ListService) {
+  constructor(private router: Router, public modalController: ModalController, public routerOutlet: IonRouterOutlet, private listService: ListService,
+    private translate: TranslateService) {
   }
 
   ngOnInit() {

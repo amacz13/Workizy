@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Parse } from 'parse';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,9 @@ import { Parse } from 'parse';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {
+  constructor(private translate: TranslateService) {
     this.initParse();
+    this.translate.use(this.translate.getBrowserLang());
   }
 
   initParse() {

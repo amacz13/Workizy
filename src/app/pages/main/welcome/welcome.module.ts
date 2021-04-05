@@ -12,6 +12,7 @@ import {LinklistElementComponent} from '../../../components/linklist-element/lin
 import {ChecklistElementComponent} from '../../../components/checklist-element/checklist-element.component';
 import {ListComponent} from '../../../components/list/list.component';
 import {LongPressModule} from '../../../directives/long-press/long-press.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import {LongPressModule} from '../../../directives/long-press/long-press.module'
         FormsModule,
         IonicModule,
         WelcomePageRoutingModule,
-        LongPressModule
+        LongPressModule,
+        TranslateModule
     ],
     exports: [
         ListComponent,

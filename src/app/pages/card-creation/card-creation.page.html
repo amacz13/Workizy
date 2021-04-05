@@ -1,25 +1,25 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="close()">Close</ion-button>
+      <ion-button (click)="close()">{{ 'general.button.cancel' | translate }}</ion-button>
     </ion-buttons>
-    <ion-title>New card</ion-title>
+    <ion-title>{{ 'page.card-creation.title' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [disabled]="!isCardValid()" (click)="create()">Create</ion-button>
+      <ion-button [disabled]="!isCardValid()" (click)="create()">{{ 'general.button.create' | translate }}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card (click)="selectPicture()" [ngStyle]="{'background-image': base64picture ? 'url(&quot;'+base64picture+'&quot;)' : 'linear-gradient(0deg, #4158D0 0%, #4158D0 100%)'}">
-    <ion-card-title>Select picture</ion-card-title>
+    <ion-card-title>{{ 'page.card-creation.input-card-picture' | translate }}</ion-card-title>
   </ion-card>
   <ion-item>
-    <ion-label position="floating">Card title</ion-label>
+    <ion-label position="floating">{{ 'page.card-creation.input-card-title' | translate }}</ion-label>
     <ion-input [(ngModel)]="card.title" required></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Card text content</ion-label>
+    <ion-label position="floating">{{ 'page.card-creation.input-card-content' | translate }}</ion-label>
     <ion-textarea [(ngModel)]="card.description"></ion-textarea>
   </ion-item>
 </ion-content>

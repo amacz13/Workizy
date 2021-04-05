@@ -8,6 +8,7 @@ import { ListViewerPageRoutingModule } from './list-viewer-routing.module';
 
 import { ListViewerPage } from './list-viewer.page';
 import {WelcomePageModule} from '../main/welcome/welcome.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {WelcomePageModule} from '../main/welcome/welcome.module';
         FormsModule,
         IonicModule,
         ListViewerPageRoutingModule,
-        WelcomePageModule
+        WelcomePageModule,
+        TranslateModule
     ],
   declarations: [ListViewerPage]
 })

@@ -8,6 +8,7 @@ import { ListCreationPageRoutingModule } from './list-creation-routing.module';
 
 import { ListCreationPage } from './list-creation.page';
 import {WelcomePageModule} from '../main/welcome/welcome.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {WelcomePageModule} from '../main/welcome/welcome.module';
         FormsModule,
         IonicModule,
         ListCreationPageRoutingModule,
-        WelcomePageModule
+        WelcomePageModule,
+        TranslateModule
     ],
   declarations: [ListCreationPage]
 })

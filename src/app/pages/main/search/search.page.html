@@ -1,16 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Search</ion-title>
+    <ion-title>{{ 'page.search.title' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Search</ion-title>
+      <ion-title size="large">{{ 'page.search.title' | translate }}</ion-title>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-searchbar [(ngModel)]="search" (ngModelChange)="onSearch($event)"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="search" placeholder="{{ 'page.search.placeholder' | translate }}" (ngModelChange)="onSearch($event)"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
 
@@ -39,8 +39,8 @@
       <ion-col size="12" size-lg="4" offset-lg="4" size-md="6" offset-md="3">
         <ion-card class="nothing">
           <ion-icon class="nothing" name="close-circle-outline"></ion-icon>
-          <ion-card-title class="nothing">No result</ion-card-title>
-          <ion-card-subtitle class="nothing">Try to update your query</ion-card-subtitle>
+          <ion-card-title class="nothing">{{ 'page.search.nothing-title' | translate }}</ion-card-title>
+          <ion-card-subtitle class="nothing">{{ 'page.search.nothing-content' | translate }}</ion-card-subtitle>
         </ion-card>
       </ion-col>
     </ion-row>

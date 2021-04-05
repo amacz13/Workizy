@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button text="{{ 'general.button.back' | translate }}"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ list.title }}</ion-title>
   </ion-toolbar>
@@ -13,8 +13,8 @@
       <ion-col size="12" size-lg="4" offset-lg="4" size-md="6" offset-md="3">
         <ion-card class="nothing">
           <ion-icon class="nothing" name="file-tray-outline"></ion-icon>
-          <ion-card-title class="nothing">Empty list</ion-card-title>
-          <ion-card-subtitle class="nothing">There is nothing to show...<br>...for the moment</ion-card-subtitle>
+          <ion-card-title class="nothing">{{ 'page.list-viewer.nothing-title' | translate }}</ion-card-title>
+          <ion-card-subtitle class="nothing" innerHTML="{{ 'page.list-viewer.nothing-content' | translate }}"></ion-card-subtitle>
         </ion-card>
       </ion-col>
     </ion-row>

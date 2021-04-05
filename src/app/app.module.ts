@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { LongPressDirective } from './directives/long-press/long-press.directive';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -27,6 +27,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     HammerModule,
     AppRoutingModule,
+    HttpClientModule,
     TranslateModule.forRoot(
         {
           loader: {

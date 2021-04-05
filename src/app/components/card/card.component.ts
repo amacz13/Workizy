@@ -4,6 +4,7 @@ import {LinklistElement} from '../../model/linklist-element/linklist-element.mod
 import {ChecklistElement} from '../../model/checklist-element/checklist-element.model';
 import {CameraService} from '../../services/camera/camera.service';
 import {ActionSheetController, AlertController} from '@ionic/angular';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -18,7 +19,8 @@ export class CardComponent implements OnInit {
 
   base64Picture: string;
 
-  constructor(private cameraService: CameraService, public actionSheetController: ActionSheetController, public alertController: AlertController) {
+  constructor(private cameraService: CameraService, public actionSheetController: ActionSheetController, public alertController: AlertController,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -39,25 +41,25 @@ export class CardComponent implements OnInit {
 
   async onLongPress() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Actions',
+      header: this.translate.instant('general.action-sheet.title'),
       buttons: [{
-        text: 'Delete',
+        text: this.translate.instant('general.button.delete'),
         role: 'destructive',
         handler: () => {
           this.beforeDelete();
         }
       }, {
-        text: 'Share',
+        text: this.translate.instant('general.button.share'),
         handler: () => {
           console.log('Share clicked');
         }
       }, {
-        text: 'Synchronize',
+        text: this.translate.instant('general.button.synchronize'),
         handler: () => {
           console.log('Play clicked');
         }
       }, {
-        text: 'Cancel',
+        text: this.translate.instant('general.button.cancel'),
         role: 'cancel',
         handler: () => {
           console.log('Cancel clicked');
@@ -69,15 +71,15 @@ export class CardComponent implements OnInit {
 
   async beforeDelete() {
     const alert = await this.alertController.create({
-      header: 'Delete card',
-      message: 'Are you sure you want to delete this card?<br>Data will not be recoverable!',
+      header: this.translate.instant('dialog.delete-card.title'),
+      message: this.translate.instant('dialog.delete-card.message'),
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('general.button.cancel'),
           role: 'cancel',
           cssClass: 'secondary'
         }, {
-          text: 'Delete',
+          text: this.translate.instant('general.button.delete'),
           handler: () => {
             this.onDelete.emit();
           }
