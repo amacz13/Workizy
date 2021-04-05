@@ -24,7 +24,8 @@ export class WelcomePage implements OnInit {
   }
 
   goToSettings() {
-      this.router.navigate(['/settings'])
+      //this.router.navigate(['/settings'])
+    this.router.navigate(['/login'])
   }
 
   doRefresh(event) {

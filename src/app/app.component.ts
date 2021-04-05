@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Parse } from 'parse';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor() {
+    this.initParse();
+  }
+
+  initParse() {
+    Parse.initialize('WORKIZY');
+    Parse.serverURL = 'http://193.168.147.167:1337/parse'
+  }
 }

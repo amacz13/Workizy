@@ -1,0 +1,33 @@
+ion-grid {
+  height: 100%;
+}
+
+ion-row {
+  height: 100%;
+}
+
+ion-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-item {
+  padding-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+ion-card-title {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+ion-button {
+  margin: 20px;
+}
+
+h5 {
+  text-align: center;
+}

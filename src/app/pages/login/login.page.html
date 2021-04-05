@@ -1,0 +1,22 @@
+<ion-content fullscreen>
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" size-lg="4" offset-lg="4" size-md="6" offset-md="3">
+        <ion-card>
+          <ion-card-title>Login</ion-card-title>
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="email" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" [(ngModel)]="password" required></ion-input>
+          </ion-item>
+          <ion-button expand="block" fill="outline" (click)="login()">Login</ion-button>
+          <h5>OR</h5>
+          <ion-button expand="block" fill="outline" (click)="register()">Register</ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
