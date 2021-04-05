@@ -25,7 +25,6 @@ export class ListComponent implements OnInit {
     if (this.preview) return;
     const actionSheet = await this.actionSheetController.create({
       header: 'Actions',
-      cssClass: 'my-custom-class',
       buttons: [{
         text: 'Delete',
         role: 'destructive',

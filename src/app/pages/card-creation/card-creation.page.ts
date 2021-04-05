@@ -11,6 +11,7 @@ import {CameraService} from '../../services/camera/camera.service';
 export class CardCreationPage implements OnInit {
 
   @Input() card: Card;
+  base64picture: string;
 
   constructor(private modalController: ModalController, private cameraService: CameraService) { }
 
@@ -22,6 +23,7 @@ export class CardCreationPage implements OnInit {
   }
 
   create() {
+    this.card.id = Math.random().toString(36).substr(2, 9);
     let now = new Date();
     let nowAsDate = now.getUTCDate()+'/'+(now.getUTCMonth()+1)+'/'+now.getUTCFullYear()+' - '+now.getUTCHours()+':'+now.getUTCSeconds()
     this.card.creationDate = nowAsDate;
@@ -34,8 +36,15 @@ export class CardCreationPage implements OnInit {
   }
 
   selectPicture() {
-    this.cameraService.getPhoto().then( result => {
-      this.card.image = 'data:image/jpg;base64,'+result.base64String
+    this.cameraService.newPicture().then( result => {
+      this.card.image = result;
+      this.getBase64Picture();
     }).catch();
+  }
+
+  getBase64Picture() {
+    this.cameraService.getPicture(this.card.image).then( content => {
+      this.base64picture = content
+    });
   }
 }

@@ -2,7 +2,7 @@ import {ChecklistElement} from '../checklist-element/checklist-element.model';
 import {LinklistElement} from '../linklist-element/linklist-element.model';
 
 export class Card {
-  id: number;
+  id: string;
   title: string;
   description: string;
   checklist: ChecklistElement[];

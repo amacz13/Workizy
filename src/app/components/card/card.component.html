@@ -1,5 +1,5 @@
-<ion-card>
-  <img *ngIf="card.image" [src]="card.image">
+<ion-card long-press (contextmenu)="onLongPress()" (onLongPress)="onLongPress()">
+  <img *ngIf="card.image && base64Picture" [src]="base64Picture">
   <ion-card-header>
     <ion-card-title>{{ card.title }}</ion-card-title>
     <ion-card-subtitle>{{ getFormattedDate()}}</ion-card-subtitle>

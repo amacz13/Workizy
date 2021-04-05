@@ -5,6 +5,7 @@ import {CardCreationPage} from '../card-creation/card-creation.page';
 import {Router} from '@angular/router';
 import {Card} from '../../model/card/card.model';
 import {ListService} from '../../services/list/list.service';
+import {CameraService} from '../../services/camera/camera.service';
 
 @Component({
   selector: 'app-list-viewer',
@@ -16,7 +17,7 @@ export class ListViewerPage implements OnInit {
   list: List;
 
 
-  constructor(private modalController: ModalController, private router: Router, private routerOutlet: IonRouterOutlet, private listService: ListService) {
+  constructor(private modalController: ModalController, private router: Router, private routerOutlet: IonRouterOutlet, private listService: ListService, private cameraServices: CameraService) {
     this.list = this.router.getCurrentNavigation().extras.state.list;
   }
 
@@ -42,5 +43,13 @@ export class ListViewerPage implements OnInit {
       }
     });
     await modal.present();
+  }
+
+  deleteCard(card: Card) {
+    let newCards: Card[] = [];
+    for (let c of this.list.cards) if (c.id !== card.id) newCards.push(c);
+    this.list.cards = newCards;
+    this.listService.saveList(this.list);
+    if (card.image) this.cameraServices.deletePicture(card.image);
   }
 }

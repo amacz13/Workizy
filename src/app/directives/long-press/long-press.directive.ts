@@ -7,7 +7,7 @@ import {GestureController} from '@ionic/angular';
 export class LongPressDirective implements AfterViewInit {
 
   @Output() onLongPress = new EventEmitter();
-  @Input("delay") delay =  1000;
+  @Input("delay") delay =  500;
   action: any;
 
   private longPressActive = false;

@@ -11,9 +11,9 @@ ion-card {
   margin: 12px;
 }
 
-ion-card:hover {
+ion-card:active {
   transform: scale(0.95);
-  transition: 2s;
+  transition: 1s;
 }
 
 .background1 {
