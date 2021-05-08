@@ -93,7 +93,7 @@
     "simple-crypto-js": "^2.0.2",
     "sql.js": "^0.5.0",
     "sw-toolbox": "3.6.0",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.2.25",
     "zone.js": "0.8.29"
   },
   "devDependencies": {
