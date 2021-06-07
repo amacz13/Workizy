@@ -1,5 +1,6 @@
 import {Card} from '../card/card.model';
 import {User} from '../user/user.model';
+import {Tag} from '../tag/tag';
 
 export class List {
     id: string;
@@ -8,5 +9,6 @@ export class List {
     owner: User;
     background: string;
     creationDate: string;
+    tags: Tag[];
 }
 

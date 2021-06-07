@@ -17,7 +17,8 @@
     },
     "list-creation": {
       "title": "Nouvelle liste",
-      "input-list-title": "Titre de la liste"
+      "input-list-title": "Titre de la liste",
+      "input-tags-placeholder": "Tags"
     },
     "list-viewer": {
       "nothing-title": "Liste vide",

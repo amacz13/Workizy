@@ -15,6 +15,13 @@
     <ion-label position="floating">{{ 'page.list-creation.input-list-title' | translate }}</ion-label>
     <ion-input [(ngModel)]="list.title"></ion-input>
   </ion-item>
+  <ion-item>
+    <ion-chip *ngFor="let t of list.tags; let i = index;">
+      <ion-label>{{ t.name }}</ion-label>
+      <ion-icon name="close-outline" (click)="removeTag(i)"></ion-icon>
+    </ion-chip>
+    <ion-input type="text" [(ngModel)]="tag" (keyup.Space)="addTag(tag)" (keyup.Enter)="addTag(tag)" [placeholder]="getTagsPlaceholder()"></ion-input>
+  </ion-item>
   <ion-slides #slider pager="false">
     <ion-slide *ngFor="let background of backgrounds">
       <ion-grid>

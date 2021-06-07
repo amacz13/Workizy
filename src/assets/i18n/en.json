@@ -17,7 +17,8 @@
     },
     "list-creation": {
       "title": "New list",
-      "input-list-title": "List title"
+      "input-list-title": "List title",
+      "input-tags-placeholder": "Tags"
     },
     "list-viewer": {
       "nothing-title": "Tempty list",
